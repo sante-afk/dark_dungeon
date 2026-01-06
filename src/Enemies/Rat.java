@@ -2,8 +2,8 @@ package Enemies;
 
 public class Rat extends Enemy {
 
-    public Rat(String name, int health, int armor, String race) {
-        super(name, health, armor, race);
+    public Rat (String name, int health, int armor, String race, int level, int minDamage, int maxDamage) {
+        super(name, health, armor, race, level, minDamage, maxDamage);
     }
 
 }
