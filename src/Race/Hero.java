@@ -1,16 +1,27 @@
 package Race;
 
-public abstract class Hero {
-    public String name;
-    public int health;
-    public int armor;
-    public String race;
+import java.util.Random;
 
-    public Hero(String name, int health, int armor, String race) {
+public abstract class Hero {
+    private static final Random RANDOM = new Random();
+    private String name;
+    private int health;
+    private int armor;
+    private String race;
+
+    private int level;
+    private int minDamage;
+    private int maxDamage;
+
+    public Hero(String name, int health, int armor, String race, int level, int minDamage, int maxDamage) {
         this.name = name;
         this.health = health;
         this.armor = armor;
         this.race = race;
+
+        this.level = level;
+        this.minDamage = minDamage;
+        this.maxDamage = maxDamage;
     }
 
     // Getters
@@ -27,6 +38,16 @@ public abstract class Hero {
         return race;
     }
 
+    public int getLevel () {
+        return level;
+    }
+    public int getMinDamage () {
+        return minDamage;
+    }
+    public int getMaxDamage () {
+        return maxDamage;
+    }
+
     // Setters
     public void setName (String name) {
         if (name.length() < 2) {
@@ -36,7 +57,7 @@ public abstract class Hero {
     }
     public void setHealth (int health) {
         if (health < 100) {
-            System.out.print("Health will be 100 by default ");
+            System.out.print("\nNotification: health will be 100 by default ");
             System.out.print("ʕっ•ᴥ•ʔっ\n");
             this.health = 100;
         } else {
@@ -45,11 +66,28 @@ public abstract class Hero {
     }
     public void setArmor (int armor) {
         if (armor < 100) {
-            System.out.print("Armor will be 100 by default ");
+            System.out.print("Notification: armor will be 100 by default ");
             System.out.print("ʕっ•ᴥ•ʔっ\n");
             this.armor = 100;
         } else {
             this.armor = armor;
         }
+    }
+    public void setRace (String race) {
+        this.race = race;
+    }
+    public void setLevel (int level) {
+        this.level = level;
+    }
+    public void setMinDamage (int minDamage) {
+        this.minDamage = minDamage;
+    }
+    public void setMaxDamage (int maxDamage) {
+        this.maxDamage = maxDamage;
+    }
+
+    // Methods
+    public int physDamage (int minDamage, int maxDamage) {
+        return RANDOM.nextInt(maxDamage - minDamage) + 1;
     }
 }
