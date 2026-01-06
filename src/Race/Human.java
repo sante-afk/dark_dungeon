@@ -1,4 +1,4 @@
-package race;
+package Race;
 
 public class Human extends Hero {
 
