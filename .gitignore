@@ -4,7 +4,7 @@ out/
 !**/src/test/**/out/
 .kotlin
 .idea/
-durk_dungeon.iml
+dark_dungeon.iml
 
 ### Eclipse ###
 .apt_generated

@@ -1,12 +1,16 @@
-abstract class Person {
+package race;
+
+public abstract class Hero {
     public String name;
     public int health;
     public int armor;
+    public String race;
 
-    public Person(String name, int health, int armor) {
+    public Hero(String name, int health, int armor, String race) {
         this.name = name;
         this.health = health;
         this.armor = armor;
+        this.race = race;
     }
 
     // Getters
@@ -19,27 +23,30 @@ abstract class Person {
     public int getArmor () {
         return armor;
     }
+    public String getRace () {
+        return race;
+    }
 
     // Setters
-    void setName (String name) {
+    public void setName(String name) {
         if (name.length() < 2) {
-            System.out.println("Error, name is small");
+            throw new IllegalArgumentException("Error, name is small " + name);
         }
         this.name = name;
     }
-    void setHealth (int health) {
+    public void setHealth(int health) {
         if (health < 100) {
             System.out.print("Health will be 100 by default ");
-            System.out.print("ʕっ•ᴥ•ʔっ");
+            System.out.print("ʕっ•ᴥ•ʔっ\n");
             this.health = 100;
         } else {
             this.health = health;
         }
     }
-    void setArmor (int armor) {
+    public void setArmor(int armor) {
         if (armor < 100) {
             System.out.print("Armor will be 100 by default ");
-            System.out.print("ʕっ•ᴥ•ʔっ");
+            System.out.print("ʕっ•ᴥ•ʔっ\n");
             this.armor = 100;
         } else {
             this.armor = armor;

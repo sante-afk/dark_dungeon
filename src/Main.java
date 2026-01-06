@@ -1,15 +1,17 @@
+import race.Elf;
+import race.Hero;
+import race.Dwarf;
+import race.Human;
+
 import java.util.Scanner;
 
 public class Main {
-    public static void main (String[] args) {
-        System.out.println(
-                "▗▄▄▄  ▗▞▀▜▌ ▄▄▄ █  ▄     ▗▄▄▄  █  ▐▌▄▄▄▄  ▗▞▀▚▖ ▄▄▄  ▄▄▄▄  \n" +
-                "▐▌  █ ▝▚▄▟▌█    █▄▀      ▐▌  █ ▀▄▄▞▘█   █ ▐▛▀▀▘█   █ █   █ \n" +
-                "▐▌  █      █    █ ▀▄     ▐▌  █      █   █ ▝▚▄▄▖▀▄▄▄▀ █   █ \n" +
-                "▐▙▄▄▀           █  █     ▐▙▄▄▀          ▗▄▖                \n" +
-                "                                       ▐▌ ▐▌               \n" +
-                "                                        ▝▀▜▌               \n" +
-                "                                       ▐▙▄▞▘               \n");
+    public static void main () {
+        System.out.println("                                                                      \n" +
+                "▄▄▄▄   ▄▄▄  ▄▄▄▄  ▄▄ ▄▄   ▄▄▄▄  ▄▄ ▄▄ ▄▄  ▄▄  ▄▄▄▄ ▄▄▄▄▄  ▄▄▄  ▄▄  ▄▄ \n" +
+                "██▀██ ██▀██ ██▄█▄ ██▄█▀   ██▀██ ██ ██ ███▄██ ██ ▄▄ ██▄▄  ██▀██ ███▄██ \n" +
+                "████▀ ██▀██ ██ ██ ██ ██   ████▀ ▀███▀ ██ ▀██ ▀███▀ ██▄▄▄ ▀███▀ ██ ▀██ \n" +
+                "                                                                      ");
         System.out.print("Start the game (Yes/No) ?: ");
         Scanner scanner = new Scanner(System.in);
         String enterGame = scanner.nextLine().trim();
@@ -21,13 +23,22 @@ public class Main {
             System.out.print("Dwarf - 3: ");
             int race = scanner.nextInt();
             scanner.nextLine();
-            CreateHero(race, scanner);
+            Hero hero = CreateHero(race, scanner);
+
+            if (hero != null) {
+                System.out.println(
+                        hero.getRace() +
+                            " ( " + hero.getName() + " ) " +
+                            "Health ( " + hero.getHealth() + " ♥ ) " +
+                            "Armor ( " + hero.getArmor() + " \uD83D\uDEE1 ) " );
+            }
         } else {
             System.out.println("bye bye ( ╥﹏╥) ノシ");
-        };
+        }
+        scanner.nextLine();
     }
 
-    public static <T> T CreateHero (int race, Scanner scanner) {
+    public static Hero CreateHero (int race, Scanner scanner) {
         System.out.print("Enter the name: ");
         String nameHero = scanner.nextLine();
 
@@ -37,25 +48,31 @@ public class Main {
         System.out.print("Enter the armor: ");
         int armorHero = Integer.parseInt(scanner.nextLine());
 
-        if (race == 1) {
-            Human human = new Human(nameHero, healthHero, armorHero);
-            return (T) human;
+        switch (race) {
+            case 1:
+                Hero human = new Human(nameHero, healthHero, armorHero, "Human");
+                human.setName(nameHero);
+                human.setHealth(healthHero);
+                human.setArmor(armorHero);
+                return human;
+            case 2:
+                Hero elf = new Elf(nameHero, healthHero, armorHero, "Elf");
+                elf.setName(nameHero);
+                elf.setHealth(healthHero);
+                elf.setArmor(armorHero);
+                return elf;
+            case 3:
+                Hero dwarf = new Dwarf(nameHero, healthHero, armorHero, "Dwarf");
+                dwarf.setName(nameHero);
+                dwarf.setHealth(healthHero);
+                dwarf.setArmor(armorHero);
+                return dwarf;
+            default:
+                return null;
         }
-        if (race == 2) {
-            Elf elf = new Elf(nameHero, healthHero, armorHero);
-            return (T) elf;
-        }
-        if (race == 3) {
-            Dwarf dwarf = new Dwarf(nameHero, healthHero, armorHero);
-            return (T) dwarf;
-//            System.out.println(
-//                    "Dwarf: " +
-//                            "Name ( " + nameHero + " ) " +
-//                            "Health ( " + healthHero + " ♥ ) " +
-//                            "Armor ( " + armorHero + " \uD83D\uDEE1 ) " );
-        }
-        return null;
     }
+
+
 }
 
 
