@@ -1,4 +1,4 @@
-package race;
+package Race;
 
 public abstract class Hero {
     public String name;
@@ -14,7 +14,7 @@ public abstract class Hero {
     }
 
     // Getters
-    public String getName() {
+    public String getName () {
         return name;
     }
     public int getHealth () {
@@ -28,13 +28,13 @@ public abstract class Hero {
     }
 
     // Setters
-    public void setName(String name) {
+    public void setName (String name) {
         if (name.length() < 2) {
             throw new IllegalArgumentException("Error, name is small " + name);
         }
         this.name = name;
     }
-    public void setHealth(int health) {
+    public void setHealth (int health) {
         if (health < 100) {
             System.out.print("Health will be 100 by default ");
             System.out.print("ʕっ•ᴥ•ʔっ\n");
@@ -43,7 +43,7 @@ public abstract class Hero {
             this.health = health;
         }
     }
-    public void setArmor(int armor) {
+    public void setArmor (int armor) {
         if (armor < 100) {
             System.out.print("Armor will be 100 by default ");
             System.out.print("ʕっ•ᴥ•ʔっ\n");

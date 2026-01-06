@@ -1,11 +1,12 @@
-import race.Elf;
-import race.Hero;
-import race.Dwarf;
-import race.Human;
+import Race.*;
+import Enemies.*;
 
+import java.io.File;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
+    private static final Random RANDOM = new Random();
     public static void main () {
         System.out.println("                                                                      \n" +
                 "▄▄▄▄   ▄▄▄  ▄▄▄▄  ▄▄ ▄▄   ▄▄▄▄  ▄▄ ▄▄ ▄▄  ▄▄  ▄▄▄▄ ▄▄▄▄▄  ▄▄▄  ▄▄  ▄▄ \n" +
@@ -16,6 +17,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String enterGame = scanner.nextLine().trim();
 
+        Hero hero = null;
         if (enterGame.equals("Yes")) {
             System.out.println("Choose a race ");
             System.out.print("Human - 1, ");
@@ -23,19 +25,22 @@ public class Main {
             System.out.print("Dwarf - 3: ");
             int race = scanner.nextInt();
             scanner.nextLine();
-            Hero hero = CreateHero(race, scanner);
+            hero = CreateHero(race, scanner);
 
             if (hero != null) {
                 System.out.println(
                         hero.getRace() +
-                            " ( " + hero.getName() + " ) " +
-                            "Health ( " + hero.getHealth() + " ♥ ) " +
-                            "Armor ( " + hero.getArmor() + " \uD83D\uDEE1 ) " );
+                                " ( " + hero.getName() + " ) " +
+                                "Health ( " + hero.getHealth() + " ♥ ) " +
+                                "Armor ( " + hero.getArmor() + " \uD83D\uDEE1 ) ");
             }
         } else {
             System.out.println("bye bye ( ╥﹏╥) ノシ");
         }
         scanner.nextLine();
+
+//        Fight(hero, scanner);
+
     }
 
     public static Hero CreateHero (int race, Scanner scanner) {
@@ -72,7 +77,22 @@ public class Main {
         }
     }
 
+    public static void Fight (Hero hero, Scanner scanner) {
 
+    }
+
+    public static Enemy CreateEnemy () {
+        int enemies = handlingEnemies();
+        int count = RANDOM.nextInt(enemies) + 1;
+        System.out.println(count);
+        return null;
+    }
+
+    public static int handlingEnemies () {
+        File dir = new File("src/Enemies");
+        File[] arrFiles = dir.listFiles();
+        return arrFiles.length - 1;
+    }
 }
 
 
