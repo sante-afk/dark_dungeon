@@ -55,8 +55,8 @@ public abstract class Hero {
         }
         this.name = name;
     }
-    public void setHealth (int health) {
-        if (health < 100) {
+    public void setHealth (int health, boolean beginSet) {
+        if (health < 100 && beginSet) {
             System.out.print("\nNotification: health will be 100 by default ");
             System.out.print("ʕっ•ᴥ•ʔっ\n");
             this.health = 100;
@@ -64,8 +64,8 @@ public abstract class Hero {
             this.health = health;
         }
     }
-    public void setArmor (int armor) {
-        if (armor < 100) {
+    public void setArmor (int armor, boolean beginSet) {
+        if (armor < 100 && beginSet) {
             System.out.print("Notification: armor will be 100 by default ");
             System.out.print("ʕっ•ᴥ•ʔっ\n");
             this.armor = 100;
