@@ -18,6 +18,9 @@ Any IDE or terminal
 # Clone the repository
 git clone https://github.com/sante-afk/dark_dungeon
 
+# Go to src
+cd src
+
 # Run
 java .\src\Main.java
 ```
