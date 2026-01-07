@@ -1,4 +1,4 @@
-package Enemies;
+package enemies;
 
 public class Rat extends Enemy {
 

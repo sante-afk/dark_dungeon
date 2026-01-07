@@ -1,17 +1,14 @@
-package Events;
+package events;
 
-import Enemies.Enemy;
-import Handlings.Handling;
-import Menu.Menu;
-import Printer.Printer;
-import Race.Hero;
-import Replicas.Replica;
-import Сreation.Create;
+import enemies.Enemy;
+import menu.Menu;
+import printer.Printer;
+import races.Hero;
+import replicas.Replica;
+import create.Create;
 
 import java.util.Random;
 import java.util.Scanner;
-
-import static Menu.Menu.MenuFight;
 
 public class Fight {
 

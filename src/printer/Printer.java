@@ -1,7 +1,7 @@
-package Printer;
+package printer;
 
-import Enemies.Enemy;
-import Race.Hero;
+import enemies.Enemy;
+import races.Hero;
 
 public class Printer {
 

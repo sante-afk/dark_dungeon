@@ -1,8 +1,6 @@
-import Handlings.Handling;
-import Printer.*;
-import Race.*;
+import handling.Handling;
+import printer.*;
 
-import java.util.Random;
 import java.util.Scanner;
 
 public class Main {

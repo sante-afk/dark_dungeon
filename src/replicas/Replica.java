@@ -1,6 +1,6 @@
-package Replicas;
+package replicas;
 
-import Enemies.Enemy;
+import enemies.Enemy;
 
 public class Replica {
     public static String replicaTour (boolean tour) {

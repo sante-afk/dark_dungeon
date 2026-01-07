@@ -1,21 +1,24 @@
-package Handlings;
+package handling;
 
-import Events.Fight;
-import Printer.Printer;
-import Race.Hero;
-import Сreation.Create;
+import events.Fight;
+import printer.Printer;
+import races.Hero;
+import create.Create;
 
 import java.io.File;
 import java.util.Scanner;
 
-import static Printer.Printer.printStartGame;
+import static printer.Printer.printStartGame;
 
 public class Handling {
 
     public static int handlingEnemies () {
         File dir = new File("src/Enemies");
         File[] arrFiles = dir.listFiles();
-        return arrFiles.length - 1;
+        if (arrFiles != null){
+            return arrFiles.length - 1;
+        }
+        return 0;
     }
 
     public static void handlingStartGame (Scanner scanner) {
@@ -26,7 +29,7 @@ public class Handling {
 
         while (enter) {
             try {
-                if (enterGame.equals("Yes") || enterGame.equals("")) {
+                if (enterGame.equals("Yes") || enterGame.isEmpty()) {
                     System.out.println("Choose a race ");
                     System.out.print("Human - 1, ");
                     System.out.print("Elf - 2, ");
@@ -37,7 +40,7 @@ public class Handling {
                 } else if (enterGame.equals("No")) {
                     System.out.println("bye bye ( ╥﹏╥) ノシ");
                     break;
-                } else if (!enterGame.equals("Yes") && !enterGame.equals("No")) {
+                } else {
                     System.out.println("what? (ㆆ _ ㆆ)\n");
                     printStartGame();
                     enterGame = scanner.nextLine().trim();
