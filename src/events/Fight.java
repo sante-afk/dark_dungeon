@@ -1,6 +1,7 @@
 package events;
 
 import enemies.Enemy;
+import handling.Handling;
 import menu.Menu;
 import printer.Printer;
 import races.Hero;
@@ -44,6 +45,13 @@ public class Fight {
 
                         if (enemy.getHealth() <= 0) {
                             System.out.println("☠ " + enemy.getName() + " defeated!");
+
+                            double heroExp = hero.getExp();
+                            int enemyLvl = enemy.getLevel();
+
+                            double receivedExp = Handling.handlingExpReceived(hero, heroExp, enemyLvl);
+
+                            System.out.println(receivedExp + " EXP received ");
                             break;
                         }
                         tour = false;

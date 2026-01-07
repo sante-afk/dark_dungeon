@@ -13,35 +13,38 @@ public class Create {
 
     public static Hero CreateHero (int race, Scanner scanner) {
         String nameHero;
-        int healthHero;
-        int armorHero;
+        int healthHero = 0;
+        int armorHero = 0;
 
         System.out.print("Enter the name: ");
         nameHero = scanner.nextLine();
 
         System.out.print("Enter the health: ");
-
-        if (scanner.nextLine().isEmpty()) {
+        String enterHealth = scanner.nextLine();
+        if (enterHealth.isEmpty()) {
             healthHero = 0;
         } else {
-            healthHero = Integer.parseInt(scanner.nextLine());
+            healthHero = Integer.parseInt(enterHealth);
         }
 
         System.out.print("Enter the armor: ");
-        if (scanner.nextLine().isEmpty()) {
+        String enterArmor = scanner.nextLine();
+        if (enterArmor.isEmpty()) {
             armorHero = 0;
         } else {
-            armorHero = Integer.parseInt(scanner.nextLine());
+            armorHero = Integer.parseInt(enterArmor);
         }
 
         int level = 1;
+        double exp = 0.0;
+
         int minDamage = RANDOM.nextInt(5) + 1;
         int maxDamage = RANDOM.nextInt(5, 10) + 1;
 
         switch (race) {
             case 1:
                 String raceHuman = "Human";
-                Hero human = new Human(nameHero, healthHero, armorHero, raceHuman, level, minDamage, maxDamage);
+                Hero human = new Human(nameHero, healthHero, armorHero, raceHuman, level, exp, minDamage, maxDamage);
                 human.setName(nameHero);
                 human.setHealth(healthHero, true);
                 human.setArmor(armorHero, true);
@@ -52,7 +55,7 @@ public class Create {
                 return human;
             case 2:
                 String raceElf = "Elf";
-                Hero elf = new Elf(nameHero, healthHero, armorHero, raceElf, level, minDamage, maxDamage);
+                Hero elf = new Elf(nameHero, healthHero, armorHero, raceElf, level, exp, minDamage, maxDamage);
                 elf.setName(nameHero);
                 elf.setHealth(healthHero, true);
                 elf.setArmor(armorHero, true);
@@ -63,7 +66,7 @@ public class Create {
                 return elf;
             case 3:
                 String raceDwarf = "Dwarf";
-                Hero dwarf = new Dwarf(nameHero, healthHero, armorHero, raceDwarf, level, minDamage, maxDamage);
+                Hero dwarf = new Dwarf(nameHero, healthHero, armorHero, raceDwarf, level, exp, minDamage, maxDamage);
                 dwarf.setName(nameHero);
                 dwarf.setHealth(healthHero, true);
                 dwarf.setArmor(armorHero, true);
