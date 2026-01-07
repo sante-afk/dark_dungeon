@@ -58,8 +58,8 @@ public class Main {
                 String raceHuman = "Human";
                 Hero human = new Human(nameHero, healthHero, armorHero, raceHuman, level, minDamage, maxDamage);
                 human.setName(nameHero);
-                human.setHealth(healthHero);
-                human.setArmor(armorHero);
+                human.setHealth(healthHero, true);
+                human.setArmor(armorHero, true);
                 human.setRace(raceHuman);
                 human.setLevel(level);
                 human.setMinDamage(minDamage);
@@ -69,8 +69,8 @@ public class Main {
                 String raceElf = "Elf";
                 Hero elf = new Elf(nameHero, healthHero, armorHero, raceElf, level, minDamage, maxDamage);
                 elf.setName(nameHero);
-                elf.setHealth(healthHero);
-                elf.setArmor(armorHero);
+                elf.setHealth(healthHero, true);
+                elf.setArmor(armorHero, true);
                 elf.setRace(raceElf);
                 elf.setLevel(level);
                 elf.setMinDamage(minDamage);
@@ -80,8 +80,8 @@ public class Main {
                 String raceDwarf = "Dwarf";
                 Hero dwarf = new Dwarf(nameHero, healthHero, armorHero, raceDwarf, level, minDamage, maxDamage);
                 dwarf.setName(nameHero);
-                dwarf.setHealth(healthHero);
-                dwarf.setArmor(armorHero);
+                dwarf.setHealth(healthHero, true);
+                dwarf.setArmor(armorHero, true);
                 dwarf.setRace(raceDwarf);
                 dwarf.setLevel(level);
                 dwarf.setMinDamage(minDamage);
@@ -93,85 +93,77 @@ public class Main {
     }
 
     public static void Fight (Hero hero, Scanner scanner) {
-        int lvlHero = hero.getLevel();
-        int minDamageHero = hero.getMinDamage();
-        int maxDamageHero = hero.getMaxDamage();
-        Enemy enemy = CreateEnemy(lvlHero, minDamageHero, maxDamageHero);
+        Enemy enemy = CreateEnemy(hero);
 
-        boolean replicaRandom = RANDOM.nextBoolean();
-        boolean attackFirst = RANDOM.nextBoolean();
+        boolean met = RANDOM.nextBoolean();
+        boolean tour = RANDOM.nextBoolean();
 
-        String replicaGoes = attackFirst ? "\n" +
-                "▛▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▜\n" +
-                "▌You attack first! ▐\n" +
-                "▙▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▟" :
-                enemy.getName() + " attacks first! \n";
+        System.out.println(replicaMet(enemy, met));
 
-        String replica = replicaRandom ?
-                "You met " + enemy.getName() + "!" :
-                "Came across your path " + enemy.getName() + "!";
-        System.out.println(replica);
-        System.out.println(
-                enemy.getRace() +
-                        " ( " + enemy.getLevel() + " lvl" + " ) " +
-                        "\nDamage ( " + enemy.getMinDamage() + " - " + enemy.getMaxDamage() + " ⚔ )" +
-                        "\nHealth ( " + enemy.getHealth() + " ♥ ) " +
-                        "\nArmor ( " + enemy.getArmor() + " ⛊ ) ");
+        if (enemy != null) {
+            printEnemy(enemy);
+        }
 
-
-        int minDamageEnemy = enemy.getMinDamage();
-        int maxDamageEnemy = enemy.getMaxDamage();
-
-        System.out.println(replicaGoes);
         while (hero.getHealth() > 0 && enemy.getHealth() > 0) {
+            System.out.println(replicaTour(tour));
 
-            if (attackFirst) {
+            if (tour) {
                 System.out.println("1. Physical Attack ");
                 int choise = Integer.parseInt(scanner.nextLine());
 
                 if (choise == 1) {
-                    int heroDamage = hero.physDamage(minDamageHero, maxDamageHero);
+                    int heroDamage = hero.physDamage(hero.getMinDamage(), hero.getMaxDamage());
                     enemy.setHealth(enemy.getHealth() - heroDamage);
 
-                    System.out.println(" \uD83D\uDDE1 You deal " + heroDamage + " damage!");
+                    System.out.println("\uD83D\uDDE1 You deal " + heroDamage + " damage!");
                     System.out.println(enemy.getName() + " has " + enemy.getHealth() + " HP left \n");
 
                     if (enemy.getHealth() <= 0) {
-                        System.out.println(" ☠ " + enemy.getName() + " defeated!");
+                        System.out.println("☠ " + enemy.getName() + " defeated!");
                         break;
                     }
                 }
-            } else {
-                int enemyDamage = enemy.physDamage(minDamageEnemy, maxDamageEnemy);
-                hero.setHealth(hero.getHealth() - enemyDamage);
+            }
+            if (!tour) {
+                int enemyDamage = enemy.physDamage(enemy.getMinDamage(), enemy.getMaxDamage());
+                int damageDeduction = hero.getHealth() - enemyDamage;
+                hero.setHealth(damageDeduction, false);
 
-                System.out.println(" \uD83D\uDDE1 Enemy deal " + enemyDamage + " damage!");
+                System.out.println("\n\uD83D\uDDE1 Enemy deal " + enemyDamage + " damage!");
                 System.out.println(hero.getName() + " has " + hero.getHealth() + " HP left \n");
 
                 if (hero.getHealth() <= 0) {
-                    System.out.println(" ☠ Game over!");
+                    System.out.println("☠ Game over!");
                     break;
                 }
             }
-            attackFirst = !attackFirst;
+            tour = !tour;
         }
 
         scanner.nextLine();
     }
 
-    public static Enemy CreateEnemy (int lvlHero, int minDamageHero, int maxDamageHero) {
+    public static Enemy CreateEnemy (Hero hero) {
         int enemies = handlingEnemies();
         int enemyRandom = RANDOM.nextInt(enemies) + 1;
         int raceRandom = RANDOM.nextInt(enemies) + 1;
 
-        int levelRandom = RANDOM.nextInt(lvlHero) + 1;
-        int minDamage = RANDOM.nextInt(minDamageHero) + 1;
-        int maxDamage = RANDOM.nextInt(minDamage, maxDamageHero) + 1;
+        int levelRandom = RANDOM.nextInt(hero.getLevel()) + 1;
+        int minDamage = RANDOM.nextInt(hero.getMinDamage()) + 1;
+        int maxDamage = RANDOM.nextInt(minDamage, hero.getMaxDamage()) + 1;
 
-        if (levelRandom == lvlHero) {
+        if (levelRandom == hero.getLevel()) {
             levelRandom += 1;
             minDamage += 1;
             maxDamage += 1;
+        }
+
+        int health = 0;
+        int armor = 0;
+
+        if (levelRandom > hero.getLevel()) {
+            health = RANDOM.nextInt(hero.getHealth() / 2) + 1;
+            armor = RANDOM.nextInt(hero.getArmor() / 2) + 1;
         }
 
         switch (enemyRandom) {
@@ -184,8 +176,6 @@ public class Main {
                     default -> race = "Plague Rat";
                 }
                 String name = "Rat";
-                int health = RANDOM.nextInt(10) + 1;
-                int armor= RANDOM.nextInt(10) + 1;
                 Rat rat = new Rat( name, health, armor, race, levelRandom, minDamage, maxDamage );
                 rat.setName(name);
                 rat.setHealth(health);
@@ -205,8 +195,6 @@ public class Main {
                     default -> race = "Goblin Grunt";
                 }
                 String name = "Goblin";
-                int health = RANDOM.nextInt(20) + 1;
-                int armor= RANDOM.nextInt(20) + 1;
                 Goblin goblin = new Goblin( name, health, armor, race, levelRandom, minDamage, maxDamage );
                 goblin.setName(name);
                 goblin.setHealth(health);
@@ -226,8 +214,6 @@ public class Main {
                     default -> race = "Bandit Thug";
                 }
                 String name = "Bandit";
-                int health = RANDOM.nextInt(30) + 1;
-                int armor= RANDOM.nextInt(30) + 1;
                 Bandit bandit = new Bandit( name, health, armor, race, levelRandom, minDamage, maxDamage);
                 bandit.setName(name);
                 bandit.setHealth(health);
@@ -247,8 +233,6 @@ public class Main {
                     default -> race = "Fire Elemental";
                 }
                 String name = "Elemental";
-                int health = RANDOM.nextInt(40) + 1;
-                int armor= RANDOM.nextInt(40) + 1;
                 Elemental elemental = new Elemental( name, health, armor, race, levelRandom, minDamage, maxDamage);
                 elemental.setName(name);
                 elemental.setHealth(health);
@@ -262,11 +246,26 @@ public class Main {
         }
         return null;
     }
+    public static String replicaTour (boolean tour) {
+        return tour ? "\n" +
+                "▛▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▜\n" +
+                "▌   You attack !   ▐\n" +
+                "▙▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▟\n" :
+                "▛▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▜\n" +
+                "▌   Enemy attack ! ▐\n" +
+                "▙▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▟\n";
+    }
 
     public static int handlingEnemies () {
         File dir = new File("src/Enemies");
         File[] arrFiles = dir.listFiles();
         return arrFiles.length - 1;
+    }
+
+    public static String replicaMet (Enemy enemy, boolean replica) {
+        return replica ?
+                "You met " + enemy.getName() + "!" :
+                "Came across your path " + enemy.getName() + "!";
     }
 
     public static void printHero (Hero hero) {
@@ -277,6 +276,15 @@ public class Main {
                         "\nHealth ( " + hero.getHealth() + " ♥ ) " +
                         "\nArmor ( " + hero.getArmor() + " ⛊ ) \n");
 
+    }
+
+    public static void printEnemy (Enemy enemy) {
+        System.out.println(
+                enemy.getRace() +
+                        " ( " + enemy.getLevel() + " lvl" + " ) " +
+                        "\nDamage ( " + enemy.getMinDamage() + " - " + enemy.getMaxDamage() + " ⚔ )" +
+                        "\nHealth ( " + enemy.getHealth() + " ♥ ) " +
+                        "\nArmor ( " + enemy.getArmor() + " ⛊ ) \n");
     }
 
 }
