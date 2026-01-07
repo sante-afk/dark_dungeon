@@ -51,7 +51,7 @@ public abstract class Hero {
     // Setters
     public void setName (String name) {
         if (name.length() < 2) {
-            throw new IllegalArgumentException("Error, name is small " + name);
+            throw new IllegalArgumentException();
         }
         this.name = name;
     }
