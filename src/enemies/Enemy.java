@@ -73,7 +73,7 @@ public class Enemy {
 
     // Methods
     public int physDamage (int minDamage, int maxDamage) {
-        return RANDOM.nextInt(maxDamage - minDamage) + 1;
+        return RANDOM.nextInt(minDamage, maxDamage) + 1;
     }
 
 }

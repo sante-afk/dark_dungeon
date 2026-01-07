@@ -6,11 +6,16 @@ import races.Hero;
 import create.Create;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.util.Random;
 import java.util.Scanner;
 
 import static printer.Printer.printStartGame;
 
 public class Handling {
+
+    private static final Random RANDOM = new Random();
+
 
     public static int handlingEnemies () {
         File dir = new File("src/Enemies");
@@ -66,6 +71,25 @@ public class Handling {
             }
         }
 
+    }
+
+    public static double handlingExpReceived (Hero hero, double heroExp, int enemyLvl) {
+        DecimalFormat decimalFormat = new DecimalFormat("#.0##");
+
+        if (enemyLvl != 0 && enemyLvl < 10) {
+            double enemyHalf = enemyLvl / 2;
+            double enemyHalfHalf = enemyHalf / 2;
+            double exp = Double.parseDouble(decimalFormat.format(RANDOM.nextDouble(0.1, enemyHalfHalf) + 0.1));
+
+            int heroLvl = hero.getLevel();
+            if (heroExp < Double.parseDouble(String.valueOf(heroLvl))) {
+                hero.setExp(heroExp + exp);
+            } else {
+                hero.setLevel(heroLvl + 1);
+            }
+            return exp;
+        }
+        return 0.0;
     }
 
 
