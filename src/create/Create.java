@@ -1,9 +1,9 @@
-package Сreation;
+package create;
 
-import Enemies.*;
-import Handlings.Handling;
-import Race.*;
-import Printer.*;
+import enemies.*;
+import handling.Handling;
+import races.*;
+
 import java.util.Random;
 import java.util.Scanner;
 

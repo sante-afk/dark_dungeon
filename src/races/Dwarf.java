@@ -1,4 +1,4 @@
-package Race;
+package races;
 
 public class Dwarf extends Hero {
 
