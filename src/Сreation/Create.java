@@ -1,0 +1,183 @@
+package Сreation;
+
+import Enemies.*;
+import Handlings.Handling;
+import Race.*;
+import Printer.*;
+import java.util.Random;
+import java.util.Scanner;
+
+public class Create {
+
+    private static final Random RANDOM = new Random();
+
+    public static Hero CreateHero (int race, Scanner scanner) {
+        String nameHero;
+        int healthHero;
+        int armorHero;
+
+        System.out.print("Enter the name: ");
+        nameHero = scanner.nextLine();
+
+        System.out.print("Enter the health: ");
+
+        if (scanner.nextLine().isEmpty()) {
+            healthHero = 0;
+        } else {
+            healthHero = Integer.parseInt(scanner.nextLine());
+        }
+
+        System.out.print("Enter the armor: ");
+        if (scanner.nextLine().isEmpty()) {
+            armorHero = 0;
+        } else {
+            armorHero = Integer.parseInt(scanner.nextLine());
+        }
+
+        int level = 1;
+        int minDamage = RANDOM.nextInt(5) + 1;
+        int maxDamage = RANDOM.nextInt(5, 10) + 1;
+
+        switch (race) {
+            case 1:
+                String raceHuman = "Human";
+                Hero human = new Human(nameHero, healthHero, armorHero, raceHuman, level, minDamage, maxDamage);
+                human.setName(nameHero);
+                human.setHealth(healthHero, true);
+                human.setArmor(armorHero, true);
+                human.setRace(raceHuman);
+                human.setLevel(level);
+                human.setMinDamage(minDamage);
+                human.setMaxDamage(maxDamage);
+                return human;
+            case 2:
+                String raceElf = "Elf";
+                Hero elf = new Elf(nameHero, healthHero, armorHero, raceElf, level, minDamage, maxDamage);
+                elf.setName(nameHero);
+                elf.setHealth(healthHero, true);
+                elf.setArmor(armorHero, true);
+                elf.setRace(raceElf);
+                elf.setLevel(level);
+                elf.setMinDamage(minDamage);
+                elf.setMaxDamage(maxDamage);
+                return elf;
+            case 3:
+                String raceDwarf = "Dwarf";
+                Hero dwarf = new Dwarf(nameHero, healthHero, armorHero, raceDwarf, level, minDamage, maxDamage);
+                dwarf.setName(nameHero);
+                dwarf.setHealth(healthHero, true);
+                dwarf.setArmor(armorHero, true);
+                dwarf.setRace(raceDwarf);
+                dwarf.setLevel(level);
+                dwarf.setMinDamage(minDamage);
+                dwarf.setMaxDamage(maxDamage);
+                return dwarf;
+            default:
+                return null;
+        }
+    }
+
+    public static Enemy CreateEnemy (Hero hero) {
+        int enemies = Handling.handlingEnemies();
+        int enemyRandom = RANDOM.nextInt(enemies) + 1;
+        int raceRandom = RANDOM.nextInt(enemies) + 1;
+
+        int levelRandom = RANDOM.nextInt(hero.getLevel()) + 1;
+        int minDamage = RANDOM.nextInt(hero.getMinDamage()) + 1;
+        int maxDamage = RANDOM.nextInt(minDamage, hero.getMaxDamage()) + 1;
+
+        if (levelRandom == hero.getLevel()) {
+            levelRandom += 1;
+            minDamage += 1;
+            maxDamage += 1;
+        }
+
+        int health = 0;
+        int armor = 0;
+
+        if (levelRandom > hero.getLevel()) {
+            health = RANDOM.nextInt(hero.getHealth() / 2) + 1;
+            armor = RANDOM.nextInt(hero.getArmor() / 2) + 1;
+        }
+
+        switch (enemyRandom) {
+            case 1 -> {
+                String race;
+                switch (raceRandom) {
+                    case 2 -> race = "Giant Rat";
+                    case 3 -> race = "Shadow Rat";
+                    case 4 -> race = "Skaven";
+                    default -> race = "Plague Rat";
+                }
+                String name = "Rat";
+                Rat rat = new Rat( name, health, armor, race, levelRandom, minDamage, maxDamage );
+                rat.setName(name);
+                rat.setHealth(health);
+                rat.setArmor(armor);
+                rat.setRace(race);
+                rat.setLevel(levelRandom);
+                rat.setMinDamage(minDamage);
+                rat.setMaxDamage(maxDamage);
+                return rat;
+            }
+            case 2 -> {
+                String race;
+                switch (raceRandom) {
+                    case 2 -> race = "Goblin Scout";
+                    case 3 -> race = "Goblin Shaman";
+                    case 4 -> race = "Hobgoblin";
+                    default -> race = "Goblin Grunt";
+                }
+                String name = "Goblin";
+                Goblin goblin = new Goblin( name, health, armor, race, levelRandom, minDamage, maxDamage );
+                goblin.setName(name);
+                goblin.setHealth(health);
+                goblin.setArmor(armor);
+                goblin.setRace(race);
+                goblin.setLevel(levelRandom);
+                goblin.setMinDamage(minDamage);
+                goblin.setMaxDamage(maxDamage);
+                return goblin;
+            }
+            case 3 -> {
+                String race;
+                switch (raceRandom) {
+                    case 2 -> race = "Bandit Archer";
+                    case 3 -> race = "Bandit Mage";
+                    case 4 -> race = "Bandit Leader";
+                    default -> race = "Bandit Thug";
+                }
+                String name = "Bandit";
+                Bandit bandit = new Bandit( name, health, armor, race, levelRandom, minDamage, maxDamage);
+                bandit.setName(name);
+                bandit.setHealth(health);
+                bandit.setArmor(armor);
+                bandit.setRace(race);
+                bandit.setLevel(levelRandom);
+                bandit.setMinDamage(minDamage);
+                bandit.setMaxDamage(maxDamage);
+                return bandit;
+            }
+            case 4 -> {
+                String race;
+                switch (raceRandom) {
+                    case 2 -> race = "Water Elemental";
+                    case 3 -> race = "Earth Elemental";
+                    case 4 -> race = "Air Elemental";
+                    default -> race = "Fire Elemental";
+                }
+                String name = "Elemental";
+                Elemental elemental = new Elemental( name, health, armor, race, levelRandom, minDamage, maxDamage);
+                elemental.setName(name);
+                elemental.setHealth(health);
+                elemental.setArmor(armor);
+                elemental.setRace(race);
+                elemental.setLevel(levelRandom);
+                elemental.setMinDamage(minDamage);
+                elemental.setMaxDamage(maxDamage);
+                return elemental;
+            }
+        }
+        return null;
+    }
+}
