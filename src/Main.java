@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class Main {
     private static final Random RANDOM = new Random();
+
     public static void main () {
         System.out.println("                                                                      \n" +
                 "▄▄▄▄   ▄▄▄  ▄▄▄▄  ▄▄ ▄▄   ▄▄▄▄  ▄▄ ▄▄ ▄▄  ▄▄  ▄▄▄▄ ▄▄▄▄▄  ▄▄▄  ▄▄  ▄▄ \n" +
@@ -27,12 +28,7 @@ public class Main {
             scanner.nextLine();
             hero = CreateHero(race, scanner);
             if (hero != null) {
-                System.out.println(
-                        "\n" + hero.getName() + " " + hero.getRace() +
-                        " ( " + hero.getLevel() + " lvl" + " ) " +
-                        "\nDamage ( " + hero.getMinDamage() + " - " + hero.getMaxDamage() + " ⚔ )" +
-                        "\nHealth ( " + hero.getHealth() + " ♥ ) " +
-                        "\nArmor ( " + hero.getArmor() + " ⛊ ) \n");
+                printHero(hero);
             }
         } else {
             System.out.println("bye bye ( ╥﹏╥) ノシ");
@@ -178,7 +174,6 @@ public class Main {
             maxDamage += 1;
         }
 
-
         switch (enemyRandom) {
             case 1 -> {
                 String race;
@@ -188,15 +183,18 @@ public class Main {
                     case 4 -> race = "Skaven";
                     default -> race = "Plague Rat";
                 }
-                return new Rat(
-                        "Rat",
-                        RANDOM.nextInt(10) + 1,
-                        RANDOM.nextInt(10) + 1,
-                        race,
-                        levelRandom,
-                        minDamage,
-                        maxDamage
-                        );
+                String name = "Rat";
+                int health = RANDOM.nextInt(10) + 1;
+                int armor= RANDOM.nextInt(10) + 1;
+                Rat rat = new Rat( name, health, armor, race, levelRandom, minDamage, maxDamage );
+                rat.setName(name);
+                rat.setHealth(health);
+                rat.setArmor(armor);
+                rat.setRace(race);
+                rat.setLevel(levelRandom);
+                rat.setMinDamage(minDamage);
+                rat.setMaxDamage(maxDamage);
+                return rat;
             }
             case 2 -> {
                 String race;
@@ -206,14 +204,18 @@ public class Main {
                     case 4 -> race = "Hobgoblin";
                     default -> race = "Goblin Grunt";
                 }
-                return new Goblin(
-                        "Goblin",
-                        RANDOM.nextInt(20) + 1,
-                        RANDOM.nextInt(20) + 1,
-                        race,
-                        levelRandom,
-                        minDamage,
-                        maxDamage);
+                String name = "Goblin";
+                int health = RANDOM.nextInt(20) + 1;
+                int armor= RANDOM.nextInt(20) + 1;
+                Goblin goblin = new Goblin( name, health, armor, race, levelRandom, minDamage, maxDamage );
+                goblin.setName(name);
+                goblin.setHealth(health);
+                goblin.setArmor(armor);
+                goblin.setRace(race);
+                goblin.setLevel(levelRandom);
+                goblin.setMinDamage(minDamage);
+                goblin.setMaxDamage(maxDamage);
+                return goblin;
             }
             case 3 -> {
                 String race;
@@ -223,14 +225,18 @@ public class Main {
                     case 4 -> race = "Bandit Leader";
                     default -> race = "Bandit Thug";
                 }
-                return new Bandit(
-                        "Bandit",
-                        RANDOM.nextInt(30) + 1,
-                        RANDOM.nextInt(30) + 1,
-                        race,
-                        levelRandom,
-                        minDamage,
-                        maxDamage);
+                String name = "Bandit";
+                int health = RANDOM.nextInt(30) + 1;
+                int armor= RANDOM.nextInt(30) + 1;
+                Bandit bandit = new Bandit( name, health, armor, race, levelRandom, minDamage, maxDamage);
+                bandit.setName(name);
+                bandit.setHealth(health);
+                bandit.setArmor(armor);
+                bandit.setRace(race);
+                bandit.setLevel(levelRandom);
+                bandit.setMinDamage(minDamage);
+                bandit.setMaxDamage(maxDamage);
+                return bandit;
             }
             case 4 -> {
                 String race;
@@ -240,14 +246,18 @@ public class Main {
                     case 4 -> race = "Air Elemental";
                     default -> race = "Fire Elemental";
                 }
-                return new Elemental(
-                        "Elemental",
-                        RANDOM.nextInt(40) + 1,
-                        RANDOM.nextInt(40) + 1,
-                        race,
-                        levelRandom,
-                        minDamage,
-                        maxDamage);
+                String name = "Elemental";
+                int health = RANDOM.nextInt(40) + 1;
+                int armor= RANDOM.nextInt(40) + 1;
+                Elemental elemental = new Elemental( name, health, armor, race, levelRandom, minDamage, maxDamage);
+                elemental.setName(name);
+                elemental.setHealth(health);
+                elemental.setArmor(armor);
+                elemental.setRace(race);
+                elemental.setLevel(levelRandom);
+                elemental.setMinDamage(minDamage);
+                elemental.setMaxDamage(maxDamage);
+                return elemental;
             }
         }
         return null;
@@ -258,4 +268,15 @@ public class Main {
         File[] arrFiles = dir.listFiles();
         return arrFiles.length - 1;
     }
+
+    public static void printHero (Hero hero) {
+        System.out.println(
+                "\n" + hero.getName() + " " + hero.getRace() +
+                        " ( " + hero.getLevel() + " lvl" + " ) " +
+                        "\nDamage ( " + hero.getMinDamage() + " - " + hero.getMaxDamage() + " ⚔ )" +
+                        "\nHealth ( " + hero.getHealth() + " ♥ ) " +
+                        "\nArmor ( " + hero.getArmor() + " ⛊ ) \n");
+
+    }
+
 }
