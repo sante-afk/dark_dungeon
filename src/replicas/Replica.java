@@ -7,15 +7,15 @@ public class Replica {
         return tour ? "\n" +
                 "▛▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▜\n" +
                 "▌   You attack !   ▐\n" +
-                "▙▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▟\n" :
+                "▙▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▟" :
                 "▛▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▜\n" +
                 "▌   Enemy attack ! ▐\n" +
-                "▙▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▟\n";
+                "▙▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▟";
     }
 
     public static String replicaMet (Enemy enemy, boolean replica) {
         return replica ?
-                "You met " + enemy.getName() + "!" :
-                "Came across your path " + enemy.getName() + "!";
+                "\nYou met " + enemy.getName() + "!" :
+                "\nCame across your path " + enemy.getName() + "!";
     }
 }
