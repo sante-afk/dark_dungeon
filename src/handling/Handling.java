@@ -1,6 +1,7 @@
 package handling;
 
 import events.Fight;
+import events.Path;
 import printer.Printer;
 import races.Hero;
 import create.Create;
@@ -16,7 +17,6 @@ public class Handling {
 
     private static final Random RANDOM = new Random();
 
-
     public static int handlingEnemies () {
         File dir = new File("src/Enemies");
         File[] arrFiles = dir.listFiles();
@@ -26,7 +26,7 @@ public class Handling {
         return 0;
     }
 
-    public static void handlingStartGame (Scanner scanner) {
+    public static Hero handlingStartGame (Scanner scanner) {
         String enterGame = scanner.nextLine().trim();
         boolean enter = true;
         boolean create = false;
@@ -67,25 +67,61 @@ public class Handling {
 
             if (hero != null) {
                 Printer.printHero(hero);
-                Fight.Fight(hero, scanner);
+                return hero;
             }
         }
-
+        return null;
     }
 
-    public static double handlingExpReceived (Hero hero, double heroExp, int enemyLvl) {
+    public static void handlingPath (Hero hero, Scanner scanner) {
+        boolean continuePath = true;
+
+        while (continuePath) {
+            Printer.printMenu();
+            try {
+                int choice = Integer.parseInt(scanner.nextLine());
+                switch (choice) {
+                    case 1: {
+                        Path.roll(hero, scanner);
+                        continuePath = false;
+                        break;
+                    }
+                    case 2: {
+                        Printer.printHero(hero);
+                        break;
+                    }
+                    case 3: {
+                        Printer.printLevel(hero);
+                        break;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                Printer.printErrorNoChoice();
+            }
+
+        }
+    }
+
+    public static double handlingExpReceived (Hero hero, int enemyLvl) {
         DecimalFormat decimalFormat = new DecimalFormat("#.0##");
 
         if (enemyLvl != 0 && enemyLvl < 10) {
-            double enemyHalf = enemyLvl / 2;
+            double enemyHalf = (double)(enemyLvl * 10) / 2 / 10;
             double enemyHalfHalf = enemyHalf / 2;
-            double exp = Double.parseDouble(decimalFormat.format(RANDOM.nextDouble(0.1, enemyHalfHalf) + 0.1));
+            double exp = Double.parseDouble(decimalFormat.format(RANDOM.nextDouble(enemyHalfHalf) + 0.1));
 
-            int heroLvl = hero.getLevel();
-            if (heroExp < Double.parseDouble(String.valueOf(heroLvl))) {
-                hero.setExp(heroExp + exp);
+            if ( ( (int)(hero.getExp() * 10) + (int)(exp * 10) ) < hero.getExpEnd() ) {
+                hero.setExp(hero.getExp() + exp);
             } else {
-                hero.setLevel(heroLvl + 1);
+                hero.setLevel(hero.getLevel() + 1);
+                hero.setMinDamage(RANDOM.nextInt(hero.getMinDamage()) + 1);
+                hero.setMaxDamage(RANDOM.nextInt(hero.getMaxDamage()) + 1);
+                hero.setExp(0.0);
+                hero.setExpEnd(hero.getLevel() * 10);
+                if (hero.getHealth() < 100) {
+                    hero.setHealth(100, true);
+                }
+                Printer.printNewLevel(hero.getLevel());
             }
             return exp;
         }

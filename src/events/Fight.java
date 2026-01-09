@@ -31,7 +31,7 @@ public class Fight {
             System.out.println(Replica.replicaTour(tour));
 
             if (tour) {
-                Menu.MenuFight();
+                Menu.menuFight();
 
                 try {
                     int choice = Integer.parseInt(scanner.nextLine());
@@ -46,12 +46,11 @@ public class Fight {
                         if (enemy.getHealth() <= 0) {
                             System.out.println("☠ " + enemy.getName() + " defeated!");
 
-                            double heroExp = hero.getExp();
                             int enemyLvl = enemy.getLevel();
 
-                            double receivedExp = Handling.handlingExpReceived(hero, heroExp, enemyLvl);
+                            double receivedExp = Handling.handlingExpReceived(hero, enemyLvl);
 
-                            System.out.println(receivedExp + " EXP received ");
+                            System.out.println("EXP " + Math.round(receivedExp * 1000) + " received ");
                             break;
                         }
                         tour = false;
@@ -73,7 +72,7 @@ public class Fight {
                 System.out.println(hero.getName() + " has " + hero.getHealth() + " HP left \n");
 
                 if (hero.getHealth() <= 0) {
-                    System.out.println("☠ Game over!");
+                    System.out.println("† Game over!");
                     break;
                 }
                 tour = true;

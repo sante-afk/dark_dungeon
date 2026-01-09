@@ -5,6 +5,7 @@ import java.util.Random;
 public abstract class Hero {
     private static final Random RANDOM = new Random();
     private double exp;
+    private int expEnd;
     private String name;
     private int health;
     private int armor;
@@ -14,7 +15,8 @@ public abstract class Hero {
     private int minDamage;
     private int maxDamage;
 
-    public Hero(String name, int health, int armor, String race, int level, double exp,int minDamage, int maxDamage) {
+    public Hero(String name, int health, int armor, String race, int level,
+                double exp, int expEnd, int minDamage, int maxDamage) {
         this.name = name;
         this.health = health;
         this.armor = armor;
@@ -22,6 +24,7 @@ public abstract class Hero {
 
         this.level = level;
         this.exp = exp;
+        this.expEnd = expEnd;
 
         this.minDamage = minDamage;
         this.maxDamage = maxDamage;
@@ -41,9 +44,11 @@ public abstract class Hero {
         return race;
     }
     public double getExp () {
-        return  exp;
+        return exp;
     }
-
+    public int getExpEnd () {
+        return expEnd;
+    }
     public int getLevel () {
         return level;
     }
@@ -87,6 +92,9 @@ public abstract class Hero {
     }
     public void setExp (double exp) {
         this.exp = exp;
+    }
+    public void setExpEnd (int expEnd) {
+        this.expEnd = expEnd;
     }
     public void setMinDamage (int minDamage) {
         this.minDamage = minDamage;
