@@ -1,9 +1,10 @@
 package printer;
 
 import enemies.Enemy;
+import handling.Handling;
 import races.Hero;
 
-import javax.swing.*;
+import java.util.Scanner;
 
 public class Printer {
 
@@ -31,23 +32,24 @@ public class Printer {
     }
 
     public static void printLevel (Hero hero) {
+        int paintBar = 10;
         int exp = (int)(hero.getExp() * 10);
-        int expEnd = hero.getExpEnd();
         StringBuilder progressBar = new StringBuilder();
-        int count = progressBar.length();
+        int count = 0;
+        int expPersent = (exp * 10) / paintBar / hero.getLevel();
 
-        for (int i = 0; i < exp; i++) {
+        for (int i = 0; i < expPersent; i++) {
             progressBar.append("█");
             ++count;
         }
 
-        for (int j = count; j < expEnd; j++) {
+        for (int j = count; j < paintBar; j++) {
             progressBar.append("▒");
         }
 
         System.out.println("\nlevel - " + hero.getLevel());
         System.out.println(progressBar);
-        System.out.println(hero.getExp() + "\n");
+        System.out.println((int)(hero.getExp() * 1000) + " - " + (hero.getExpEnd()) * 100 + "\n");
         progressBar.setLength(0);
     }
 
@@ -82,6 +84,35 @@ public class Printer {
 
     public static void printNewLevel (double heroLvl) {
         System.out.println("★ New level " + (int)heroLvl + " (◡_◡) ᕤ ");
+    }
+
+    public static void printGameOwer(Hero hero, Scanner scanner) {
+        System.out.println("† Game over!\n");
+        hero.setIsEmpty();
+        boolean game = true;
+
+        while (game) {
+            try {
+                System.out.print("Start new game (Yes/No) ?: ");
+                String chose = scanner.nextLine();
+
+                if (chose.equals("Yes") || chose.isEmpty()) {
+                    Handling.handlingStartGame(scanner);
+                    game = false;
+                }
+                if (chose.equals("No")) {
+                    System.out.println("bye bye ( ╥﹏╥) ノシ");
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("\nError, there is no such choice");
+            }
+        }
+    }
+
+    public static void printMenuFight () {
+        System.out.println("1. Physical Attack ");
+        System.out.println("2. Auto Attack ");
     }
 
     public static void printErrorChoiceString () {

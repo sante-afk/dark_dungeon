@@ -102,10 +102,20 @@ public abstract class Hero {
     public void setMaxDamage (int maxDamage) {
         this.maxDamage = maxDamage;
     }
+    public void setIsEmpty () {
+        this.name = null;
+        this.health = 0;
+        this.armor = 0;
+        this.race = null;
+        this.level = 0;
+        this.exp = 0.0;
+        this.expEnd = 0;
+        this.minDamage = 0;
+        this.maxDamage = 0;
+    }
 
     // Methods
     public int physDamage (int minDamage, int maxDamage) {
         return RANDOM.nextInt(minDamage, maxDamage) + 1;
     }
-
 }

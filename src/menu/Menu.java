@@ -21,6 +21,6 @@ public class Menu {
     }
 
     public static void menuFight () {
-        System.out.println("1. Physical Attack ");
+        Printer.printMenuFight();
     }
 }

@@ -73,6 +73,7 @@ public class Fight {
 
                 if (hero.getHealth() <= 0) {
                     System.out.println("† Game over!");
+                    Printer.printGameOwer(hero, scanner);
                     break;
                 }
                 tour = true;

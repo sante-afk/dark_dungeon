@@ -111,7 +111,7 @@ public class Handling {
             double exp = Double.parseDouble(decimalFormat.format(RANDOM.nextDouble(enemyHalfHalf) + 0.1));
 
             if ( ( (int)(hero.getExp() * 10) + (int)(exp * 10) ) < hero.getExpEnd() ) {
-                hero.setExp(hero.getExp() + exp);
+                hero.setExp(Double.parseDouble(decimalFormat.format(hero.getExp() + exp)));
             } else {
                 hero.setLevel(hero.getLevel() + 1);
                 hero.setMinDamage(RANDOM.nextInt(hero.getMinDamage()) + 1);
