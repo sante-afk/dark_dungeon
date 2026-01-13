@@ -1,6 +1,4 @@
 package handling;
-
-import events.Fight;
 import events.Path;
 import printer.Printer;
 import races.Hero;
