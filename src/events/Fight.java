@@ -43,7 +43,7 @@ public class Fight {
                             System.out.println("☠ " + enemy.getName() + " defeated!");
                             int enemyLvl = enemy.getLevel();
                             double receivedExp = Handling.handlingExpReceived(hero, enemyLvl);
-                            System.out.println("EXP " + Math.round(receivedExp * 1000) + " received ");
+                            System.out.println("EXP " + Math.round(receivedExp * 1000) + " received \n");
                             break;
                         }
                         tour = false;
@@ -58,7 +58,7 @@ public class Fight {
                                 System.out.println("☠ " + enemy.getName() + " defeated!");
                                 int enemyLvl = enemy.getLevel();
                                 double receivedExp = Handling.handlingExpReceived(hero, enemyLvl);
-                                System.out.println("EXP " + Math.round(receivedExp * 1000) + " received ");
+                                System.out.println("EXP " + Math.round(receivedExp * 1000) + " received \n");
                                 break;
                             }
                             int enemyDamage = enemy.physDamage(enemy.getMinDamage(), enemy.getMaxDamage());

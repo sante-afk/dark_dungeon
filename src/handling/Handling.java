@@ -92,6 +92,15 @@ public class Handling {
                         Printer.printLevel(hero);
                         break;
                     }
+                    case 4: {
+                        if (hero.getHealth() >= 100) {
+                            Printer.printDontRelax();
+                        } else {
+                            int healthPoint = handlingHealing(hero);
+                            Printer.printRelax(healthPoint);
+                        }
+
+                    }
                 }
             } catch (NumberFormatException e) {
                 Printer.printErrorNoChoice();
@@ -126,5 +135,13 @@ public class Handling {
         return 0.0;
     }
 
+    public static int handlingHealing (Hero hero) {
+        int heroHealth = hero.getHealth();
+        int healthPoint = 100 - heroHealth;
+        if (heroHealth < 100) {
+            hero.setHealth(100, true);
+        }
+        return healthPoint;
+    }
 
 }
