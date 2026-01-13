@@ -72,6 +72,7 @@ public class Printer {
         System.out.println("1. Continue on your way");
         System.out.println("2. View character");
         System.out.println("3. View level");
+        System.out.println("4. To take a break");
     }
 
     public static void printEnemy (Enemy enemy) {
@@ -85,6 +86,15 @@ public class Printer {
 
     public static void printNewLevel (double heroLvl) {
         System.out.println("★ New level " + (int)heroLvl + " (◡_◡) ᕤ ");
+    }
+
+
+    public static void printRelax (int healthPoint) {
+        System.out.println("\nYou relaxed! Repaired: " + healthPoint + " HP " + " (｡◕‿‿◕｡) \n");
+    }
+
+    public static void printDontRelax () {
+        System.out.println("\nYour character does not require recovery (︶︹︶)\n");
     }
 
     public static void printGameOwer(Scanner scanner) {
