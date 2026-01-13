@@ -22,7 +22,7 @@ git clone https://github.com/sante-afk/dark_dungeon
 cd src
 
 # Run
-java .\src\Main.java
+java .\Main.java
 ```
 
 ## Gameplay
