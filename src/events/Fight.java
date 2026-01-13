@@ -68,12 +68,11 @@ public class Fight {
                 int damageDeduction = hero.getHealth() - enemyDamage;
                 hero.setHealth(damageDeduction, false);
 
-                System.out.println("\n\uD83D\uDDE1 Enemy deal " + enemyDamage + " damage!");
+                System.out.println("\uD83D\uDDE1 Enemy deal " + enemyDamage + " damage!");
                 System.out.println(hero.getName() + " has " + hero.getHealth() + " HP left \n");
 
                 if (hero.getHealth() <= 0) {
-                    System.out.println("† Game over!");
-                    Printer.printGameOwer(hero, scanner);
+                    Printer.printGameOwer(scanner);
                     break;
                 }
                 tour = true;

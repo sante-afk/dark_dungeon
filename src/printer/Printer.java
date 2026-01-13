@@ -2,6 +2,7 @@ package printer;
 
 import enemies.Enemy;
 import handling.Handling;
+import menu.Menu;
 import races.Hero;
 
 import java.util.Scanner;
@@ -86,9 +87,8 @@ public class Printer {
         System.out.println("★ New level " + (int)heroLvl + " (◡_◡) ᕤ ");
     }
 
-    public static void printGameOwer(Hero hero, Scanner scanner) {
+    public static void printGameOwer(Scanner scanner) {
         System.out.println("† Game over!\n");
-        hero.setIsEmpty();
         boolean game = true;
 
         while (game) {
@@ -97,7 +97,8 @@ public class Printer {
                 String chose = scanner.nextLine();
 
                 if (chose.equals("Yes") || chose.isEmpty()) {
-                    Handling.handlingStartGame(scanner);
+                    Hero hero = Handling.handlingStartGame(scanner);
+                    Menu.menuBegin(hero, scanner);
                     game = false;
                 }
                 if (chose.equals("No")) {
