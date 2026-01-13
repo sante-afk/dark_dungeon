@@ -1,13 +1,9 @@
 package menu;
-
-import events.Path;
 import handling.Handling;
 import printer.Printer;
 import races.Hero;
 
 import java.util.Scanner;
-
-import static printer.Printer.printHistory;
 
 public class Menu {
 
