@@ -118,7 +118,7 @@ public class Printer {
             } catch (NumberFormatException e) {
                 System.out.println("\nError, there is no such choice");
             }
-        }
+        };
     }
 
     public static void printMenuFight () {

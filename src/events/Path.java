@@ -17,10 +17,13 @@ public class Path {
 
         if (chanceFight) {
             Fight(hero, scanner);
-            Menu.menuHistory(hero, scanner);
-        } else {
+            if (hero.getHealth() > 0) {
+                Menu.menuHistory(hero, scanner);
+            }
+        } else if (hero.getHealth() > 0) {
             Menu.menuHistory(hero, scanner);
         }
+
     }
 
 

@@ -4,6 +4,7 @@ import printer.Printer;
 import races.Hero;
 import create.Create;
 
+import javax.swing.table.TableRowSorter;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.Random;
@@ -97,9 +98,9 @@ public class Handling {
                             Printer.printDontRelax();
                         } else {
                             int healthPoint = handlingHealing(hero);
+                            handlingArmorRegen(hero);
                             Printer.printRelax(healthPoint);
                         }
-
                     }
                 }
             } catch (NumberFormatException e) {
@@ -121,8 +122,8 @@ public class Handling {
                 hero.setExp(Double.parseDouble(decimalFormat.format(hero.getExp() + exp)));
             } else {
                 hero.setLevel(hero.getLevel() + 1);
-                hero.setMinDamage(RANDOM.nextInt(hero.getMinDamage()) + 1);
-                hero.setMaxDamage(RANDOM.nextInt(hero.getMaxDamage()) + 1);
+                hero.setMinDamage(hero.getMinDamage() + RANDOM.nextInt(hero.getMinDamage() + 1)) ;
+                hero.setMaxDamage(hero.getMaxDamage() + RANDOM.nextInt(hero.getMaxDamage() + 1));
                 hero.setExp(0.0);
                 hero.setExpEnd(hero.getLevel() * 10);
                 if (hero.getHealth() < 100) {
@@ -142,6 +143,10 @@ public class Handling {
             hero.setHealth(100, true);
         }
         return healthPoint;
+    }
+
+    public static void handlingArmorRegen (Hero hero) {
+        hero.setArmor(100, true);
     }
 
 }

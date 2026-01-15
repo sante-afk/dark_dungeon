@@ -39,8 +39,8 @@ public class Create {
         double exp = 0.0;
         int expEnd = level * 10;
 
-        int minDamage = RANDOM.nextInt(5) + 1;
-        int maxDamage = RANDOM.nextInt(5, 10) + 1;
+        int minDamage = RANDOM.nextInt(1, 5) + 1;
+        int maxDamage = RANDOM.nextInt(minDamage, 10) + 1;
 
         switch (race) {
             case 1:
@@ -89,9 +89,9 @@ public class Create {
         int enemyRandom = RANDOM.nextInt(enemies) + 1;
         int raceRandom = RANDOM.nextInt(enemies) + 1;
 
-        int levelRandom = RANDOM.nextInt(hero.getLevel()) + 1;
-        int minDamage = RANDOM.nextInt(hero.getMinDamage()) + 1;
-        int maxDamage = RANDOM.nextInt(minDamage, hero.getMaxDamage()) + 1;
+        int levelRandom = RANDOM.nextInt(1, hero.getLevel() + 1);
+        int minDamage = RANDOM.nextInt(1, hero.getMinDamage() + 1);
+        int maxDamage = RANDOM.nextInt(minDamage, hero.getMaxDamage() + 1);
 
         if (levelRandom > hero.getLevel() && levelRandom == hero.getLevel()) {
             levelRandom += 1;
@@ -103,11 +103,11 @@ public class Create {
         int armor = 0;
 
         if (levelRandom > hero.getLevel() && levelRandom == hero.getLevel()) {
-            health = RANDOM.nextInt(hero.getHealth() / 2) + 1;
-            armor = RANDOM.nextInt(hero.getArmor() / 2) + 1;
+            health = RANDOM.nextInt(1, (hero.getHealth() / 2) + 1);
+            armor = RANDOM.nextInt(1, (hero.getArmor() / 2) + 1);
         } else {
-            health = RANDOM.nextInt(hero.getHealth()) + 1;
-            armor = RANDOM.nextInt(hero.getArmor()) + 1;
+            health = RANDOM.nextInt(1, hero.getHealth() + 1);
+            armor = RANDOM.nextInt(1, hero.getArmor() + 1);
         }
 
         switch (enemyRandom) {
