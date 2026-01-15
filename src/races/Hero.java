@@ -105,6 +105,6 @@ public abstract class Hero {
 
     // Methods
     public int physDamage (int minDamage, int maxDamage) {
-        return RANDOM.nextInt(minDamage, maxDamage) + 1;
+        return RANDOM.nextInt(minDamage, maxDamage + 1);
     }
 }
