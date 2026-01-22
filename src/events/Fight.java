@@ -32,10 +32,11 @@ public class Fight {
             if (tour) {
                 boolean autoFight = false;
                 if (!autoFight) {
+                    Menu.menuFight();
                     int choice = Integer.parseInt(scanner.nextLine());
                     TourHero(scanner, hero, enemy, autoFight, choice);
                 } else {
-                    TourHero(scanner, hero, enemy, autoFight, 2);
+                    TourHero(scanner, hero, enemy, autoFight, 1);
                 }
                 tour = false;
             }
@@ -46,7 +47,6 @@ public class Fight {
         }
     }
     public static void TourHero (Scanner scanner, Hero hero, Enemy enemy, boolean autoFight, int choice) {
-        Menu.menuFight();
         try {
             if (choice == 1 || autoFight) {
                 boolean chanceInDefense = RANDOM.nextBoolean();
@@ -85,9 +85,6 @@ public class Fight {
             }
             if (choice == 2) {
                 AutoFight(scanner, hero, enemy);
-            }
-            if (choice != 1 && choice != 2) {
-                Printer.printErrorNoChoice();
             }
         } catch (NumberFormatException e) {
             Printer.printErrorChoiceString();
