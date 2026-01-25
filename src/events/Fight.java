@@ -2,7 +2,7 @@ package events;
 
 import enemies.Enemy;
 import handling.Handling;
-import menu.Menu;
+import frames.Menu;
 import printer.Printer;
 import races.Hero;
 import replicas.Replica;
