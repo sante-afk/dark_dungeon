@@ -28,19 +28,24 @@ public class Fight {
         }
 
         while (hero.getHealth() > 0 && enemy.getHealth() > 0) {
-            System.out.println(Replica.replicaTour(tour));
             if (tour) {
                 boolean autoFight = false;
                 if (!autoFight) {
-                    Menu.menuFight();
-                    int choice = Integer.parseInt(scanner.nextLine());
+                    int choice = 0;
+                    while (choice == 0) {
+                        try {
+                            System.out.println(Replica.replicaTour(tour));
+                            Menu.menuFight();
+                            choice = Integer.parseInt(scanner.nextLine());
+                        } catch (NumberFormatException e) {
+                            Printer.printErrorNoChoice();
+                        }
+                    }
                     TourHero(scanner, hero, enemy, autoFight, choice);
-                } else {
-                    TourHero(scanner, hero, enemy, autoFight, 1);
                 }
                 tour = false;
             }
-            if (!tour) {
+            if (!tour && enemy.getHealth() > 0) {
                 TourEnemy(scanner, hero, enemy);
                 tour = true;
             }
@@ -51,7 +56,12 @@ public class Fight {
             if (choice == 1 || autoFight) {
                 boolean chanceInDefense = RANDOM.nextBoolean();
                 int heroDamage = hero.physDamage(hero.getMinDamage(), hero.getMaxDamage());
-                int enemyDefense = RANDOM.nextInt(0, enemy.getArmor() + 1);
+                int enemyDefense = 0;
+                if (enemy.getArmor() < 0) {
+                    enemyDefense = 0;
+                } else {
+                    enemyDefense = RANDOM.nextInt(0, enemy.getArmor() + 1);
+                }
                 if (chanceInDefense) {
                     if (enemyDefense >= enemy.getHealth() && enemy.getHealth() != 0 && enemy.getArmor() != 0) {
                         enemy.setArmor(enemyDefense - heroDamage);
@@ -93,7 +103,12 @@ public class Fight {
 
     public static void TourEnemy (Scanner scanner, Hero hero, Enemy enemy) {
         boolean chanceInDefense = RANDOM.nextBoolean();
-        int heroDefense = RANDOM.nextInt(0, hero.getArmor() + 1);
+        int heroDefense = 0;
+        if (hero.getArmor() < 0) {
+            heroDefense = 0;
+        } else {
+            heroDefense = RANDOM.nextInt(0, hero.getArmor() + 1);
+        }
         int enemyDamage = enemy.physDamage(enemy.getMinDamage(), enemy.getMaxDamage());
         if (chanceInDefense) {
             if (heroDefense >= hero.getHealth() && hero.getHealth() != 0 && hero.getArmor() !=0 ) {
@@ -130,8 +145,12 @@ public class Fight {
     public static void AutoFight (Scanner scanner, Hero hero, Enemy enemy) {
         while (hero.getHealth() > 0 && enemy.getHealth() > 0) {
             boolean autoFight = true;
-            TourHero(scanner, hero, enemy, autoFight, 2);
-            TourEnemy(scanner, hero, enemy);
+            if (hero.getHealth() > 0) {
+                TourHero(scanner, hero, enemy, autoFight, 1);
+            }
+            if (enemy.getHealth() > 0) {
+                TourEnemy(scanner, hero, enemy);
+            }
         }
     }
 
