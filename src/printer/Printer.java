@@ -2,24 +2,27 @@ package printer;
 
 import enemies.Enemy;
 import handling.Handling;
-import menu.Menu;
+import frames.Menu;
 import races.Hero;
 
 import java.util.Scanner;
 
 public class Printer {
 
-    public static void printLogo() {
-        System.out.println("""
-                
-                ▄▄▄▄   ▄▄▄  ▄▄▄▄  ▄▄ ▄▄   ▄▄▄▄  ▄▄ ▄▄ ▄▄  ▄▄  ▄▄▄▄ ▄▄▄▄▄  ▄▄▄  ▄▄  ▄▄\s
-                ██▀██ ██▀██ ██▄█▄ ██▄█▀   ██▀██ ██ ██ ███▄██ ██ ▄▄ ██▄▄  ██▀██ ███▄██\s
-                ████▀ ██▀██ ██ ██ ██ ██   ████▀ ▀███▀ ██ ▀██ ▀███▀ ██▄▄▄ ▀███▀ ██ ▀██\s
-                                                                                     \s""");
+    public static String printLogo() {
+        return "DARK DUNGEON";
     }
 
-    public static void printStartGame() {
-        System.out.print("Start the game (Yes/No) ?: ");
+    public static String printStartGame() {
+        return "Start the game";
+    }
+
+    public static String printMenuYes() {
+        return "Yes";
+    }
+
+    public static String printMenuNo() {
+        return "No";
     }
 
     public static void printHero (Hero hero) {

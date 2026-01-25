@@ -1,6 +1,6 @@
 package events;
 
-import menu.Menu;
+import frames.Menu;
 import races.Hero;
 
 import java.util.Random;
