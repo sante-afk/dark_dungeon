@@ -1,4 +1,4 @@
-<img width="569" height="163" alt="image" src="https://github.com/user-attachments/assets/363216a1-63f7-48a6-bd0a-c04ca4ed6264" />
+<img width="1000" height="450" alt="Screenshot 2026-01-25 at 23 59 24" src="https://github.com/user-attachments/assets/78f83019-420e-4226-9fdb-b47cf683535d" />
 
 ## Features
 
@@ -6,7 +6,7 @@
 >4 enemy types with unique characteristics  
 >Damage system with armor and random values  
 >Randomized encounters and first turn  
->Visual interface with ASCII graphics  
+>Visual interface 
 >Detailed statistics for characters  
 
 ## Requirements:
