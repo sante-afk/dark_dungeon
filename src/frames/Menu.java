@@ -32,19 +32,20 @@ public class Menu {
 
 
 //      frame start
-        JFrame frameStart = new JFrame();
-        frameStart.setLayout(null);
-        frameStart.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JFrame window = new JFrame();
+        window.setLayout(null);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ImageIcon imageLogo = new ImageIcon("icons/dd_icon.png");
-        frameStart.getContentPane().setBackground(Color.BLACK);
-        frameStart.setTitle(Printer.printLogo());
-        frameStart.setSize(1000, 750);
-        frameStart.setResizable(true);
-        frameStart.setIconImage(imageLogo.getImage());
-        frameStart.add(panelLogo);
-        frameStart.add(panelMenuYes);
-        frameStart.add(panelMenuNo);
-
+        window.getContentPane().setBackground(Color.BLACK);
+        window.setTitle(Printer.printLogo());
+        window.setSize(1000, 750);
+        window.setResizable(true);
+        window.setIconImage(imageLogo.getImage());
+        window.add(panelLogo);
+        window.add(panelMenuYes);
+        window.add(panelMenuNo);
+        JPanel createHero = CreateHero.createHeroFrame();
+        window.add(createHero);
 
 //      logo game
         JLabel logo = new JLabel(Printer.printLogo());
@@ -93,6 +94,9 @@ public class Menu {
         yes.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                panelLogo.setVisible(false);
+                panelMenuNo.setVisible(false);
+                panelMenuYes.setVisible(false);
 
             }
         });
@@ -113,7 +117,7 @@ public class Menu {
         no.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frameStart.dispatchEvent(new WindowEvent(frameStart, WindowEvent.WINDOW_CLOSING));
+                window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
             }
         });
 
@@ -123,10 +127,11 @@ public class Menu {
 //        Menu.menuBegin(hero, scanner);
 //        scanner.close();
 
-        frameStart.setVisible(true);
+        window.setVisible(true);
     }
 
     public static void menuBegin (Hero hero, Scanner scanner) {
+        JTextField history = new JTextField();
         Printer.printHistory(hero);
         menuHistory(hero, scanner);
     }
