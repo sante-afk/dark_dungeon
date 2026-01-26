@@ -6,7 +6,7 @@ import frames.Menu;
 import printer.Printer;
 import races.Hero;
 import replicas.Replica;
-import create.Create;
+import frames.CreateHero;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -16,7 +16,7 @@ public class Fight {
     private static final Random RANDOM = new Random();
 
     public static void Fight (Hero hero, Scanner scanner) {
-        Enemy enemy = Create.CreateEnemy(hero);
+        Enemy enemy = CreateHero.CreateEnemy(hero);
 
         boolean met = RANDOM.nextBoolean();
         boolean tour = RANDOM.nextBoolean();

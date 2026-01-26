@@ -1,15 +1,35 @@
-package create;
+package frames;
 
 import enemies.*;
 import handling.Handling;
+import printer.Printer;
 import races.*;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Create {
+public class CreateHero {
 
     private static final Random RANDOM = new Random();
+
+    public static JPanel createHeroFrame () {
+        JPanel topCharacter = new JPanel();
+        topCharacter.setBackground(Color.RED);
+        topCharacter.setBounds(250,0,500,300);
+
+        JLabel labelName = new JLabel("Enter the name");
+        topCharacter.add(labelName, BorderLayout.NORTH);
+
+        JTextField fieldName = new JTextField();
+        topCharacter.add(labelName, BorderLayout.CENTER);
+        fieldName.setBackground(Color.BLUE);
+
+        topCharacter.add(fieldName);
+        return topCharacter;
+    }
 
     public static Hero CreateHero (int race, Scanner scanner) {
         String nameHero;

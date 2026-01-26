@@ -57,8 +57,8 @@ public class Printer {
         progressBar.setLength(0);
     }
 
-    public static void printHistory (Hero hero) {
-        System.out.println(
+    public static String printHistory (Hero hero) {
+        return (
             "The darkness receded slowly, reluctantly, like thick molasses, and \n" +
             "the first thing " + hero.getName() + " felt was not light or sound, but cold. \n" +
             "The sharp, bone-chilling cold of the stone slabs, biting into his cheek. \n" +

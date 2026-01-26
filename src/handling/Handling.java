@@ -2,9 +2,8 @@ package handling;
 import events.Path;
 import printer.Printer;
 import races.Hero;
-import create.Create;
+import frames.CreateHero;
 
-import javax.swing.table.TableRowSorter;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.Random;
@@ -57,7 +56,7 @@ public class Handling {
             Hero hero = null;
 
             try {
-                hero = Create.CreateHero(race, scanner);
+                hero = CreateHero.CreateHero(race, scanner);
             } catch (NumberFormatException e) {
                 Printer.printErrorHealthOrArmor();
             } catch (IllegalArgumentException e) {
