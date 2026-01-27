@@ -44,8 +44,7 @@ public class Menu {
         window.add(panelLogo);
         window.add(panelMenuYes);
         window.add(panelMenuNo);
-        JPanel createHero = CreateHero.createHeroFrame();
-        window.add(createHero);
+
 
 //      logo game
         JLabel logo = new JLabel(Printer.printLogo());
@@ -97,7 +96,8 @@ public class Menu {
                 panelLogo.setVisible(false);
                 panelMenuNo.setVisible(false);
                 panelMenuYes.setVisible(false);
-
+                JPanel createHero = CreateHero.createHeroFrame();
+                window.add(createHero);
             }
         });
 

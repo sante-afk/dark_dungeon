@@ -6,10 +6,14 @@ import printer.Printer;
 import races.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class CreateHero {
 
@@ -17,17 +21,58 @@ public class CreateHero {
 
     public static JPanel createHeroFrame () {
         JPanel topCharacter = new JPanel();
-        topCharacter.setBackground(Color.RED);
-        topCharacter.setBounds(250,0,500,300);
+        topCharacter.setBackground(Color.BLACK);
+        topCharacter.setBounds(250,200,500,300);
+        topCharacter.setLayout(new BorderLayout());
 
+//      label
         JLabel labelName = new JLabel("Enter the name");
+        labelName.setPreferredSize(new Dimension(100,150));
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/Cinzel-Black.ttf")).deriveFont(50f);
+            labelName.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        labelName.setForeground(Color.WHITE);
+        labelName.setHorizontalAlignment(SwingConstants.CENTER);
         topCharacter.add(labelName, BorderLayout.NORTH);
 
-        JTextField fieldName = new JTextField();
-        topCharacter.add(labelName, BorderLayout.CENTER);
-        fieldName.setBackground(Color.BLUE);
+        JPanel paneLInput = new JPanel();
+        paneLInput.setBackground(Color.BLACK);
+        paneLInput.setLayout(new BorderLayout());
+        topCharacter.add(paneLInput, BorderLayout.CENTER);
 
-        topCharacter.add(fieldName);
+//      input
+        JTextField fieldName = new JTextField(15);
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(30f);
+            fieldName.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        fieldName.setPreferredSize(new Dimension(0,40));
+        fieldName.setHorizontalAlignment(SwingConstants.CENTER);
+        fieldName.setBackground(Color.BLACK);
+        fieldName.setForeground(Color.WHITE);
+        paneLInput.add(fieldName, BorderLayout.NORTH);
+
+
+//      OK
+        JButton bOK = new JButton(Printer.printMenuOK());
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+            bOK.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        bOK.setForeground(Color.black);
+        bOK.setPreferredSize(new Dimension(0, 50));
+        topCharacter.add(bOK, BorderLayout.SOUTH);
+
         return topCharacter;
     }
 

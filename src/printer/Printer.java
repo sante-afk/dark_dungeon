@@ -21,6 +21,10 @@ public class Printer {
         return "Yes";
     }
 
+    public static String printMenuOK() {
+        return "OK";
+    }
+
     public static String printMenuNo() {
         return "No";
     }
