@@ -24,53 +24,6 @@ public class Handling {
         return 0;
     }
 
-    public static Hero handlingStartGame (Scanner scanner) {
-        String enterGame = scanner.nextLine().trim();
-        boolean enter = true;
-        boolean create = false;
-        int race = 0;
-
-        while (enter) {
-            try {
-                if (enterGame.equals("Yes") || enterGame.isEmpty()) {
-                    System.out.println("Choose a race ");
-                    System.out.print("Human - 1, ");
-                    System.out.print("Elf - 2, ");
-                    System.out.print("Dwarf - 3: ");
-                    race = Integer.parseInt(scanner.nextLine());
-                    create = true;
-                    enter = false;
-                } else if (enterGame.equals("No")) {
-                    System.out.println("bye bye ( ╥﹏╥) ノシ");
-                    break;
-                } else {
-                    System.out.println("what? (ㆆ _ ㆆ)\n");
-                    printStartGame();
-                    enterGame = scanner.nextLine().trim();
-                }
-            } catch (NumberFormatException e) {
-                Printer.printErrorChoiceString();
-            }
-        }
-        while (create) {
-            Hero hero = null;
-
-            try {
-                hero = CreateHero.CreateHero(race, scanner);
-            } catch (NumberFormatException e) {
-                Printer.printErrorHealthOrArmor();
-            } catch (IllegalArgumentException e) {
-                Printer.printErrorName();
-            }
-
-            if (hero != null) {
-                Printer.printHero(hero);
-                return hero;
-            }
-        }
-        return null;
-    }
-
     public static void handlingPath (Hero hero, Scanner scanner) {
         boolean continuePath = true;
 

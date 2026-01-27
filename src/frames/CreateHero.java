@@ -6,26 +6,24 @@ import printer.Printer;
 import races.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class CreateHero {
 
     private static final Random RANDOM = new Random();
 
-    public static JPanel createHeroFrame () {
-        JPanel topCharacter = new JPanel();
-        topCharacter.setBackground(Color.BLACK);
-        topCharacter.setBounds(250,200,500,300);
-        topCharacter.setLayout(new BorderLayout());
+    public static JPanel createHero () {
+        JPanel panelName = new JPanel();
+        panelName.setBackground(Color.BLACK);
+        panelName.setBounds(250,200,500,300);
+        panelName.setLayout(new BorderLayout());
+
 
 //      label
         JLabel labelName = new JLabel("Enter the name");
@@ -39,28 +37,30 @@ public class CreateHero {
         }
         labelName.setForeground(Color.WHITE);
         labelName.setHorizontalAlignment(SwingConstants.CENTER);
-        topCharacter.add(labelName, BorderLayout.NORTH);
+        panelName.add(labelName, BorderLayout.NORTH);
 
-        JPanel paneLInput = new JPanel();
-        paneLInput.setBackground(Color.BLACK);
-        paneLInput.setLayout(new BorderLayout());
-        topCharacter.add(paneLInput, BorderLayout.CENTER);
+
+//      container Input
+        JPanel conInput = new JPanel();
+        conInput.setBackground(Color.BLACK);
+        conInput.setLayout(new BorderLayout());
+        panelName.add(conInput, BorderLayout.CENTER);
+
 
 //      input
-        JTextField fieldName = new JTextField(15);
+        JTextField inputName = new JTextField(15);
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
                     new File("fonts/Cinzel-Regular.ttf")).deriveFont(30f);
-            fieldName.setFont(mainText);
+            inputName.setFont(mainText);
         } catch (FontFormatException | IOException e) {
             throw new RuntimeException(e);
         }
-        fieldName.setPreferredSize(new Dimension(0,40));
-        fieldName.setHorizontalAlignment(SwingConstants.CENTER);
-        fieldName.setBackground(Color.BLACK);
-        fieldName.setForeground(Color.WHITE);
-        paneLInput.add(fieldName, BorderLayout.NORTH);
-
+        inputName.setPreferredSize(new Dimension(0,40));
+        inputName.setHorizontalAlignment(SwingConstants.CENTER);
+        inputName.setBackground(Color.BLACK);
+        inputName.setForeground(Color.WHITE);
+        conInput.add(inputName, BorderLayout.NORTH);
 
 
 //      OK
@@ -75,46 +75,255 @@ public class CreateHero {
         }
         bOK.setForeground(Color.black);
         bOK.setPreferredSize(new Dimension(0, 50));
-        topCharacter.add(bOK, BorderLayout.SOUTH);
+        panelName.add(bOK, BorderLayout.SOUTH);
         bOK.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (fieldName.getText().length() > 2) {
-                    nameHero[0] = fieldName.getText();
+                if (inputName.getText().length() > 2) {
+                    nameHero[0] = inputName.getText();
+                    labelName.setVisible(false);
+                    conInput.setVisible(false);
+                    inputName.setVisible(false);
+                    bOK.setVisible(false);
+                    JPanel chooseRace = chooseRace(nameHero);
+                    panelName.add(chooseRace);
                 } else {
                     String errorName = Printer.printErrorName();
-                    JOptionPane.showMessageDialog(topCharacter, errorName,
+                    JOptionPane.showMessageDialog(panelName, errorName,
                             "WARNING", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
 
-        return topCharacter;
+        return panelName;
     }
 
-    public static Hero CreateHero (int race, Scanner scanner) {
-        String nameHero;
-        int healthHero = 0;
-        int armorHero = 0;
+    public static JPanel chooseRace (String[] nameHero) {
+        JPanel panelRace = new JPanel();
+        panelRace.setBackground(Color.BLACK);
+        panelRace.setBounds(250,200,700,300);
 
-        System.out.print("Enter the name: ");
-        nameHero = scanner.nextLine();
+        JButton bHuman = new JButton(Printer.printHuman());
+        JButton bElf = new JButton(Printer.printElf());
+        JButton bDwarf = new JButton(Printer.printDwarf());
 
-        System.out.print("Enter the health: ");
-        String enterHealth = scanner.nextLine();
-        if (enterHealth.isEmpty()) {
-            healthHero = 0;
-        } else {
-            healthHero = Integer.parseInt(enterHealth);
+
+//      label
+        JLabel labelName = new JLabel("Choose a race");
+        labelName.setPreferredSize(new Dimension(500,200));
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/Cinzel-Black.ttf")).deriveFont(50f);
+            labelName.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
         }
+        labelName.setForeground(Color.WHITE);
+        labelName.setHorizontalAlignment(SwingConstants.CENTER);
+        panelRace.add(labelName, BorderLayout.NORTH);
 
-        System.out.print("Enter the armor: ");
-        String enterArmor = scanner.nextLine();
-        if (enterArmor.isEmpty()) {
-            armorHero = 0;
-        } else {
-            armorHero = Integer.parseInt(enterArmor);
+//      human
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+            bHuman.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
         }
+        bHuman.setForeground(Color.black);
+        bHuman.setPreferredSize(new Dimension(100, 40));
+        panelRace.add(bHuman, BorderLayout.SOUTH);
+        bHuman.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                labelName.setVisible(false);
+                bHuman.setVisible(false);
+                bElf.setVisible(false);
+                bDwarf.setVisible(false);
+
+                JPanel panelAttributes = chooseAttributes(nameHero, 1);
+                panelRace.add(panelAttributes);
+            }
+        });
+
+
+//      Elf
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+            bElf.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        bElf.setForeground(Color.black);
+        bElf.setPreferredSize(new Dimension(100, 40));
+        panelRace.add(bElf, BorderLayout.SOUTH);
+        bElf.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                labelName.setVisible(false);
+                bHuman.setVisible(false);
+                bElf.setVisible(false);
+                bDwarf.setVisible(false);
+
+                JPanel panelAttributes = chooseAttributes(nameHero, 2);
+                panelRace.add(panelAttributes);
+            }
+        });
+
+
+//      Dwarf
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+            bDwarf.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        bDwarf.setForeground(Color.black);
+        bDwarf.setPreferredSize(new Dimension(100, 40));
+        panelRace.add(bDwarf, BorderLayout.SOUTH);
+        bDwarf.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                labelName.setVisible(false);
+                bHuman.setVisible(false);
+                bElf.setVisible(false);
+                bDwarf.setVisible(false);
+
+                JPanel panelAttributes = chooseAttributes(nameHero, 3);
+                panelRace.add(panelAttributes);
+            }
+        });
+
+
+        return panelRace;
+    }
+
+    public static JPanel chooseAttributes (String[] nameHero, int race) {
+        JPanel panelAttributes = new JPanel();
+        panelAttributes.setBackground(Color.BLACK);
+        panelAttributes.setBounds(250,200,700,300);
+        panelAttributes.setLayout(new BorderLayout());
+
+//      label
+        JLabel labelName = new JLabel("Enter to attributes");
+        labelName.setPreferredSize(new Dimension(500,150));
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/Cinzel-Black.ttf")).deriveFont(40f);
+            labelName.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        labelName.setForeground(Color.WHITE);
+        labelName.setHorizontalAlignment(SwingConstants.CENTER);
+        panelAttributes.add(labelName, BorderLayout.NORTH);
+
+//      panelHP
+        JPanel westHP = new JPanel();
+        westHP.setBackground(Color.BLACK);
+        panelAttributes.add(westHP, BorderLayout.WEST);
+        westHP.setLayout(new BorderLayout());
+
+//      HP label
+        JLabel hpLabel = new JLabel("HP");
+        hpLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        hpLabel.setBackground(Color.BLACK);
+        hpLabel.setForeground(Color.WHITE);
+        westHP.add(hpLabel, BorderLayout.NORTH);
+
+//      HP
+        JTextField hp = new JTextField();
+        hp.setPreferredSize(new Dimension(200,30));
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+            hp.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        hp.setForeground(Color.WHITE);
+        hp.setHorizontalAlignment(SwingConstants.CENTER);
+        hp.setBackground(Color.RED);
+        westHP.add(hp, BorderLayout.CENTER);
+
+//      panelOK
+        JPanel panelOK = new JPanel();
+        panelOK.setBackground(Color.BLACK);
+        panelOK.setPreferredSize(new Dimension(30,80));
+        panelAttributes.add(panelOK, BorderLayout.SOUTH);
+        panelOK.setLayout(new BorderLayout());
+
+
+//      panelArmor
+        JPanel eastArmor = new JPanel();
+        panelAttributes.add(eastArmor, BorderLayout.EAST);
+        eastArmor.setBackground(Color.BLACK);
+        eastArmor.setLayout(new BorderLayout());
+
+
+//      Armor label
+        JLabel armorLabel = new JLabel("Armor");
+        armorLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        armorLabel.setForeground(Color.WHITE);
+        eastArmor.add(armorLabel, BorderLayout.NORTH);
+
+
+//      Armor
+        JTextField armor = new JTextField();
+        armor.setPreferredSize(new Dimension(200,30));
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+            armor.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        armor.setHorizontalAlignment(SwingConstants.CENTER);
+        armor.setForeground(Color.BLACK);
+        armor.setBackground(Color.CYAN);
+        eastArmor.add(armor, BorderLayout.CENTER);
+
+        int[] armorHero = {0};
+        int[] healthHero = {0};
+
+//      OK
+        JButton bOK = new JButton(Printer.printMenuOK());
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+            bOK.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        bOK.setHorizontalAlignment(SwingConstants.CENTER);
+        bOK.setForeground(Color.BLACK);
+        panelOK.add(bOK, BorderLayout.SOUTH);
+        bOK.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                healthHero[0] = Integer.parseInt(hp.getText());
+                armorHero[0] = Integer.parseInt(armor.getText());
+
+                if (healthHero[0] < 100) {
+                    JOptionPane.showMessageDialog(panelAttributes, "health will be 100 by default", "Notification", JOptionPane.INFORMATION_MESSAGE);
+                    healthHero[0] = 100;
+                }
+
+                if (armorHero[0] < 100) {
+                    JOptionPane.showMessageDialog(panelAttributes, "armor will be 100 by default", "Notification", JOptionPane.INFORMATION_MESSAGE);
+                    armorHero[0] = 100;
+                }
+
+               Hero hero = CreateHeroClass(nameHero, race, healthHero, armorHero);
+            }
+        });
+
+        return panelAttributes;
+    }
+
+    public static Hero CreateHeroClass (String[] nameHero, int race, int[] healthHero, int[] armorHero) {
 
         int level = 1;
         double exp = 0.0;
@@ -126,11 +335,11 @@ public class CreateHero {
         switch (race) {
             case 1:
                 String raceHuman = "Human";
-                Hero human = new Human(nameHero, healthHero, armorHero, raceHuman,
+                Hero human = new Human(nameHero[0], healthHero[0], armorHero[0], raceHuman,
                         level, exp, expEnd, minDamage, maxDamage);
-                human.setName(nameHero);
-                human.setHealth(healthHero, true);
-                human.setArmor(armorHero, true);
+                human.setName(nameHero[0]);
+                human.setHealth(healthHero[0], true);
+                human.setArmor(armorHero[0], true);
                 human.setRace(raceHuman);
                 human.setLevel(level);
                 human.setMinDamage(minDamage);
@@ -138,11 +347,11 @@ public class CreateHero {
                 return human;
             case 2:
                 String raceElf = "Elf";
-                Hero elf = new Elf(nameHero, healthHero, armorHero, raceElf,
+                Hero elf = new Elf(nameHero[0], healthHero[0], armorHero[0], raceElf,
                         level, exp, expEnd, minDamage, maxDamage);
-                elf.setName(nameHero);
-                elf.setHealth(healthHero, true);
-                elf.setArmor(armorHero, true);
+                elf.setName(nameHero[0]);
+                elf.setHealth(healthHero[0], true);
+                elf.setArmor(armorHero[0], true);
                 elf.setRace(raceElf);
                 elf.setLevel(level);
                 elf.setMinDamage(minDamage);
@@ -150,11 +359,11 @@ public class CreateHero {
                 return elf;
             case 3:
                 String raceDwarf = "Dwarf";
-                Hero dwarf = new Dwarf(nameHero, healthHero, armorHero, raceDwarf,
+                Hero dwarf = new Dwarf(nameHero[0], healthHero[0], armorHero[0], raceDwarf,
                         level, exp, expEnd, minDamage, maxDamage);
-                dwarf.setName(nameHero);
-                dwarf.setHealth(healthHero, true);
-                dwarf.setArmor(armorHero, true);
+                dwarf.setName(nameHero[0]);
+                dwarf.setHealth(healthHero[0], true);
+                dwarf.setArmor(armorHero[0], true);
                 dwarf.setRace(raceDwarf);
                 dwarf.setLevel(level);
                 dwarf.setMinDamage(minDamage);

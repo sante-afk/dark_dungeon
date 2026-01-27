@@ -114,8 +114,8 @@ public class Printer {
                 String chose = scanner.nextLine();
 
                 if (chose.equals("Yes") || chose.isEmpty()) {
-                    Hero hero = Handling.handlingStartGame(scanner);
-                    Menu.menuBegin(hero, scanner);
+//                    Hero hero = Handling.handlingStartGame(scanner);
+//                    Menu.menuBegin(hero, scanner);
                     game = false;
                 }
                 if (chose.equals("No")) {
@@ -131,6 +131,18 @@ public class Printer {
     public static void printMenuFight () {
         System.out.println("1. Physical Attack ");
         System.out.println("2. Auto Attack ");
+    }
+
+    public static String printHuman () {
+        return "Human";
+    }
+
+    public static String printElf () {
+        return "Elf";
+    }
+
+    public static String printDwarf () {
+        return "Dwarf";
     }
 
     public static void printErrorChoiceString () {

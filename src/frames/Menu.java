@@ -20,10 +20,12 @@ public class Menu {
         panelLogo.setLayout(new BorderLayout());
         panelLogo.setBounds(250,0,500,250);
 
+
         JPanel panelMenuYes = new JPanel();
         panelMenuYes.setBackground(Color.BLACK);
         panelMenuYes.setLayout(new BorderLayout());
         panelMenuYes.setBounds(398,270,100,20);
+
 
         JPanel panelMenuNo = new JPanel();
         panelMenuNo.setBackground(Color.BLACK);
@@ -98,7 +100,7 @@ public class Menu {
                 panelMenuNo.setVisible(false);
                 panelMenuYes.setVisible(false);
 
-                JPanel createHero = CreateHero.createHeroFrame();
+                JPanel createHero = CreateHero.createHero();
                 window.add(createHero);
 
             }
