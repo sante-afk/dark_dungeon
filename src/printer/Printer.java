@@ -139,8 +139,8 @@ public class Printer {
     public static void printErrorNoChoice () {
         System.out.println("\nError, there is no such choice");
     }
-    public static void printErrorName () {
-        System.out.println("\nError, name is small");
+    public static String printErrorName () {
+        return "Error, name is small";
     }
     public static void printErrorHealthOrArmor () {
         System.out.println("\nError, health or armor cannot be symbols");

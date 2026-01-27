@@ -61,6 +61,7 @@ public class Menu {
         logo.setHorizontalAlignment(JLabel.CENTER);
         panelLogo.add(logo);
 
+
 //      print start game
         JLabel printStartGame = new JLabel(Printer.printStartGame());
         printStartGame.setSize(200,50);
@@ -96,10 +97,13 @@ public class Menu {
                 panelLogo.setVisible(false);
                 panelMenuNo.setVisible(false);
                 panelMenuYes.setVisible(false);
+
                 JPanel createHero = CreateHero.createHeroFrame();
                 window.add(createHero);
+
             }
         });
+
 
 //      end game
         JButton no = new JButton(Printer.printMenuNo());

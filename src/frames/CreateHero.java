@@ -8,6 +8,8 @@ import races.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -60,7 +62,9 @@ public class CreateHero {
         paneLInput.add(fieldName, BorderLayout.NORTH);
 
 
+
 //      OK
+        final String[] nameHero = new String[1];
         JButton bOK = new JButton(Printer.printMenuOK());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
@@ -72,6 +76,18 @@ public class CreateHero {
         bOK.setForeground(Color.black);
         bOK.setPreferredSize(new Dimension(0, 50));
         topCharacter.add(bOK, BorderLayout.SOUTH);
+        bOK.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (fieldName.getText().length() > 2) {
+                    nameHero[0] = fieldName.getText();
+                } else {
+                    String errorName = Printer.printErrorName();
+                    JOptionPane.showMessageDialog(topCharacter, errorName,
+                            "WARNING", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
 
         return topCharacter;
     }
