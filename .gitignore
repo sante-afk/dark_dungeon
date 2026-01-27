@@ -5,6 +5,7 @@ out/
 .kotlin
 .idea/
 game.iml
+dark_dungeon.iml
 
 ### Eclipse ###
 .apt_generated
