@@ -79,6 +79,9 @@ public class CreateHero {
         bOK.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                ImageIcon warning = new ImageIcon(new ImageIcon("icons/warning-icon.png")
+                        .getImage().getScaledInstance(30,30, Image.SCALE_DEFAULT));
+
                 if (inputName.getText().length() > 2) {
                     nameHero[0] = inputName.getText();
                     labelName.setVisible(false);
@@ -89,8 +92,12 @@ public class CreateHero {
                     panelName.add(chooseRace);
                 } else {
                     String errorName = Printer.printErrorName();
-                    JOptionPane.showMessageDialog(panelName, errorName,
-                            "WARNING", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                            panelName,
+                            errorName,
+                            "WARNING",
+                            JOptionPane.WARNING_MESSAGE,
+                            warning);
                 }
             }
         });
@@ -303,17 +310,41 @@ public class CreateHero {
         bOK.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                healthHero[0] = Integer.parseInt(hp.getText());
-                armorHero[0] = Integer.parseInt(armor.getText());
+                ImageIcon notification = new ImageIcon(new ImageIcon("icons/notification-icon.png")
+                        .getImage().getScaledInstance(30,30, Image.SCALE_DEFAULT));
+                ImageIcon warning = new ImageIcon(new ImageIcon("icons/warning-icon.png")
+                        .getImage().getScaledInstance(30,30, Image.SCALE_DEFAULT));
 
-                if (healthHero[0] < 100) {
-                    JOptionPane.showMessageDialog(panelAttributes, "health will be 100 by default", "Notification", JOptionPane.INFORMATION_MESSAGE);
-                    healthHero[0] = 100;
-                }
+                if (healthHero[0] == 0 || armorHero[0] == 0) {
+                    try {
+                        healthHero[0] = Integer.parseInt(hp.getText());
+                        armorHero[0] = Integer.parseInt(armor.getText());
+                        if (healthHero[0] < 100) {
+                            JOptionPane.showMessageDialog(
+                                    panelAttributes,
+                                    "health will be 100 by default",
+                                    "Notification",
+                                    JOptionPane.INFORMATION_MESSAGE,
+                                    notification);
+                            healthHero[0] = 100;
+                        }
+                        if (armorHero[0] < 100) {
+                            JOptionPane.showMessageDialog(panelAttributes,
+                                    "armor will be 100 by default",
+                                    "Notification",
+                                    JOptionPane.INFORMATION_MESSAGE,
+                                    notification);
 
-                if (armorHero[0] < 100) {
-                    JOptionPane.showMessageDialog(panelAttributes, "armor will be 100 by default", "Notification", JOptionPane.INFORMATION_MESSAGE);
-                    armorHero[0] = 100;
+                            armorHero[0] = 100;
+                        }
+                    } catch (NumberFormatException a) {
+                        JOptionPane.showMessageDialog(
+                                panelAttributes,
+                                "You have not set all attributes",
+                                "WARNING",
+                                JOptionPane.WARNING_MESSAGE,
+                                warning);
+                    }
                 }
 
                Hero hero = CreateHeroClass(nameHero, race, healthHero, armorHero);
