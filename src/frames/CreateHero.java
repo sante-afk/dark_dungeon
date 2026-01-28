@@ -375,6 +375,9 @@ public class CreateHero {
                 human.setLevel(level);
                 human.setMinDamage(minDamage);
                 human.setMaxDamage(maxDamage);
+
+                Handling.handlingCreateHero(nameHero, healthHero, armorHero, raceHuman,
+                        level, exp, expEnd, minDamage, maxDamage);
                 return human;
             case 2:
                 String raceElf = "Elf";
@@ -387,6 +390,9 @@ public class CreateHero {
                 elf.setLevel(level);
                 elf.setMinDamage(minDamage);
                 elf.setMaxDamage(maxDamage);
+
+                Handling.handlingCreateHero(nameHero, healthHero, armorHero, raceElf,
+                        level, exp, expEnd, minDamage, maxDamage);
                 return elf;
             case 3:
                 String raceDwarf = "Dwarf";
@@ -399,6 +405,9 @@ public class CreateHero {
                 dwarf.setLevel(level);
                 dwarf.setMinDamage(minDamage);
                 dwarf.setMaxDamage(maxDamage);
+
+                Handling.handlingCreateHero(nameHero, healthHero, armorHero, raceDwarf,
+                        level, exp, expEnd, minDamage, maxDamage);
                 return dwarf;
             default:
                 return null;

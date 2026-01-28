@@ -5,6 +5,8 @@ import races.Hero;
 import frames.CreateHero;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Scanner;
@@ -22,6 +24,28 @@ public class Handling {
             return arrFiles.length - 1;
         }
         return 0;
+    }
+
+    public static void handlingCreateHero (
+            String[] nameHero,
+            int[] healthHero,
+            int[] armorHero,
+            String race,
+            int level,
+            double exp,
+            int expEnd,
+            int minDamage,
+            int maxDamage) {
+        File hero = new File("data/hero.txt");
+
+        try {
+            hero.createNewFile();
+            FileWriter write = new FileWriter(hero);
+            write.write(nameHero[0]);
+            write.write(healthHero[0]);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void handlingPath (Hero hero, Scanner scanner) {

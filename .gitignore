@@ -6,6 +6,7 @@ out/
 .idea/
 game.iml
 dark_dungeon.iml
+artifacts/game_jar.jar
 
 ### Eclipse ###
 .apt_generated
