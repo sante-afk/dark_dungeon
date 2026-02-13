@@ -13,7 +13,7 @@
 >Detailed statistics for characters  
 
 ## Requirements:
-Java JDK 11 or higher  
+Java JDK 17 or higher  
 Any IDE or terminal  
 
 ## Running the Game:
