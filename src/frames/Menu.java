@@ -1,4 +1,5 @@
 package frames;
+import enemies.Enemy;
 import handling.Handling;
 import printer.Printer;
 import races.Hero;
@@ -102,7 +103,6 @@ public class Menu {
 
                 JPanel createHero = CreateHero.createHero();
                 window.add(createHero);
-
             }
         });
 
@@ -143,7 +143,7 @@ public class Menu {
     }
 
     public static void menuHistory (Hero hero, Scanner scanner) {
-        Handling.handlingPath(hero, scanner);
+//        Handling.handlingPath(hero, enemy, chanceFight, choice);
     }
 
     public static void menuFight () {

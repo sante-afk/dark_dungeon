@@ -21,9 +21,8 @@ public class CreateHero {
     public static JPanel createHero () {
         JPanel panelName = new JPanel();
         panelName.setBackground(Color.BLACK);
-        panelName.setBounds(250,200,500,300);
+        panelName.setSize(new Dimension(1000, 750));
         panelName.setLayout(new BorderLayout());
-
 
 //      label
         JLabel labelName = new JLabel("Enter the name");
@@ -39,13 +38,18 @@ public class CreateHero {
         labelName.setHorizontalAlignment(SwingConstants.CENTER);
         panelName.add(labelName, BorderLayout.NORTH);
 
+        // container
+        JPanel container = new JPanel();
+        container.setBackground(Color.BLACK);
+        container.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panelName.add(container);
 
 //      container Input
         JPanel conInput = new JPanel();
         conInput.setBackground(Color.BLACK);
-        conInput.setLayout(new BorderLayout());
-        panelName.add(conInput, BorderLayout.CENTER);
-
+        conInput.setLayout(new BoxLayout(conInput, BoxLayout.Y_AXIS));
+        conInput.setAlignmentX(Component.CENTER_ALIGNMENT);
+        container.add(conInput, BorderLayout.NORTH);
 
 //      input
         JTextField inputName = new JTextField(15);
@@ -56,11 +60,12 @@ public class CreateHero {
         } catch (FontFormatException | IOException e) {
             throw new RuntimeException(e);
         }
-        inputName.setPreferredSize(new Dimension(0,40));
         inputName.setHorizontalAlignment(SwingConstants.CENTER);
         inputName.setBackground(Color.BLACK);
         inputName.setForeground(Color.WHITE);
-        conInput.add(inputName, BorderLayout.NORTH);
+        inputName.setPreferredSize(new Dimension(70, 40));
+        conInput.add(inputName);
+        conInput.add(Box.createVerticalStrut(20));
 
 
 //      OK
@@ -74,8 +79,9 @@ public class CreateHero {
             throw new RuntimeException(e);
         }
         bOK.setForeground(Color.black);
-        bOK.setPreferredSize(new Dimension(0, 50));
-        panelName.add(bOK, BorderLayout.SOUTH);
+        bOK.setPreferredSize(new Dimension(100, 20));
+        bOK.setAlignmentX(Component.CENTER_ALIGNMENT);
+        conInput.add(bOK);
         bOK.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -85,9 +91,10 @@ public class CreateHero {
                 if (inputName.getText().length() > 2) {
                     nameHero[0] = inputName.getText();
                     labelName.setVisible(false);
-                    conInput.setVisible(false);
                     inputName.setVisible(false);
                     bOK.setVisible(false);
+                    panelName.removeAll();
+
                     JPanel chooseRace = chooseRace(nameHero);
                     panelName.add(chooseRace);
                 } else {
@@ -108,16 +115,25 @@ public class CreateHero {
     public static JPanel chooseRace (String[] nameHero) {
         JPanel panelRace = new JPanel();
         panelRace.setBackground(Color.BLACK);
-        panelRace.setBounds(250,200,700,300);
+        panelRace.setSize(new Dimension(1000, 750));
+        panelRace.setLayout(new BorderLayout());
 
         JButton bHuman = new JButton(Printer.printHuman());
         JButton bElf = new JButton(Printer.printElf());
         JButton bDwarf = new JButton(Printer.printDwarf());
 
 
+        // container
+        JPanel container = new JPanel();
+        container.setBackground(Color.BLACK);
+        container.setLayout(new FlowLayout(FlowLayout.CENTER));
+        container.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelRace.add(container);
+
+
 //      label
         JLabel labelName = new JLabel("Choose a race");
-        labelName.setPreferredSize(new Dimension(500,200));
+        labelName.setPreferredSize(new Dimension(100,150));
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
                     new File("fonts/Cinzel-Black.ttf")).deriveFont(50f);
@@ -138,18 +154,19 @@ public class CreateHero {
             throw new RuntimeException(e);
         }
         bHuman.setForeground(Color.black);
-        bHuman.setPreferredSize(new Dimension(100, 40));
-        panelRace.add(bHuman, BorderLayout.SOUTH);
+        bHuman.setPreferredSize(new Dimension(100, 20));
+        container.add(bHuman);
         bHuman.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                labelName.setVisible(false);
-                bHuman.setVisible(false);
-                bElf.setVisible(false);
-                bDwarf.setVisible(false);
+            labelName.setVisible(false);
+            bHuman.setVisible(false);
+            bElf.setVisible(false);
+            bDwarf.setVisible(false);
+            panelRace.removeAll();
 
-                JPanel panelAttributes = chooseAttributes(nameHero, 1);
-                panelRace.add(panelAttributes);
+            JPanel panelAttributes = chooseAttributes(nameHero, 1);
+            panelRace.add(panelAttributes);
             }
         });
 
@@ -163,18 +180,19 @@ public class CreateHero {
             throw new RuntimeException(e);
         }
         bElf.setForeground(Color.black);
-        bElf.setPreferredSize(new Dimension(100, 40));
-        panelRace.add(bElf, BorderLayout.SOUTH);
+        bElf.setPreferredSize(new Dimension(100, 20));
+        container.add(bElf);
         bElf.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                labelName.setVisible(false);
-                bHuman.setVisible(false);
-                bElf.setVisible(false);
-                bDwarf.setVisible(false);
+            labelName.setVisible(false);
+            bHuman.setVisible(false);
+            bElf.setVisible(false);
+            bDwarf.setVisible(false);
+            panelRace.removeAll();
 
-                JPanel panelAttributes = chooseAttributes(nameHero, 2);
-                panelRace.add(panelAttributes);
+            JPanel panelAttributes = chooseAttributes(nameHero, 2);
+            panelRace.add(panelAttributes);
             }
         });
 
@@ -188,18 +206,19 @@ public class CreateHero {
             throw new RuntimeException(e);
         }
         bDwarf.setForeground(Color.black);
-        bDwarf.setPreferredSize(new Dimension(100, 40));
-        panelRace.add(bDwarf, BorderLayout.SOUTH);
+        bDwarf.setPreferredSize(new Dimension(100, 20));
+        container.add(bDwarf);
         bDwarf.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                labelName.setVisible(false);
-                bHuman.setVisible(false);
-                bElf.setVisible(false);
-                bDwarf.setVisible(false);
+            labelName.setVisible(false);
+            bHuman.setVisible(false);
+            bElf.setVisible(false);
+            bDwarf.setVisible(false);
+            panelRace.removeAll();
 
-                JPanel panelAttributes = chooseAttributes(nameHero, 3);
-                panelRace.add(panelAttributes);
+            JPanel panelAttributes = chooseAttributes(nameHero, 3);
+            panelRace.add(panelAttributes);
             }
         });
 
@@ -227,22 +246,30 @@ public class CreateHero {
         labelName.setHorizontalAlignment(SwingConstants.CENTER);
         panelAttributes.add(labelName, BorderLayout.NORTH);
 
-//      panelHP
-        JPanel westHP = new JPanel();
-        westHP.setBackground(Color.BLACK);
-        panelAttributes.add(westHP, BorderLayout.WEST);
-        westHP.setLayout(new BorderLayout());
+//      container
+        JPanel container = new JPanel();
+        container.setBackground(Color.BLACK);
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        container.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelAttributes.add(container, BorderLayout.CENTER);
 
 //      HP label
         JLabel hpLabel = new JLabel("HP");
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(24f);
+            hpLabel.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
         hpLabel.setHorizontalAlignment(SwingConstants.CENTER);
         hpLabel.setBackground(Color.BLACK);
         hpLabel.setForeground(Color.WHITE);
-        westHP.add(hpLabel, BorderLayout.NORTH);
+        hpLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        container.add(hpLabel);
 
 //      HP
         JTextField hp = new JTextField();
-        hp.setPreferredSize(new Dimension(200,30));
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
                     new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
@@ -251,35 +278,30 @@ public class CreateHero {
             throw new RuntimeException(e);
         }
         hp.setForeground(Color.WHITE);
-        hp.setHorizontalAlignment(SwingConstants.CENTER);
         hp.setBackground(Color.RED);
-        westHP.add(hp, BorderLayout.CENTER);
-
-//      panelOK
-        JPanel panelOK = new JPanel();
-        panelOK.setBackground(Color.BLACK);
-        panelOK.setPreferredSize(new Dimension(30,80));
-        panelAttributes.add(panelOK, BorderLayout.SOUTH);
-        panelOK.setLayout(new BorderLayout());
-
-
-//      panelArmor
-        JPanel eastArmor = new JPanel();
-        panelAttributes.add(eastArmor, BorderLayout.EAST);
-        eastArmor.setBackground(Color.BLACK);
-        eastArmor.setLayout(new BorderLayout());
+        hp.setMaximumSize(new Dimension(200, 40));
+        hp.setAlignmentX(Component.CENTER_ALIGNMENT);
+        hp.setHorizontalAlignment(SwingConstants.CENTER);
+        container.add(hp);
+        container.add(Box.createVerticalStrut(30));
 
 
 //      Armor label
         JLabel armorLabel = new JLabel("Armor");
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(24f);
+            armorLabel.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
         armorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         armorLabel.setForeground(Color.WHITE);
-        eastArmor.add(armorLabel, BorderLayout.NORTH);
-
+        armorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        container.add(armorLabel);
 
 //      Armor
         JTextField armor = new JTextField();
-        armor.setPreferredSize(new Dimension(200,30));
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
                     new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
@@ -290,7 +312,10 @@ public class CreateHero {
         armor.setHorizontalAlignment(SwingConstants.CENTER);
         armor.setForeground(Color.BLACK);
         armor.setBackground(Color.CYAN);
-        eastArmor.add(armor, BorderLayout.CENTER);
+        armor.setMaximumSize(new Dimension(200, 40));
+        armor.setAlignmentX(Component.CENTER_ALIGNMENT);
+        container.add(armor);
+        container.add(Box.createVerticalStrut(20));
 
         int[] armorHero = {0};
         int[] healthHero = {0};
@@ -306,14 +331,17 @@ public class CreateHero {
         }
         bOK.setHorizontalAlignment(SwingConstants.CENTER);
         bOK.setForeground(Color.BLACK);
-        panelOK.add(bOK, BorderLayout.SOUTH);
+        bOK.setAlignmentX(Component.CENTER_ALIGNMENT);
+        bOK.setPreferredSize(new Dimension(100, 20));
+        bOK.setMaximumSize(new Dimension(100, 20));
+        container.add(bOK);
         bOK.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ImageIcon notification = new ImageIcon(new ImageIcon("icons/notification-icon.png")
-                        .getImage().getScaledInstance(30,30, Image.SCALE_DEFAULT));
+                        .getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH));
                 ImageIcon warning = new ImageIcon(new ImageIcon("icons/warning-icon.png")
-                        .getImage().getScaledInstance(30,30, Image.SCALE_DEFAULT));
+                        .getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH));
 
                 if (healthHero[0] == 0 || armorHero[0] == 0) {
                     try {
@@ -347,7 +375,39 @@ public class CreateHero {
                     }
                 }
 
-               Hero hero = CreateHeroClass(nameHero, race, healthHero, armorHero);
+                Hero hero = CreateHeroClass(nameHero, race, healthHero, armorHero);
+
+                File fileHero = new File("data/hero.txt");
+
+                try {
+                    File dataDir = new File("data");
+                    if (!dataDir.exists()) {
+                        dataDir.mkdirs();
+                    }
+                    if (!fileHero.exists()) {
+                        fileHero.createNewFile();
+                    }
+                    if (fileHero.length() != 0) {
+                        labelName.setVisible(false);
+                        container.setVisible(false);
+                        armorLabel.setVisible(false);
+                        hp.setVisible(false);
+                        bOK.setVisible(false);
+                        panelAttributes.removeAll();
+
+
+                        JPanel gameFrame = Game.gameFrame(hero);
+                        panelAttributes.add(gameFrame);
+                    }
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(
+                        panelAttributes,
+                        "Error, file not found",
+                        "WARNING",
+                        JOptionPane.WARNING_MESSAGE,
+                        warning);
+                }
+
             }
         });
 

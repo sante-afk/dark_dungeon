@@ -1,29 +1,28 @@
 package events;
 
-import frames.Menu;
+import enemies.Enemy;
 import races.Hero;
 
+import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 import static events.Fight.Fight;
 
 public class Path {
 
-    private static final Random RANDOM = new Random();
 
-    public static void roll (Hero hero, Scanner scanner) {
-        boolean chanceFight = RANDOM.nextBoolean();
+
+    public static ArrayList<String> roll (Hero hero, Enemy enemy, boolean chanceFight, int[] choice, boolean autoFight) {
 
         if (chanceFight) {
-            Fight(hero, scanner);
-            if (hero.getHealth() > 0) {
-                Menu.menuHistory(hero, scanner);
-            }
-        } else if (hero.getHealth() > 0) {
-            Menu.menuHistory(hero, scanner);
+            ArrayList<String> fight = Fight(hero, enemy, choice, autoFight);
+//            if (hero.getHealth() > 0) {
+//                Menu.menuHistory(hero, scanner);
+//            }
+            return fight;
         }
 
+        return null;
     }
 
 
