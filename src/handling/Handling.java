@@ -1,4 +1,5 @@
 package handling;
+import enemies.Enemy;
 import events.Path;
 import printer.Printer;
 import races.Hero;
@@ -36,28 +37,35 @@ public class Handling {
             int expEnd,
             int minDamage,
             int maxDamage) {
-        File hero = new File("data/hero.txt");
-
         try {
+            File hero = new File("data/hero.txt");
             hero.createNewFile();
             FileWriter write = new FileWriter(hero);
-            write.write(nameHero[0]);
-            write.write(healthHero[0]);
+
+            write.write("Name: " + nameHero[0] + "\n");
+            write.write("Health: " + String.valueOf(healthHero[0]) + "\n");
+            write.write("Armor: " + String.valueOf(armorHero[0]) + "\n");
+            write.write("race: " + race + "\n");
+            write.write("level: " + String.valueOf(level) + "\n");
+            write.write("exp: " + String.valueOf(exp) + "\n");
+            write.write("expend: " + String.valueOf(expEnd) + "\n");
+            write.write("minDamage: " + String.valueOf(minDamage) + "\n");
+            write.write("maxDamage: " + String.valueOf(maxDamage) + "\n");
+            write.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void handlingPath (Hero hero, Scanner scanner) {
+    public static void handlingPath (Hero hero, Enemy enemy, boolean chanceFight, int[] choice) {
         boolean continuePath = true;
 
         while (continuePath) {
             Printer.printMenu();
             try {
-                int choice = Integer.parseInt(scanner.nextLine());
-                switch (choice) {
+                switch (choice[0]) {
                     case 1: {
-                        Path.roll(hero, scanner);
+//                        Path.roll(hero, enemy, chanceFight, choice[0]);
                         continuePath = false;
                         break;
                     }

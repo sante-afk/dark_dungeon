@@ -8,27 +8,21 @@ import races.Hero;
 import java.util.Scanner;
 
 public class Printer {
-
     public static String printLogo() {
         return "DARK DUNGEON";
     }
-
     public static String printStartGame() {
         return "Start the game";
     }
-
     public static String printMenuYes() {
         return "Yes";
     }
-
     public static String printMenuOK() {
         return "OK";
     }
-
     public static String printMenuNo() {
         return "No";
     }
-
     public static void printHero (Hero hero) {
         System.out.println(
                 "\n" + hero.getName() + " " + hero.getRace() +
@@ -38,7 +32,6 @@ public class Printer {
                         "\nArmor ( " + hero.getArmor() + " ⛊ ) \n");
 
     }
-
     public static void printLevel (Hero hero) {
         int paintBar = 10;
         int exp = (int)(hero.getExp() * 10);
@@ -60,7 +53,6 @@ public class Printer {
         System.out.println((int)(hero.getExp() * 1000) + " - " + (hero.getExpEnd()) * 100 + "\n");
         progressBar.setLength(0);
     }
-
     public static String printHistory (Hero hero) {
         return (
             "The darkness receded slowly, reluctantly, like thick molasses, and \n" +
@@ -74,14 +66,12 @@ public class Printer {
             "The air smelled of dust, dampness, and something ancient and forgotten, \n" +
             "like the scent of fear that had soaked into stone for millennia.\n");
     }
-
     public static void printMenu () {
         System.out.println("1. Continue on your way");
         System.out.println("2. View character");
         System.out.println("3. View level");
         System.out.println("4. To take a break");
     }
-
     public static void printEnemy (Enemy enemy) {
         System.out.println(
                 enemy.getRace() +
@@ -90,20 +80,15 @@ public class Printer {
                         "\nHealth ( " + enemy.getHealth() + " ♥ ) " +
                         "\nArmor ( " + enemy.getArmor() + " ⛊ ) \n");
     }
-
     public static void printNewLevel (double heroLvl) {
         System.out.println("★ New level " + (int)heroLvl + " (◡_◡) ᕤ ");
     }
-
-
     public static void printRelax (int healthPoint) {
         System.out.println("\nYou relaxed! Repaired: " + healthPoint + " HP " + " (｡◕‿‿◕｡) \n");
     }
-
     public static void printDontRelax () {
         System.out.println("\nYour character does not require recovery (︶︹︶)\n");
     }
-
     public static void printGameOwer(Scanner scanner) {
         System.out.println("† Game over!\n");
         boolean game = true;
@@ -127,24 +112,19 @@ public class Printer {
             }
         };
     }
-
     public static void printMenuFight () {
         System.out.println("1. Physical Attack ");
         System.out.println("2. Auto Attack ");
     }
-
     public static String printHuman () {
         return "Human";
     }
-
     public static String printElf () {
         return "Elf";
     }
-
     public static String printDwarf () {
         return "Dwarf";
     }
-
     public static void printErrorChoiceString () {
         System.out.println("\nError, there is no such choice");
     }

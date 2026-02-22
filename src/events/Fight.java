@@ -2,26 +2,26 @@ package events;
 
 import enemies.Enemy;
 import handling.Handling;
-import frames.Menu;
 import printer.Printer;
 import races.Hero;
 import replicas.Replica;
-import frames.CreateHero;
 
+import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Fight {
 
     private static final Random RANDOM = new Random();
 
-    public static void Fight (Hero hero, Scanner scanner) {
-        Enemy enemy = CreateHero.CreateEnemy(hero);
+    public static ArrayList<String> Fight (Hero hero, Enemy enemy, int[] choice, boolean autoFight) {
 
         boolean met = RANDOM.nextBoolean();
         boolean tour = RANDOM.nextBoolean();
 
-        System.out.println(Replica.replicaMet(enemy, met));
+        ArrayList<String> fight = new ArrayList<>();
+        
+        String replica = Replica.replicaMet(enemy, met);
+        fight.add(replica);
 
         if (enemy != null) {
             Printer.printEnemy(enemy);
@@ -29,31 +29,21 @@ public class Fight {
 
         while (hero.getHealth() > 0 && enemy.getHealth() > 0) {
             if (tour) {
-                boolean autoFight = false;
                 if (!autoFight) {
-                    int choice = 0;
-                    while (choice == 0) {
-                        try {
-                            System.out.println(Replica.replicaTour(tour));
-                            Menu.menuFight();
-                            choice = Integer.parseInt(scanner.nextLine());
-                        } catch (NumberFormatException e) {
-                            Printer.printErrorNoChoice();
-                        }
-                    }
-                    TourHero(scanner, hero, enemy, autoFight, choice);
+                    String[] tourHero = TourHero(hero, enemy, choice, autoFight);
                 }
                 tour = false;
             }
             if (!tour && enemy.getHealth() > 0) {
-                TourEnemy(scanner, hero, enemy);
+                String[] tourEnemy = TourEnemy(hero, enemy, choice, autoFight);
                 tour = true;
             }
         }
+        return fight;
     }
-    public static void TourHero (Scanner scanner, Hero hero, Enemy enemy, boolean autoFight, int choice) {
+    public static String[] TourHero (Hero hero, Enemy enemy, int[] choice, boolean autoFight) {
         try {
-            if (choice == 1 || autoFight) {
+            if (choice[0] == 1 || autoFight) {
                 boolean chanceInDefense = RANDOM.nextBoolean();
                 int heroDamage = hero.physDamage(hero.getMinDamage(), hero.getMaxDamage());
                 int enemyDefense = 0;
@@ -93,15 +83,16 @@ public class Fight {
                     System.out.println("EXP " + Math.round(receivedExp * 1000) + " received \n");
                 }
             }
-            if (choice == 2) {
-                AutoFight(scanner, hero, enemy);
+            if (choice[0] == 2) {
+                AutoFight(hero, enemy, choice);
             }
         } catch (NumberFormatException e) {
             Printer.printErrorChoiceString();
         }
+        return new String[0];
     }
 
-    public static void TourEnemy (Scanner scanner, Hero hero, Enemy enemy) {
+    public static String[] TourEnemy (Hero hero, Enemy enemy, int[] choice, boolean autoFight) {
         boolean chanceInDefense = RANDOM.nextBoolean();
         int heroDefense = 0;
         if (hero.getArmor() < 0) {
@@ -138,18 +129,20 @@ public class Fight {
             System.out.println(hero.getName() + " has ( " + hero.getHealth() + " ♥ )\n");
         }
         if (hero.getHealth() <= 0) {
-            Printer.printGameOwer(scanner);
+//            Printer.printGameOwer(scanner);
         }
+        return null;
     }
 
-    public static void AutoFight (Scanner scanner, Hero hero, Enemy enemy) {
+    public static void AutoFight (Hero hero, Enemy enemy, int[] choice) {
         while (hero.getHealth() > 0 && enemy.getHealth() > 0) {
             boolean autoFight = true;
+            choice = new int[]{1};
             if (hero.getHealth() > 0) {
-                TourHero(scanner, hero, enemy, autoFight, 1);
+                TourHero(hero, enemy, choice, autoFight);
             }
             if (enemy.getHealth() > 0) {
-                TourEnemy(scanner, hero, enemy);
+                TourEnemy(hero, enemy, choice, autoFight);
             }
         }
     }
