@@ -1,10 +1,13 @@
 package frames;
 
+import Icons.IconManager;
 import enemies.Enemy;
 import events.Path;
 import printer.Printer;
 import races.Hero;
+import replicas.Replica;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,51 +18,49 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-import static events.Fight.Fight;
+import static Icons.IconManager.*;
+import static events.Fight.*;
+import static handling.Handling.handlingHealing;
+import static handling.Handling.handlingPath;
 
 public class Game {
 
     private static final Random RANDOM = new Random();
+    private static Clip musicClip;
 
-    public static JPanel gameFrame(Hero hero) {
+    private static JButton btnContinue;
+    private static JButton btnSleep;
+    private static JButton btnAttack;
+    private static JButton btnAutoAttack;
+
+    private static Enemy enemy;
+    private static JLabel portraitEnemy;
+    private static JLabel nameEnemyLabel;
+    private static JLabel raceEnemyLabel;
+    private static JLabel healthEnemyLabel;
+    private static JLabel armorEnemyLabel;
+    private static JLabel levelEnemyLabel;
+    private static JPanel panelEnemy;
+
+    public static JPanel gameFrame(Hero hero) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         JPanel gameFrame = new JPanel();
+        gameFrame.setBackground(Color.BLACK);
         gameFrame.setLayout(new BorderLayout());
 
-        // Icons hero
-        ImageIcon iconHuman = new ImageIcon(new ImageIcon("icons/human.png")
-                .getImage().getScaledInstance(120, 140, Image.SCALE_SMOOTH));
-        ImageIcon iconElf = new ImageIcon(new ImageIcon("icons/elf.png")
-                .getImage().getScaledInstance(120, 140, Image.SCALE_SMOOTH));
-        ImageIcon iconDwarf = new ImageIcon(new ImageIcon("icons/dwarf.png")
-                .getImage().getScaledInstance(120, 140, Image.SCALE_SMOOTH));
 
-        // Icons enemy
-        ImageIcon iconBandit = new ImageIcon(new ImageIcon("icons/bandit.png")
-                .getImage().getScaledInstance(120, 140, Image.SCALE_SMOOTH));
-        ImageIcon iconCyclops = new ImageIcon(new ImageIcon("icons/cyclops.png")
-                .getImage().getScaledInstance(120, 140, Image.SCALE_SMOOTH));
-        ImageIcon iconRat = new ImageIcon(new ImageIcon("icons/rat.png")
-                .getImage().getScaledInstance(120, 140, Image.SCALE_SMOOTH));
-        ImageIcon iconOrc = new ImageIcon(new ImageIcon("icons/orc.png")
-                .getImage().getScaledInstance(120, 140, Image.SCALE_SMOOTH));
-        ImageIcon iconGoblin = new ImageIcon(new ImageIcon("icons/goblin.png")
-                .getImage().getScaledInstance(120, 140, Image.SCALE_SMOOTH));
-
-        ImageIcon iconElementalAir = new ImageIcon(new ImageIcon("icons/elementalAir.png")
-                .getImage().getScaledInstance(120, 140, Image.SCALE_SMOOTH));
-        ImageIcon iconElementalWater = new ImageIcon(new ImageIcon("icons/elementalWater.png")
-                .getImage().getScaledInstance(120, 140, Image.SCALE_SMOOTH));
-        ImageIcon iconElementalFire = new ImageIcon(new ImageIcon("icons/elementalFire.png")
-                .getImage().getScaledInstance(120, 140, Image.SCALE_SMOOTH));
-        ImageIcon iconElementalEarth = new ImageIcon(new ImageIcon("icons/elementalEarth.png")
-                .getImage().getScaledInstance(120, 140, Image.SCALE_SMOOTH));
-
-
-        // Other Icons
-        ImageIcon iconHp = new ImageIcon(new ImageIcon("icons/hp.png")
-                .getImage().getScaledInstance(33, 35, Image.SCALE_SMOOTH));
-        ImageIcon iconArmor = new ImageIcon(new ImageIcon("icons/armor.png")
-                .getImage().getScaledInstance(25, 26, Image.SCALE_SMOOTH));
+        // path music
+        stopMusic();
+        boolean randomPathMusic = RANDOM.nextBoolean();
+        String sound = randomPathMusic ? "sounds/mainPath.wav" : "sounds/path.wav";
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(sound).getAbsoluteFile());
+            musicClip = AudioSystem.getClip();
+            musicClip.open(audioStream);
+            musicClip.start();
+            musicClip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
 
         // battlePlace
         JPanel battlePlace = new JPanel();
@@ -74,13 +75,7 @@ public class Game {
         gameLog.setEditable(false);
         gameLog.setLineWrap(true);
         gameLog.setWrapStyleWord(true);
-        try {
-            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(20f);
-            gameLog.setFont(mainText);
-        } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
-        }
+        gameLog.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 20));
         gameLog.setForeground(Color.WHITE);
         gameLog.setBackground(Color.BLACK);
 
@@ -191,10 +186,10 @@ public class Game {
         gameFrame.add(panelMenu, BorderLayout.SOUTH);
 
 
-        JButton btnContinue = new JButton("Continue on your way");
-        JButton btnSleep = new JButton("To take a break");
-        JButton btnAttack = new JButton("Physical Attack");
-        JButton btnAutoAttack = new JButton("Auto Attack");
+        btnContinue = new JButton("Continue on your way");
+        btnSleep = new JButton("To take a break");
+        btnAttack = new JButton("Physical Attack");
+        btnAutoAttack = new JButton("Auto Attack");
         final int[] choice = {0};
 
         // Button attack
@@ -231,7 +226,7 @@ public class Game {
             }
         });
 
-        Enemy enemy = CreateHero.CreateEnemy(hero);
+        final Enemy[] enemy = {CreateHero.CreateEnemy(hero)};
 
         // Button To take a break
         try {
@@ -245,7 +240,7 @@ public class Game {
         panelMenu.add(btnSleep);
 
         // panelEnemy
-        JPanel panelEnemy = new JPanel();
+        panelEnemy = new JPanel ();
         panelEnemy.setBackground(Color.BLACK);
         panelEnemy.setLayout(new BoxLayout(panelEnemy, BoxLayout.Y_AXIS));
         panelEnemy.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -253,8 +248,8 @@ public class Game {
         gameFrame.add(panelEnemy, BorderLayout.WEST);
 
         // Portrait enemy
-        JLabel portraitEnemy = new JLabel();
-        String raceEnemy = enemy.getRace();
+        portraitEnemy = new JLabel();
+        String raceEnemy = enemy[0].getRace();
         if (raceEnemy.contains("Rat")) {
             portraitEnemy.setIcon(iconRat);
         } else if (raceEnemy.contains("Goblin")) {
@@ -276,7 +271,7 @@ public class Game {
         panelEnemy.add(Box.createVerticalStrut(30));
 
         // Name
-        JLabel nameEnemyLabel = new JLabel("Name: " + enemy.getName());
+        nameEnemyLabel = new JLabel("Name: " + enemy[0].getName());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
                     new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
@@ -290,7 +285,7 @@ public class Game {
         panelEnemy.add(nameEnemyLabel);
 
         // Race
-        JLabel raceEnemyLabel = new JLabel("Race: " + enemy.getRace());
+        raceEnemyLabel = new JLabel("Race: " + enemy[0].getRace());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
                     new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
@@ -304,7 +299,7 @@ public class Game {
         panelEnemy.add(raceEnemyLabel);
 
         // Health
-        JLabel healthEnemyLabel = new JLabel("Health: " + enemy.getHealth());
+        healthEnemyLabel = new JLabel("Health: " + enemy[0].getHealth());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
                     new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
@@ -319,7 +314,7 @@ public class Game {
         panelEnemy.add(healthEnemyLabel);
 
         // Armor
-        JLabel armorEnemyLabel = new JLabel("Armor: " + enemy.getArmor());
+        armorEnemyLabel = new JLabel("Armor: " + enemy[0].getArmor());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
                     new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
@@ -334,7 +329,7 @@ public class Game {
         panelEnemy.add(armorEnemyLabel);
 
         // Level
-        JLabel levelEnemyLabel = new JLabel("LvL: " + enemy.getLevel());
+        levelEnemyLabel = new JLabel("LvL: " + enemy[0].getLevel());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
                     new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
@@ -362,8 +357,15 @@ public class Game {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean chanceFight = RANDOM.nextBoolean();
+                enemy[0] = CreateHero.CreateEnemy(hero);
+                updateEnemyUI(enemy[0]);
 
                 if (chanceFight) {
+                    stopMusic();
+
+                    playFightMusic();
+
+
                     boolean autoFight = false;
                     gameLog.setText("");
 
@@ -380,8 +382,18 @@ public class Game {
                     armorEnemyLabel.setVisible(true);
                     levelEnemyLabel.setVisible(true);
 
+                    choice[0] = 1;
+                    Fight(hero, enemy[0], choice, false);
+                    healthHeroLabel.setText("HP: " + hero.getHealth());
+                    armorHeroLabel.setText("Armor: " + hero.getArmor());
+                    healthEnemyLabel.setText("HP: " + enemy[0].getHealth());
+                    armorEnemyLabel.setText("Armor: " + enemy[0].getArmor());
 
-                    ArrayList<String> replicas = Path.roll(hero, enemy, chanceFight, new int[]{choice[0]}, autoFight);
+                    boolean randomReplic = RANDOM.nextBoolean();
+                    String replica = Replica.replicaMet(enemy[0], randomReplic);
+                    gameLog.setText(replica);
+
+                    ArrayList<String> replicas = Path.roll(hero, enemy[0], chanceFight, choice, autoFight);
                     gameLog.setText(String.valueOf(replicas));
                 }
             }
@@ -389,10 +401,106 @@ public class Game {
         btnAttack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Fight(hero, enemy, choice, false);
+                if (enemy[0].getHealth() > 0) {
+                    if (hero.getHealth() <= 0 || enemy[0].getHealth() <= 0) {
+                        return;
+                    }
+
+                    ArrayList<String> roundLog = new ArrayList<>();
+                    choice[0] = 1;
+                    roundLog.addAll(TourHero(hero, enemy[0], choice, false));
+
+                    if (enemy[0].getHealth() > 0) {
+                        roundLog.addAll(TourEnemy(hero, enemy[0], choice, false));
+                    }
+
+                    gameLog.setText(String.join("\n", roundLog));
+                    healthHeroLabel.setText("HP: " + hero.getHealth());
+                    armorHeroLabel.setText("Armor: " + hero.getArmor());
+                    levelHeroLabel.setText("LVL: " + hero.getLevel());
+                    healthEnemyLabel.setText("HP: " + enemy[0].getHealth());
+                    armorEnemyLabel.setText("Armor: " + enemy[0].getArmor());
+
+                    if (enemy[0].getHealth() <= 0 || hero.getHealth() <= 0) {
+                        endBattle(hero, enemy[0]);
+                    }
+                }
+            }
+        });
+        btnSleep.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                choice[0] = 4;
+                String log = handlingPath(hero, enemy[0], false, choice);
+                gameLog.setText(String.join("\n", log));
+                healthHeroLabel.setText("HP: " + hero.getHealth());
             }
         });
 
         return gameFrame;
+    }
+
+
+    private static void updateEnemyUI(Enemy enemy) {
+        String raceEnemy = enemy.getRace();
+        portraitEnemy.setIcon(IconManager.getEnemyIcon(raceEnemy));
+        nameEnemyLabel.setText("Name: " + enemy.getName());
+        raceEnemyLabel.setText("Race: " + enemy.getRace());
+        healthEnemyLabel.setText("HP: " + enemy.getHealth());
+        armorEnemyLabel.setText("Armor: " + enemy.getArmor());
+        levelEnemyLabel.setText("LvL: " + enemy.getLevel());
+        panelEnemy.revalidate();
+        panelEnemy.repaint();
+    }
+
+    private static void stopMusic() {
+        if (musicClip != null && musicClip.isRunning()) {
+            musicClip.stop();
+            musicClip.close();
+        }
+    }
+
+    private static void endBattle(Hero hero, Enemy enemy) {
+        btnAttack.setVisible(false);
+        btnAutoAttack.setVisible(false);
+        panelEnemy.setVisible(false);
+        portraitEnemy.setVisible(false);
+        nameEnemyLabel.setVisible(false);
+        raceEnemyLabel.setVisible(false);
+        healthEnemyLabel.setVisible(false);
+        armorEnemyLabel.setVisible(false);
+        levelEnemyLabel.setVisible(false);
+
+        btnContinue.setVisible(true);
+        btnSleep.setVisible(true);
+
+        stopMusic();
+        playPathMusic();
+    }
+
+    private static void playFightMusic () {
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("sounds/fight.wav").getAbsoluteFile());
+            musicClip = AudioSystem.getClip();
+            musicClip.open(audioStream);
+            musicClip.start();
+            musicClip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException r) {
+            r.printStackTrace();
+        }
+    }
+
+    private static void playPathMusic () {
+        boolean randomPathMusic = RANDOM.nextBoolean();
+        String sound = randomPathMusic ? "sounds/mainPath.wav" : "sounds/path.wav";
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(sound).getAbsoluteFile());
+            musicClip = AudioSystem.getClip();
+            musicClip.open(audioStream);
+            musicClip.start();
+            musicClip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException s) {
+            s.printStackTrace();
+        }
     }
 }

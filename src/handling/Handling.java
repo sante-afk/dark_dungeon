@@ -1,18 +1,13 @@
 package handling;
 import enemies.Enemy;
-import events.Path;
 import printer.Printer;
 import races.Hero;
-import frames.CreateHero;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Random;
-import java.util.Scanner;
-
-import static printer.Printer.printStartGame;
 
 public class Handling {
 
@@ -57,7 +52,7 @@ public class Handling {
         }
     }
 
-    public static void handlingPath (Hero hero, Enemy enemy, boolean chanceFight, int[] choice) {
+    public static String handlingPath (Hero hero, Enemy enemy, boolean chanceFight, int[] choice) {
         boolean continuePath = true;
 
         while (continuePath) {
@@ -79,11 +74,11 @@ public class Handling {
                     }
                     case 4: {
                         if (hero.getHealth() >= 100) {
-                            Printer.printDontRelax();
+                            return (Printer.printDontRelax());
                         } else {
                             int healthPoint = handlingHealing(hero);
                             handlingArmorRegen(hero);
-                            Printer.printRelax(healthPoint);
+                            return (Printer.printRelax(healthPoint));
                         }
                     }
                 }
@@ -92,6 +87,7 @@ public class Handling {
             }
 
         }
+        return null;
     }
 
     public static double handlingExpReceived (Hero hero, int enemyLvl) {

@@ -5,6 +5,10 @@ import handling.Handling;
 import printer.Printer;
 import races.*;
 
+import javax.management.monitor.CounterMonitor;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,7 +22,7 @@ public class CreateHero {
 
     private static final Random RANDOM = new Random();
 
-    public static JPanel createHero () {
+    public static JPanel createHero (Clip clip) {
         JPanel panelName = new JPanel();
         panelName.setBackground(Color.BLACK);
         panelName.setSize(new Dimension(1000, 750));
@@ -95,7 +99,7 @@ public class CreateHero {
                     bOK.setVisible(false);
                     panelName.removeAll();
 
-                    JPanel chooseRace = chooseRace(nameHero);
+                    JPanel chooseRace = chooseRace(nameHero, clip);
                     panelName.add(chooseRace);
                 } else {
                     String errorName = Printer.printErrorName();
@@ -112,7 +116,7 @@ public class CreateHero {
         return panelName;
     }
 
-    public static JPanel chooseRace (String[] nameHero) {
+    public static JPanel chooseRace (String[] nameHero, Clip clip) {
         JPanel panelRace = new JPanel();
         panelRace.setBackground(Color.BLACK);
         panelRace.setSize(new Dimension(1000, 750));
@@ -165,7 +169,7 @@ public class CreateHero {
             bDwarf.setVisible(false);
             panelRace.removeAll();
 
-            JPanel panelAttributes = chooseAttributes(nameHero, 1);
+            JPanel panelAttributes = chooseAttributes(nameHero, 1, clip);
             panelRace.add(panelAttributes);
             }
         });
@@ -191,7 +195,7 @@ public class CreateHero {
             bDwarf.setVisible(false);
             panelRace.removeAll();
 
-            JPanel panelAttributes = chooseAttributes(nameHero, 2);
+            JPanel panelAttributes = chooseAttributes(nameHero, 2, clip);
             panelRace.add(panelAttributes);
             }
         });
@@ -217,7 +221,7 @@ public class CreateHero {
             bDwarf.setVisible(false);
             panelRace.removeAll();
 
-            JPanel panelAttributes = chooseAttributes(nameHero, 3);
+            JPanel panelAttributes = chooseAttributes(nameHero, 3, clip);
             panelRace.add(panelAttributes);
             }
         });
@@ -226,7 +230,7 @@ public class CreateHero {
         return panelRace;
     }
 
-    public static JPanel chooseAttributes (String[] nameHero, int race) {
+    public static JPanel chooseAttributes (String[] nameHero, int race, Clip clip) {
         JPanel panelAttributes = new JPanel();
         panelAttributes.setBackground(Color.BLACK);
         panelAttributes.setBounds(250,200,700,300);
@@ -342,7 +346,6 @@ public class CreateHero {
                         .getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH));
                 ImageIcon warning = new ImageIcon(new ImageIcon("icons/warning-icon.png")
                         .getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH));
-
                 if (healthHero[0] == 0 || armorHero[0] == 0) {
                     try {
                         healthHero[0] = Integer.parseInt(hp.getText());
@@ -395,7 +398,8 @@ public class CreateHero {
                         bOK.setVisible(false);
                         panelAttributes.removeAll();
 
-
+                        clip.stop();
+                        clip.close();
                         JPanel gameFrame = Game.gameFrame(hero);
                         panelAttributes.add(gameFrame);
                     }
@@ -406,6 +410,10 @@ public class CreateHero {
                         "WARNING",
                         JOptionPane.WARNING_MESSAGE,
                         warning);
+                } catch (UnsupportedAudioFileException ex) {
+                    throw new RuntimeException(ex);
+                } catch (LineUnavailableException ex) {
+                    throw new RuntimeException(ex);
                 }
 
             }

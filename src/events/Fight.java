@@ -15,20 +15,13 @@ public class Fight {
 
     public static ArrayList<String> Fight (Hero hero, Enemy enemy, int[] choice, boolean autoFight) {
 
-        boolean met = RANDOM.nextBoolean();
         boolean tour = RANDOM.nextBoolean();
 
         ArrayList<String> fight = new ArrayList<>();
-        
-        String replica = Replica.replicaMet(enemy, met);
-        fight.add(replica);
-
-        if (enemy != null) {
-            Printer.printEnemy(enemy);
-        }
 
         if (tour) {
             if (!autoFight) {
+                choice[0] = 1;
                 ArrayList<String> tourHero = TourHero(hero, enemy, choice, autoFight);
                 fight.addAll(tourHero);
             }
@@ -149,7 +142,6 @@ public class Fight {
                     if (hero.getHealth() <= 0) {
                         tourEnemy.add("† Game over!");
                         return tourEnemy;
-//
                     }
                     return tourEnemy;
                 } else {
@@ -161,7 +153,6 @@ public class Fight {
                     if (hero.getHealth() <= 0) {
                         tourEnemy.add("† Game over!");
                         return tourEnemy;
-//
                     }
                     return tourEnemy;
                 }
@@ -174,7 +165,6 @@ public class Fight {
             if (hero.getHealth() <= 0) {
                 tourEnemy.add("† Game over!");
                 return tourEnemy;
-//
             }
             return tourEnemy;
         }
