@@ -8,10 +8,14 @@ import races.Hero;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+
+import static events.Fight.Fight;
 
 public class Game {
 
@@ -354,10 +358,7 @@ public class Game {
         panelMenu.add(btnContinue);
 
 
-
-
-
-        btnContinue.addActionListener(new AbstractAction() {
+        btnContinue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean chanceFight = RANDOM.nextBoolean();
@@ -380,11 +381,15 @@ public class Game {
                     levelEnemyLabel.setVisible(true);
 
 
-                    String[] replicas = Path.roll(hero, enemy, chanceFight, new int[]{choice[0]}, autoFight);
-                    gameLog.setText(Arrays.toString(replicas));
+                    ArrayList<String> replicas = Path.roll(hero, enemy, chanceFight, new int[]{choice[0]}, autoFight);
+                    gameLog.setText(String.valueOf(replicas));
                 }
-
-
+            }
+        });
+        btnAttack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Fight(hero, enemy, choice, false);
             }
         });
 

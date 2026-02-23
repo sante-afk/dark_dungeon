@@ -89,28 +89,8 @@ public class Printer {
     public static void printDontRelax () {
         System.out.println("\nYour character does not require recovery (︶︹︶)\n");
     }
-    public static void printGameOwer(Scanner scanner) {
-        System.out.println("† Game over!\n");
-        boolean game = true;
-
-        while (game) {
-            try {
-                System.out.print("Start new game (Yes/No) ?: ");
-                String chose = scanner.nextLine();
-
-                if (chose.equals("Yes") || chose.isEmpty()) {
-//                    Hero hero = Handling.handlingStartGame(scanner);
-//                    Menu.menuBegin(hero, scanner);
-                    game = false;
-                }
-                if (chose.equals("No")) {
-                    System.out.println("bye bye ( ╥﹏╥) ノシ");
-                    break;
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("\nError, there is no such choice");
-            }
-        };
+    public static void printGameOwer() {
+        System.out.println("† Game over!");
     }
     public static void printMenuFight () {
         System.out.println("1. Physical Attack ");
