@@ -4,6 +4,7 @@ import handling.Handling;
 import printer.Printer;
 import races.Hero;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,7 +16,7 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public static void menuFrame () {
+    public static void menuFrame () throws LineUnavailableException, IOException, UnsupportedAudioFileException {
         JPanel panelLogo = new JPanel();
         panelLogo.setBackground(Color.BLACK);
         panelLogo.setLayout(new BorderLayout());
@@ -64,6 +65,13 @@ public class Menu {
         logo.setHorizontalAlignment(JLabel.CENTER);
         panelLogo.add(logo);
 
+//      main music menu
+        String mainTheme = "sounds/mainTheme.wav";
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(mainTheme).getAbsoluteFile());
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+        clip.start();
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
 
 //      print start game
         JLabel printStartGame = new JLabel(Printer.printStartGame());
@@ -101,7 +109,7 @@ public class Menu {
                 panelMenuNo.setVisible(false);
                 panelMenuYes.setVisible(false);
 
-                JPanel createHero = CreateHero.createHero();
+                JPanel createHero = CreateHero.createHero(clip);
                 window.add(createHero);
             }
         });

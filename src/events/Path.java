@@ -16,9 +16,6 @@ public class Path {
 
         if (chanceFight) {
             ArrayList<String> fight = Fight(hero, enemy, choice, autoFight);
-//            if (hero.getHealth() > 0) {
-//                Menu.menuHistory(hero, scanner);
-//            }
             return fight;
         }
 

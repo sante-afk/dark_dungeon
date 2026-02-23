@@ -1,11 +1,7 @@
 package printer;
 
 import enemies.Enemy;
-import handling.Handling;
-import frames.Menu;
 import races.Hero;
-
-import java.util.Scanner;
 
 public class Printer {
     public static String printLogo() {
@@ -83,11 +79,11 @@ public class Printer {
     public static void printNewLevel (double heroLvl) {
         System.out.println("★ New level " + (int)heroLvl + " (◡_◡) ᕤ ");
     }
-    public static void printRelax (int healthPoint) {
-        System.out.println("\nYou relaxed! Repaired: " + healthPoint + " HP " + " (｡◕‿‿◕｡) \n");
+    public static String printRelax (int healthPoint) {
+        return "\nYou relaxed! Repaired: " + healthPoint + " HP " + " (｡◕‿‿◕｡) \n";
     }
-    public static void printDontRelax () {
-        System.out.println("\nYour character does not require recovery (︶︹︶)\n");
+    public static String printDontRelax () {
+        return "\nYour character does not require recovery (︶︹︶)\n";
     }
     public static void printGameOwer() {
         System.out.println("† Game over!");
