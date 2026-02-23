@@ -27,23 +27,28 @@ public class Fight {
             Printer.printEnemy(enemy);
         }
 
-        while (hero.getHealth() > 0 && enemy.getHealth() > 0) {
-            if (tour) {
-                if (!autoFight) {
-                    String[] tourHero = TourHero(hero, enemy, choice, autoFight);
-                }
-                tour = false;
+        if (tour) {
+            if (!autoFight) {
+                ArrayList<String> tourHero = TourHero(hero, enemy, choice, autoFight);
+                fight.addAll(tourHero);
             }
-            if (!tour && enemy.getHealth() > 0) {
-                String[] tourEnemy = TourEnemy(hero, enemy, choice, autoFight);
-                tour = true;
-            }
+            tour = false;
         }
+
+        if (!tour && enemy.getHealth() > 0) {
+            ArrayList<String> tourEnemy = TourEnemy(hero, enemy, choice, autoFight);
+            fight.addAll(tourEnemy);
+            tour = true;
+        }
+
         return fight;
     }
-    public static String[] TourHero (Hero hero, Enemy enemy, int[] choice, boolean autoFight) {
+    public static ArrayList<String> TourHero (Hero hero, Enemy enemy, int[] choice, boolean autoFight) {
+        ArrayList<String> tourHero = new ArrayList<>();
+
         try {
             if (choice[0] == 1 || autoFight) {
+
                 boolean chanceInDefense = RANDOM.nextBoolean();
                 int heroDamage = hero.physDamage(hero.getMinDamage(), hero.getMaxDamage());
                 int enemyDefense = 0;
@@ -55,45 +60,69 @@ public class Fight {
                 if (chanceInDefense) {
                     if (enemyDefense >= enemy.getHealth() && enemy.getHealth() != 0 && enemy.getArmor() != 0) {
                         enemy.setArmor(enemyDefense - heroDamage);
-                        System.out.println("⛊ The monster defended itself ⛊");
+                        ArrayList<String> monsterDegended = new ArrayList<>();
+                        monsterDegended.add("⛊ The monster defended itself ⛊");
+                        return monsterDegended;
                     } else {
                         int armoryChanceDefence = enemy.getHealth() - enemyDefense;
                         int chanceInDefenseHalf = RANDOM.nextInt(0, enemy.getHealth() + 1);
                         if (chanceInDefenseHalf < armoryChanceDefence) {
                             double halfDamage = (double)heroDamage / 2;
                             enemy.setHealth(enemy.getHealth() - (int)halfDamage);
-                            System.out.println("The monster partially defended itself ⛊");
-                            System.out.println("\uD83D\uDDE1 You deal " + (int)halfDamage + " damage!");
-                            System.out.println(enemy.getName() + " has ( " + enemy.getHealth() + " ♥ " + enemy.getArmor() + " ⛊ " + ") " + "\n");
+                            tourHero.add("The monster partially defended itself ⛊" +
+                                    "\n" + "\uD83D\uDDE1 You deal " + (int)halfDamage + " damage!" +
+                                    "\n" + enemy.getName() + " has ( " + enemy.getHealth() + " ♥ " + enemy.getArmor() + " ⛊ " + ") " + "\n");
+                            if (enemy.getHealth() <= 0) {
+                                tourHero.add("☠ " + enemy.getName() + " defeated!");
+                                int enemyLvl = enemy.getLevel();
+                                double receivedExp = Handling.handlingExpReceived(hero, enemyLvl);
+                                tourHero.add("EXP " + Math.round(receivedExp * 1000) + " received \n");
+                                return tourHero;
+                            }
+                            return tourHero;
                         } else {
                             enemy.setHealth(enemy.getHealth() - heroDamage);
-                            System.out.println("\uD83D\uDDE1 You deal " + heroDamage + " damage!");
-                            System.out.println(enemy.getName() + " has ( " + enemy.getHealth() + " ♥ )\n");
+                            tourHero.add(
+                                    "\uD83D\uDDE1 You deal " + heroDamage + " damage!" +
+                                    "\n" + enemy.getName() + " has ( " + enemy.getHealth() + " ♥ )\n");
+                            if (enemy.getHealth() <= 0) {
+                                tourHero.add("☠ " + enemy.getName() + " defeated!");
+                                int enemyLvl = enemy.getLevel();
+                                double receivedExp = Handling.handlingExpReceived(hero, enemyLvl);
+                                tourHero.add("EXP " + Math.round(receivedExp * 1000) + " received \n");
+                                return tourHero;
+                            }
+                            return tourHero;
                         }
                     }
                 } else {
                     enemy.setHealth(enemy.getHealth() - heroDamage);
-                    System.out.println("\uD83D\uDDE1 You deal " + heroDamage + " damage!");
-                    System.out.println(enemy.getName() + " has ( " + enemy.getHealth() + " ♥ )\n");
+                    tourHero.add(
+                            "\uD83D\uDDE1 You deal " + heroDamage + " damage!" +
+                                    "\n" + enemy.getName() + " has ( " + enemy.getHealth() + " ♥ )\n");
+                    if (enemy.getHealth() <= 0) {
+                        tourHero.add("☠ " + enemy.getName() + " defeated!");
+                        int enemyLvl = enemy.getLevel();
+                        double receivedExp = Handling.handlingExpReceived(hero, enemyLvl);
+                        tourHero.add("EXP " + Math.round(receivedExp * 1000) + " received \n");
+                        return tourHero;
+                    }
+                    return tourHero;
                 }
-                if (enemy.getHealth() <= 0) {
-                    System.out.println("☠ " + enemy.getName() + " defeated!");
-                    int enemyLvl = enemy.getLevel();
-                    double receivedExp = Handling.handlingExpReceived(hero, enemyLvl);
-                    System.out.println("EXP " + Math.round(receivedExp * 1000) + " received \n");
-                }
+
             }
             if (choice[0] == 2) {
-                AutoFight(hero, enemy, choice);
+//                AutoFight(hero, enemy, choice);
             }
         } catch (NumberFormatException e) {
             Printer.printErrorChoiceString();
         }
-        return new String[0];
+        return tourHero;
     }
 
-    public static String[] TourEnemy (Hero hero, Enemy enemy, int[] choice, boolean autoFight) {
+    public static ArrayList<String> TourEnemy (Hero hero, Enemy enemy, int[] choice, boolean autoFight) {
         boolean chanceInDefense = RANDOM.nextBoolean();
+        ArrayList<String> tourEnemy = new ArrayList<>();
         int heroDefense = 0;
         if (hero.getArmor() < 0) {
             heroDefense = 0;
@@ -105,46 +134,63 @@ public class Fight {
             if (heroDefense >= hero.getHealth() && hero.getHealth() != 0 && hero.getArmor() !=0 ) {
                 int heroArmor = hero.getArmor() - enemyDamage;
                 hero.setArmor(heroArmor, false);
-                System.out.println("⛊ You were able to defend yourself ⛊");
+                tourEnemy.add("⛊ You were able to defend yourself ⛊");
+                return tourEnemy;
             } else {
                 int armoryChanceDefence = hero.getHealth() - heroDefense;
                 int chanceInDefenseHalf = RANDOM.nextInt(0, hero.getHealth() + 1);
                 if (chanceInDefenseHalf < armoryChanceDefence) {
                     double halfDamage = (double)enemyDamage / 2;
                     hero.setHealth((hero.getHealth() - (int)halfDamage), false);
-                    System.out.println("You were able to partially defend yourself ⛊");
-                    System.out.println("\uD83D\uDDE1 Enemy deal " + (int)halfDamage + " damage!");
-                    System.out.println(hero.getName() + " has ( " + hero.getHealth() + " ♥ " + hero.getArmor() + " ⛊ " + ") " + "\n");
+                    tourEnemy.add(
+                            "You were able to partially defend yourself ⛊" +
+                            "\n" + "\uD83D\uDDE1 Enemy deal " + (int)halfDamage + " damage!" +
+                            "\n" + hero.getName() + " has ( " + hero.getHealth() + " ♥ " + hero.getArmor() + " ⛊ " + ") " + "\n");
+                    if (hero.getHealth() <= 0) {
+                        tourEnemy.add("† Game over!");
+                        return tourEnemy;
+//
+                    }
+                    return tourEnemy;
                 } else {
                     int damageDeduction = hero.getHealth() - enemyDamage;
                     hero.setHealth(damageDeduction, false);
-                    System.out.println("\uD83D\uDDE1 Enemy deal " + enemyDamage + " damage!");
-                    System.out.println(hero.getName() + " has ( " + hero.getHealth() + " ♥ )\n");
+                    tourEnemy.add(
+                            "\uD83D\uDDE1 Enemy deal " + enemyDamage + " damage!" +
+                            "\n" + hero.getName() + " has ( " + hero.getHealth() + " ♥ )\n");
+                    if (hero.getHealth() <= 0) {
+                        tourEnemy.add("† Game over!");
+                        return tourEnemy;
+//
+                    }
+                    return tourEnemy;
                 }
             }
         } else {
             int damageDeduction = hero.getHealth() - enemyDamage;
             hero.setHealth(damageDeduction, false);
-            System.out.println("\uD83D\uDDE1 Enemy deal " + enemyDamage + " damage!");
-            System.out.println(hero.getName() + " has ( " + hero.getHealth() + " ♥ )\n");
+            tourEnemy.add("\uD83D\uDDE1 Enemy deal " + enemyDamage + " damage!" +
+                    "\n" + hero.getName() + " has ( " + hero.getHealth() + " ♥ )\n");
+            if (hero.getHealth() <= 0) {
+                tourEnemy.add("† Game over!");
+                return tourEnemy;
+//
+            }
+            return tourEnemy;
         }
-        if (hero.getHealth() <= 0) {
-//            Printer.printGameOwer(scanner);
-        }
-        return null;
     }
 
-    public static void AutoFight (Hero hero, Enemy enemy, int[] choice) {
-        while (hero.getHealth() > 0 && enemy.getHealth() > 0) {
-            boolean autoFight = true;
-            choice = new int[]{1};
-            if (hero.getHealth() > 0) {
-                TourHero(hero, enemy, choice, autoFight);
-            }
-            if (enemy.getHealth() > 0) {
-                TourEnemy(hero, enemy, choice, autoFight);
-            }
-        }
-    }
+//    public static void AutoFight (Hero hero, Enemy enemy, int[] choice) {
+//        while (hero.getHealth() > 0 && enemy.getHealth() > 0) {
+//            boolean autoFight = true;
+//            choice = new int[]{1};
+//            if (hero.getHealth() > 0) {
+//                TourHero(hero, enemy, choice, autoFight);
+//            }
+//            if (enemy.getHealth() > 0) {
+//                TourEnemy(hero, enemy, choice, autoFight);
+//            }
+//        }
+//    }
 
 }
