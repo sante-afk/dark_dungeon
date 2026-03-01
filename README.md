@@ -15,21 +15,3 @@
 ## Requirements:
 Java JDK 17 or higher  
 Any IDE or terminal  
-
-## Running the Game:
-```bash
-# Clone the repository
-git clone https://github.com/sante-afk/dark_dungeon
-
-# Go to src
-cd src
-
-# Run
-java .\Main.java
-```
-
-## Gameplay
-Launch the application `java .\src\Main.java`  
-Enter your hero's name  
-Choose a race (Human, Elf, Dwarf)  
-Begin battles!  
