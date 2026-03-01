@@ -5,6 +5,7 @@ out/
 .kotlin
 .idea/
 game.iml
+conf.xml
 dark_dungeon.iml
 artifacts/game_jar.jar
 

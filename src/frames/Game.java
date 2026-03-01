@@ -1,6 +1,5 @@
 package frames;
 
-import Icons.IconManager;
 import enemies.Enemy;
 import events.Path;
 import printer.Printer;
@@ -12,15 +11,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
-import static Icons.IconManager.*;
+import static icons.IconManager.*;
 import static events.Fight.*;
-import static handling.Handling.handlingHealing;
 import static handling.Handling.handlingPath;
 
 public class Game {
@@ -42,18 +39,20 @@ public class Game {
     private static JLabel levelEnemyLabel;
     private static JPanel panelEnemy;
 
-    public static JPanel gameFrame(Hero hero) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    public static JPanel gameFrame(Hero hero) {
         JPanel gameFrame = new JPanel();
         gameFrame.setBackground(Color.BLACK);
         gameFrame.setLayout(new BorderLayout());
 
 
+
         // path music
         stopMusic();
         boolean randomPathMusic = RANDOM.nextBoolean();
-        String sound = randomPathMusic ? "sounds/mainPath.wav" : "sounds/path.wav";
+        String sound = randomPathMusic ? "mainPath.wav" : "path.wav";
         try {
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(sound).getAbsoluteFile());
+            URL soundUrl = Menu.class.getResource("/sounds/" + sound);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundUrl);
             musicClip = AudioSystem.getClip();
             musicClip.open(audioStream);
             musicClip.start();
@@ -115,10 +114,10 @@ public class Game {
         JLabel nameHeroLabel = new JLabel("Name: " + hero.getName());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
             nameHeroLabel.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         nameHeroLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         nameHeroLabel.setForeground(Color.WHITE);
@@ -128,10 +127,10 @@ public class Game {
         JLabel raceHeroLabel = new JLabel("Race: " + hero.getRace());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
             raceHeroLabel.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         raceHeroLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         raceHeroLabel.setForeground(Color.WHITE);
@@ -141,10 +140,10 @@ public class Game {
         JLabel healthHeroLabel = new JLabel("Health: " + hero.getHealth());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
             healthHeroLabel.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         healthHeroLabel.setIcon(iconHp);
         healthHeroLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -155,10 +154,10 @@ public class Game {
         JLabel armorHeroLabel = new JLabel("Armor: " + hero.getArmor());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
             armorHeroLabel.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         armorHeroLabel.setIcon(iconArmor);
         armorHeroLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -169,10 +168,10 @@ public class Game {
         JLabel levelHeroLabel = new JLabel("LvL: " + hero.getLevel());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
             levelHeroLabel.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         levelHeroLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         levelHeroLabel.setForeground(Color.WHITE);
@@ -195,10 +194,10 @@ public class Game {
         // Button attack
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             btnAttack.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         btnAttack.setVisible(false);
         panelMenu.add(btnAttack);
@@ -212,10 +211,10 @@ public class Game {
         // Button auto attack
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             btnAutoAttack.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         btnAutoAttack.setVisible(false);
         panelMenu.add(btnAutoAttack);
@@ -231,10 +230,10 @@ public class Game {
         // Button To take a break
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             btnSleep.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         btnSleep.setHorizontalAlignment(SwingConstants.CENTER);
         panelMenu.add(btnSleep);
@@ -274,10 +273,10 @@ public class Game {
         nameEnemyLabel = new JLabel("Name: " + enemy[0].getName());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
             nameEnemyLabel.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         nameEnemyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         nameEnemyLabel.setForeground(Color.WHITE);
@@ -288,10 +287,10 @@ public class Game {
         raceEnemyLabel = new JLabel("Race: " + enemy[0].getRace());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
             raceEnemyLabel.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         raceEnemyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         raceEnemyLabel.setForeground(Color.WHITE);
@@ -302,10 +301,10 @@ public class Game {
         healthEnemyLabel = new JLabel("Health: " + enemy[0].getHealth());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
             healthEnemyLabel.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         healthEnemyLabel.setIcon(iconHp);
         healthEnemyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -317,10 +316,10 @@ public class Game {
         armorEnemyLabel = new JLabel("Armor: " + enemy[0].getArmor());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
             armorEnemyLabel.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         armorEnemyLabel.setIcon(iconArmor);
         armorEnemyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -332,10 +331,10 @@ public class Game {
         levelEnemyLabel = new JLabel("LvL: " + enemy[0].getLevel());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(18f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
             levelEnemyLabel.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         levelEnemyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         levelEnemyLabel.setForeground(Color.WHITE);
@@ -345,10 +344,10 @@ public class Game {
         // Button Continue
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             btnContinue.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         panelMenu.add(btnContinue);
 
@@ -443,7 +442,7 @@ public class Game {
 
     private static void updateEnemyUI(Enemy enemy) {
         String raceEnemy = enemy.getRace();
-        portraitEnemy.setIcon(IconManager.getEnemyIcon(raceEnemy));
+        portraitEnemy.setIcon(getEnemyIcon(raceEnemy));
         nameEnemyLabel.setText("Name: " + enemy.getName());
         raceEnemyLabel.setText("Race: " + enemy.getRace());
         healthEnemyLabel.setText("HP: " + enemy.getHealth());
@@ -480,7 +479,8 @@ public class Game {
 
     private static void playFightMusic () {
         try {
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("sounds/fight.wav").getAbsoluteFile());
+            URL soundUrl = Menu.class.getResource("/sounds/fight.wav");
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundUrl);
             musicClip = AudioSystem.getClip();
             musicClip.open(audioStream);
             musicClip.start();
@@ -492,9 +492,10 @@ public class Game {
 
     private static void playPathMusic () {
         boolean randomPathMusic = RANDOM.nextBoolean();
-        String sound = randomPathMusic ? "sounds/mainPath.wav" : "sounds/path.wav";
+        String sound = randomPathMusic ? "mainPath.wav" : "path.wav";
         try {
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(sound).getAbsoluteFile());
+            URL soundUrl = Menu.class.getResource("/sounds/" + sound);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundUrl);
             musicClip = AudioSystem.getClip();
             musicClip.open(audioStream);
             musicClip.start();

@@ -6,8 +6,12 @@ import java.io.IOException;
 
 public class Main {
 
-    public static void main () throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        Menu.menuFrame();
+    public static void main (String[] args) {
+        try {
+            Menu.menuFrame();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

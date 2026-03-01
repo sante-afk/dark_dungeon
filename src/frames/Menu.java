@@ -1,6 +1,4 @@
 package frames;
-import enemies.Enemy;
-import handling.Handling;
 import printer.Printer;
 import races.Hero;
 
@@ -10,8 +8,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Scanner;
 
 public class Menu {
@@ -39,7 +39,7 @@ public class Menu {
         JFrame window = new JFrame();
         window.setLayout(null);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ImageIcon imageLogo = new ImageIcon("icons/dd_icon.png");
+        ImageIcon imageLogo = new ImageIcon(Menu.class.getResource("/icons/dd_icon.png"));
         window.getContentPane().setBackground(Color.BLACK);
         window.setTitle(Printer.printLogo());
         window.setSize(1000, 750);
@@ -55,10 +55,10 @@ public class Menu {
         logo.setSize( 500, 250);
         try {
             Font logoFont = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Black.ttf")).deriveFont(50f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Black.ttf")).deriveFont(50f);
             logo.setFont(logoFont);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         logo.setForeground(Color.WHITE);
         logo.setVerticalAlignment(JLabel.CENTER);
@@ -66,10 +66,11 @@ public class Menu {
         panelLogo.add(logo);
 
 //      main music menu
-        String mainTheme = "sounds/mainTheme.wav";
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(mainTheme).getAbsoluteFile());
+        InputStream mainTheme = Menu.class.getResourceAsStream("/sounds/mainTheme.wav");
+        AudioInputStream audioStream =
+                AudioSystem.getAudioInputStream(new BufferedInputStream(mainTheme));
         Clip clip = AudioSystem.getClip();
-        clip.open(audioInputStream);
+        clip.open(audioStream);
         clip.start();
         clip.loop(Clip.LOOP_CONTINUOUSLY);
 
@@ -78,10 +79,10 @@ public class Menu {
         printStartGame.setSize(200,50);
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             printStartGame.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         printStartGame.setForeground(Color.WHITE);
         printStartGame.setVerticalAlignment(JLabel.BOTTOM);
@@ -93,10 +94,10 @@ public class Menu {
         JButton yes = new JButton(Printer.printMenuYes());
         try {
             Font fontInput = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             yes.setFont(fontInput);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         yes.setForeground(Color.BLACK);
         yes.setHorizontalAlignment(JButton.CENTER);
@@ -119,10 +120,10 @@ public class Menu {
         JButton no = new JButton(Printer.printMenuNo());
         try {
             Font fontInput = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             no.setFont(fontInput);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         no.setForeground(Color.BLACK);
         no.setHorizontalAlignment(JButton.CENTER);
