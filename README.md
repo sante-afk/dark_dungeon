@@ -11,7 +11,3 @@
 >Randomized encounters and first turn  
 >Visual interface 
 >Detailed statistics for characters  
-
-## Requirements:
-Java JDK 17 or higher  
-Any IDE or terminal  
