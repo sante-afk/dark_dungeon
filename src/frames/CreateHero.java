@@ -33,10 +33,10 @@ public class CreateHero {
         labelName.setPreferredSize(new Dimension(100,150));
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Black.ttf")).deriveFont(50f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Black.ttf")).deriveFont(50f);
             labelName.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         labelName.setForeground(Color.WHITE);
         labelName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -59,10 +59,10 @@ public class CreateHero {
         JTextField inputName = new JTextField(15);
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(30f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(30f);
             inputName.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         inputName.setHorizontalAlignment(SwingConstants.CENTER);
         inputName.setBackground(Color.BLACK);
@@ -77,10 +77,10 @@ public class CreateHero {
         JButton bOK = new JButton(Printer.printMenuOK());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             bOK.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         bOK.setForeground(Color.black);
         bOK.setPreferredSize(new Dimension(100, 20));
@@ -89,8 +89,11 @@ public class CreateHero {
         bOK.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ImageIcon warning = new ImageIcon(new ImageIcon("icons/warning-icon.png")
-                        .getImage().getScaledInstance(30,30, Image.SCALE_DEFAULT));
+                ImageIcon warning = new ImageIcon(
+                        new ImageIcon(Menu.class.getResource("/icons/warning-icon.png"))
+                                .getImage()
+                                .getScaledInstance(30, 30, Image.SCALE_SMOOTH)
+                );
 
                 if (inputName.getText().length() > 2) {
                     nameHero[0] = inputName.getText();
@@ -140,10 +143,10 @@ public class CreateHero {
         labelName.setPreferredSize(new Dimension(100,150));
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Black.ttf")).deriveFont(50f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Black.ttf")).deriveFont(50f);
             labelName.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         labelName.setForeground(Color.WHITE);
         labelName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -152,10 +155,10 @@ public class CreateHero {
 //      human
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             bHuman.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         bHuman.setForeground(Color.black);
         bHuman.setPreferredSize(new Dimension(100, 20));
@@ -178,10 +181,10 @@ public class CreateHero {
 //      Elf
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             bElf.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         bElf.setForeground(Color.black);
         bElf.setPreferredSize(new Dimension(100, 20));
@@ -204,10 +207,10 @@ public class CreateHero {
 //      Dwarf
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             bDwarf.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         bDwarf.setForeground(Color.black);
         bDwarf.setPreferredSize(new Dimension(100, 20));
@@ -241,10 +244,10 @@ public class CreateHero {
         labelName.setPreferredSize(new Dimension(500,150));
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Black.ttf")).deriveFont(40f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Black.ttf")).deriveFont(40f);
             labelName.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         labelName.setForeground(Color.WHITE);
         labelName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -261,10 +264,10 @@ public class CreateHero {
         JLabel hpLabel = new JLabel("HP");
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(24f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(24f);
             hpLabel.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         hpLabel.setHorizontalAlignment(SwingConstants.CENTER);
         hpLabel.setBackground(Color.BLACK);
@@ -276,10 +279,10 @@ public class CreateHero {
         JTextField hp = new JTextField();
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             hp.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         hp.setForeground(Color.WHITE);
         hp.setBackground(Color.RED);
@@ -294,10 +297,10 @@ public class CreateHero {
         JLabel armorLabel = new JLabel("Armor");
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(24f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(24f);
             armorLabel.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         armorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         armorLabel.setForeground(Color.WHITE);
@@ -308,10 +311,10 @@ public class CreateHero {
         JTextField armor = new JTextField();
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             armor.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         armor.setHorizontalAlignment(SwingConstants.CENTER);
         armor.setForeground(Color.BLACK);
@@ -328,10 +331,10 @@ public class CreateHero {
         JButton bOK = new JButton(Printer.printMenuOK());
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             bOK.setFont(mainText);
         } catch (FontFormatException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         bOK.setHorizontalAlignment(SwingConstants.CENTER);
         bOK.setForeground(Color.BLACK);
@@ -342,10 +345,17 @@ public class CreateHero {
         bOK.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ImageIcon notification = new ImageIcon(new ImageIcon("icons/notification-icon.png")
-                        .getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH));
-                ImageIcon warning = new ImageIcon(new ImageIcon("icons/warning-icon.png")
-                        .getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH));
+                ImageIcon notification = new ImageIcon(
+                        new ImageIcon(Menu.class.getResource("/icons/notification-icon.png"))
+                                .getImage()
+                                .getScaledInstance(30, 30, Image.SCALE_SMOOTH)
+                );
+
+                ImageIcon warning = new ImageIcon(
+                        new ImageIcon(Menu.class.getResource("/icons/warning-icon.png"))
+                                .getImage()
+                                .getScaledInstance(30, 30, Image.SCALE_SMOOTH)
+                );
                 if (healthHero[0] == 0 || armorHero[0] == 0) {
                     try {
                         healthHero[0] = Integer.parseInt(hp.getText());
@@ -380,42 +390,28 @@ public class CreateHero {
 
                 Hero hero = CreateHeroClass(nameHero, race, healthHero, armorHero);
 
-                File fileHero = new File("data/hero.txt");
+//              File fileHero = new File("data/hero.txt");
 
-                try {
-                    File dataDir = new File("data");
-                    if (!dataDir.exists()) {
-                        dataDir.mkdirs();
-                    }
-                    if (!fileHero.exists()) {
-                        fileHero.createNewFile();
-                    }
-                    if (fileHero.length() != 0) {
-                        labelName.setVisible(false);
-                        container.setVisible(false);
-                        armorLabel.setVisible(false);
-                        hp.setVisible(false);
-                        bOK.setVisible(false);
-                        panelAttributes.removeAll();
+//                  File dataDir = new File("data");
+//                  if (!dataDir.exists()) {
+//                      dataDir.mkdirs();
+//                  }
+//                  if (!fileHero.exists()) {
+//                      fileHero.createNewFile();
+//                  }
+//                  if (fileHero.length() != 0) {
+                    labelName.setVisible(false);
+                    container.setVisible(false);
+                    armorLabel.setVisible(false);
+                    hp.setVisible(false);
+                    bOK.setVisible(false);
+                    panelAttributes.removeAll();
 
-                        clip.stop();
-                        clip.close();
-                        JPanel gameFrame = Game.gameFrame(hero);
-                        panelAttributes.add(gameFrame);
-                    }
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(
-                        panelAttributes,
-                        "Error, file not found",
-                        "WARNING",
-                        JOptionPane.WARNING_MESSAGE,
-                        warning);
-                } catch (UnsupportedAudioFileException ex) {
-                    throw new RuntimeException(ex);
-                } catch (LineUnavailableException ex) {
-                    throw new RuntimeException(ex);
-                }
-
+                    clip.stop();
+                    clip.close();
+                    JPanel gameFrame = Game.gameFrame(hero);
+                    panelAttributes.add(gameFrame);
+//              }
             }
         });
 
@@ -483,7 +479,7 @@ public class CreateHero {
     }
 
     public static Enemy CreateEnemy (Hero hero) {
-        int enemies = Handling.handlingEnemies();
+        int enemies = 5;
         int enemyRandom = RANDOM.nextInt(enemies) + 1;
         int raceRandom = RANDOM.nextInt(enemies) + 1;
 
