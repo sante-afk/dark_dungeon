@@ -82,7 +82,7 @@ public class CreateHero {
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
-        bOK.setForeground(Color.black);
+        bOK.setForeground(Color.BLACK);
         bOK.setPreferredSize(new Dimension(100, 20));
         bOK.setAlignmentX(Component.CENTER_ALIGNMENT);
         conInput.add(bOK);
@@ -160,7 +160,7 @@ public class CreateHero {
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
-        bHuman.setForeground(Color.black);
+        bHuman.setForeground(Color.BLACK);
         bHuman.setPreferredSize(new Dimension(100, 20));
         container.add(bHuman);
         bHuman.addActionListener(new AbstractAction() {
@@ -186,7 +186,7 @@ public class CreateHero {
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
-        bElf.setForeground(Color.black);
+        bElf.setForeground(Color.BLACK);
         bElf.setPreferredSize(new Dimension(100, 20));
         container.add(bElf);
         bElf.addActionListener(new AbstractAction() {
@@ -212,7 +212,7 @@ public class CreateHero {
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
-        bDwarf.setForeground(Color.black);
+        bDwarf.setForeground(Color.BLACK);
         bDwarf.setPreferredSize(new Dimension(100, 20));
         container.add(bDwarf);
         bDwarf.addActionListener(new AbstractAction() {

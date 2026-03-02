@@ -85,8 +85,8 @@ public class Printer {
     public static String printDontRelax () {
         return "\nYour character does not require recovery (︶︹︶)\n";
     }
-    public static void printGameOwer() {
-        System.out.println("† Game over!");
+    public static String printGameOwer() {
+        return "† Game over!";
     }
     public static void printMenuFight () {
         System.out.println("1. Physical Attack ");

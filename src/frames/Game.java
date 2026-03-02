@@ -48,18 +48,7 @@ public class Game {
 
         // path music
         stopMusic();
-        boolean randomPathMusic = RANDOM.nextBoolean();
-        String sound = randomPathMusic ? "mainPath.wav" : "path.wav";
-        try {
-            URL soundUrl = Menu.class.getResource("/sounds/" + sound);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundUrl);
-            musicClip = AudioSystem.getClip();
-            musicClip.open(audioStream);
-            musicClip.start();
-            musicClip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
-        }
+        playPathMusic();
 
         // battlePlace
         JPanel battlePlace = new JPanel();
@@ -179,7 +168,7 @@ public class Game {
 
         // panelMenu
         JPanel panelMenu = new JPanel();
-        panelMenu.setBackground(Color.BLUE);
+        panelMenu.setBackground(Color.BLACK);
         panelMenu.setLayout(new GridLayout(1, 4));
         panelMenu.setPreferredSize(new Dimension(0, 100));
         gameFrame.add(panelMenu, BorderLayout.SOUTH);
@@ -394,6 +383,10 @@ public class Game {
 
                     ArrayList<String> replicas = Path.roll(hero, enemy[0], chanceFight, choice, autoFight);
                     gameLog.setText(String.valueOf(replicas));
+
+                    if (replicas.equals(printer.Printer.printGameOwer())) {
+                        throw new SecurityException();
+                    };
                 }
             }
         });
@@ -476,7 +469,6 @@ public class Game {
         stopMusic();
         playPathMusic();
     }
-
     private static void playFightMusic () {
         try {
             URL soundUrl = Menu.class.getResource("/sounds/fight.wav");
