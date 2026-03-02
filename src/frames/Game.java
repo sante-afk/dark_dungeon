@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Formattable;
 import java.util.Random;
 
 import static icons.IconManager.*;
@@ -29,6 +30,7 @@ public class Game {
     private static JButton btnSleep;
     private static JButton btnAttack;
     private static JButton btnAutoAttack;
+    private static JButton btnPrintLvL;
 
     private static Enemy enemy;
     private static JLabel portraitEnemy;
@@ -43,8 +45,6 @@ public class Game {
         JPanel gameFrame = new JPanel();
         gameFrame.setBackground(Color.BLACK);
         gameFrame.setLayout(new BorderLayout());
-
-
 
         // path music
         stopMusic();
@@ -178,6 +178,7 @@ public class Game {
         btnSleep = new JButton("To take a break");
         btnAttack = new JButton("Physical Attack");
         btnAutoAttack = new JButton("Auto Attack");
+        btnPrintLvL = new JButton("Status LVL");
         final int[] choice = {0};
 
         // Button attack
@@ -226,6 +227,15 @@ public class Game {
         }
         btnSleep.setHorizontalAlignment(SwingConstants.CENTER);
         panelMenu.add(btnSleep);
+
+        // Button print lvl hero
+        try {
+            Font lvlText = Font.createFont(Font.TRUETYPE_FONT,
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
+            btnPrintLvL.setFont(lvlText);
+        } catch (FontFormatException | IOException e) {
+            panelMenu.add(btnPrintLvL);
+        }
 
         // panelEnemy
         panelEnemy = new JPanel ();
@@ -426,6 +436,12 @@ public class Game {
                 String log = handlingPath(hero, enemy[0], false, choice);
                 gameLog.setText(String.join("\n", log));
                 healthHeroLabel.setText("HP: " + hero.getHealth());
+            }
+        });
+        btnPrintLvL.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gameLog.setText(printer.Printer.printLevel(hero));
             }
         });
 
