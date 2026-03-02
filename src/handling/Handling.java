@@ -17,36 +17,6 @@ public class Handling {
         return 5;
     }
 
-    public static void handlingCreateHero (
-            String[] nameHero,
-            int[] healthHero,
-            int[] armorHero,
-            String race,
-            int level,
-            double exp,
-            int expEnd,
-            int minDamage,
-            int maxDamage) {
-//        try {
-//            File hero = new File("data/hero.txt");
-//            hero.createNewFile();
-//            FileWriter write = new FileWriter(hero);
-
-//            write.write("Name: " + nameHero[0] + "\n");
-//            write.write("Health: " + String.valueOf(healthHero[0]) + "\n");
-//            write.write("Armor: " + String.valueOf(armorHero[0]) + "\n");
-//            write.write("race: " + race + "\n");
-//            write.write("level: " + String.valueOf(level) + "\n");
-//            write.write("exp: " + String.valueOf(exp) + "\n");
-//            write.write("expend: " + String.valueOf(expEnd) + "\n");
-//            write.write("minDamage: " + String.valueOf(minDamage) + "\n");
-//            write.write("maxDamage: " + String.valueOf(maxDamage) + "\n");
-//            write.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-    }
-
     public static String handlingPath (Hero hero, Enemy enemy, boolean chanceFight, int[] choice) {
         boolean continuePath = true;
 
