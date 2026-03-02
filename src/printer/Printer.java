@@ -28,7 +28,7 @@ public class Printer {
                         "\nArmor ( " + hero.getArmor() + " ⛊ ) \n");
 
     }
-    public static void printLevel (Hero hero) {
+    public static String printLevel (Hero hero) {
         int paintBar = 10;
         int exp = (int)(hero.getExp() * 10);
         StringBuilder progressBar = new StringBuilder();
@@ -43,11 +43,11 @@ public class Printer {
         for (int j = count; j < paintBar; j++) {
             progressBar.append("▒");
         }
-
-        System.out.println("\nlevel - " + hero.getLevel());
-        System.out.println(progressBar);
-        System.out.println((int)(hero.getExp() * 1000) + " - " + (hero.getExpEnd()) * 100 + "\n");
         progressBar.setLength(0);
+
+        return ("\nlevel - " + hero.getLevel() + "\n"
+                + progressBar + "\n"
+                + (int)(hero.getExp() * 1000) + " - " + (hero.getExpEnd()) * 100 + "\n");
     }
     public static String printHistory (Hero hero) {
         return (
