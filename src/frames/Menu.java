@@ -110,8 +110,23 @@ public class Menu {
                 panelMenuNo.setVisible(false);
                 panelMenuYes.setVisible(false);
 
-                JPanel createHero = CreateHero.createHero(clip);
-                window.add(createHero);
+                try {
+                    JPanel createHero = CreateHero.createHero(clip);
+                    window.add(createHero);
+                } catch (SecurityException r) {
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    JOptionPane.showConfirmDialog(null, printer.Printer.printGameOwer(), "Information", dialogButton);
+                    if (dialogButton == JOptionPane.NO_OPTION) {
+                        window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSED));
+                    } else if (dialogButton == JOptionPane.YES_NO_OPTION) {
+                        window.removeAll();
+                        try {
+                            Menu.menuFrame();
+                        } catch (Exception t) {
+                            t.printStackTrace();
+                        }
+                    }
+                }
             }
         });
 
