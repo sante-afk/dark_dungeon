@@ -21,7 +21,7 @@
    - Or [OpenJDK](https://openjdk.org/) (free, open-source version)
 
 2. **Download the game:**
-   - https://github.com/sante-afk/dark_dungeon/releases/download/v1.0/dark.dungeon.jar
+   - https://github.com/sante-afk/dark_dungeon/releases
     
 3. **Run the game:**
 ```bash
