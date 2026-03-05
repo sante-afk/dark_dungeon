@@ -37,14 +37,18 @@ public class Game {
 
     private static Clip clipFight;
     private static Clip clipPath;
+
+    private static JLabel damageHeroLabel;
+
+    private static Enemy enemy;
+    private static JPanel panelEnemy;
     private static JLabel portraitEnemy;
     private static JLabel nameEnemyLabel;
     private static JLabel raceEnemyLabel;
     private static JLabel healthEnemyLabel;
     private static JLabel armorEnemyLabel;
+    private static JLabel damageEnemyLabel;
     private static JLabel levelEnemyLabel;
-    private static JPanel panelEnemy;
-    private static Enemy enemy;
 
     public static JPanel gameFrame(Hero hero, Clip clip, JFrame window) {
         JPanel gameFrame = new JPanel();
@@ -84,6 +88,7 @@ public class Game {
         containerScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         battlePlace.add(containerScroll, BorderLayout.CENTER);
 
+//        -------------------------------HERO-------------------------------
         // panelHero
         JPanel panelHero = new JPanel();
         panelHero.setBackground(Color.BLACK);
@@ -164,6 +169,20 @@ public class Game {
         armorHeroLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         armorHeroLabel.setForeground(Color.WHITE);
         panelHero.add(armorHeroLabel);
+
+        // Damage
+        damageHeroLabel = new JLabel("Damage: " + hero.getMinDamage() + " - " + hero.getMaxDamage());
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
+            damageHeroLabel.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
+        damageHeroLabel.setIcon(iconDamage);
+        damageHeroLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        damageHeroLabel.setForeground(Color.WHITE);
+        panelHero.add(damageHeroLabel);
 
         // Level
         JLabel levelHeroLabel = new JLabel("LvL: " + hero.getLevel());
@@ -253,7 +272,7 @@ public class Game {
         btnPrintLvL.setHorizontalAlignment(SwingConstants.CENTER);
         panelMenu.add(btnPrintLvL);
 
-
+//        -------------------------------ENEMY-------------------------------
         // panelEnemy
         panelEnemy = new JPanel ();
         panelEnemy.setBackground(Color.BLACK);
@@ -347,6 +366,22 @@ public class Game {
         armorEnemyLabel.setVisible(false);
         panelEnemy.add(armorEnemyLabel);
 
+        // Damage
+        damageEnemyLabel = new JLabel("Damage: " );
+        try {
+            Font mainText = Font.createFont(Font.TRUETYPE_FONT,
+                    Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
+            damageEnemyLabel.setFont(mainText);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
+        damageEnemyLabel.setIcon(iconDamage);
+        damageEnemyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        damageEnemyLabel.setForeground(Color.WHITE);
+        damageEnemyLabel.setVisible(false);
+        panelEnemy.add(damageEnemyLabel);
+
+
         // Level
         levelEnemyLabel = new JLabel("LvL: " );
         try {
@@ -372,13 +407,15 @@ public class Game {
         btnContinue.setPreferredSize(new Dimension(120, 30));
         panelMenu.add(btnContinue);
 
+//        -------------------------------BUTTONS-------------------------------
         btnContinue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean chanceFight = RANDOM.nextBoolean();
 
+                enemy = CreateHero.CreateEnemy(hero);
+
                 if (chanceFight) {
-                    enemy = CreateHero.CreateEnemy(hero);
                     if (enemy != null) {
                         updateEnemyUI(enemy);
                     }
@@ -399,6 +436,7 @@ public class Game {
 //                    btnAutoAttack.setVisible(true);
                     panelEnemy.setVisible(true);
                     portraitEnemy.setVisible(true);
+                    damageEnemyLabel.setVisible(true);
                     nameEnemyLabel.setVisible(true);
                     raceEnemyLabel.setVisible(true);
                     healthEnemyLabel.setVisible(true);
@@ -439,8 +477,12 @@ public class Game {
         btnAttack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (enemy != null) {
-                    if (enemy.getHealth() > 0) {
+                if (enemy == null || enemy.getHealth() <= 0) {
+                    endBattle(hero, window, gameFrame, enemy, clipFight, clipPath);
+                    clipPath = playPathMusic();
+                }
+
+                if (enemy.getHealth() > 0) {
                         if (hero.getHealth() <= 0 || enemy.getHealth() <= 0) {
                             return;
                         }
@@ -457,16 +499,14 @@ public class Game {
                         healthHeroLabel.setText("HP: " + hero.getHealth());
                         armorHeroLabel.setText("Armor: " + hero.getArmor());
                         levelHeroLabel.setText("LVL: " + hero.getLevel());
+
                         healthEnemyLabel.setText("HP: " + enemy.getHealth());
                         armorEnemyLabel.setText("Armor: " + enemy.getArmor());
 
                         if (enemy.getHealth() <= 0 || hero.getHealth() <= 0) {
-                            endBattle(hero, window, gameFrame, enemy, clipFight);
+                            endBattle(hero, window, gameFrame, enemy, clipFight, clipPath);
                             clipPath = playPathMusic();
                         }
-                    }
-                } else {
-                    enemy = CreateHero.CreateEnemy(hero);
                 }
 
             }
@@ -500,17 +540,22 @@ public class Game {
         raceEnemyLabel.setText("Race: " + enemy.getRace());
         healthEnemyLabel.setText("HP: " + enemy.getHealth());
         armorEnemyLabel.setText("Armor: " + enemy.getArmor());
+        damageEnemyLabel.setText("Damage: " + enemy.getMinDamage() + " - " + enemy.getMaxDamage());
         levelEnemyLabel.setText("LvL: " + enemy.getLevel());
         panelEnemy.revalidate();
         panelEnemy.repaint();
     }
 
+    private static void updateHeroUI(Hero hero) {
+        damageHeroLabel.setText("Damage: " + hero.getMinDamage() + " - " + hero.getMaxDamage());
+    }
 
-    private static void endBattle(Hero hero, JFrame window, JPanel gameFrame, Enemy enemy, Clip clipFight) {
+    private static void endBattle(Hero hero, JFrame window, JPanel gameFrame, Enemy enemy, Clip clipFight, Clip clipPath) {
         btnAttack.setVisible(false);
         btnAutoAttack.setVisible(false);
         panelEnemy.setVisible(false);
         portraitEnemy.setVisible(false);
+        damageEnemyLabel.setVisible(false);
         nameEnemyLabel.setVisible(false);
         raceEnemyLabel.setVisible(false);
         healthEnemyLabel.setVisible(false);
@@ -530,6 +575,10 @@ public class Game {
                 stopMusic(clipPath);
             }
             gameOver(window, gameFrame, clipFight);
+        }
+
+        if (hero.getHealth() > 0) {
+            updateHeroUI(hero);
         }
     }
 

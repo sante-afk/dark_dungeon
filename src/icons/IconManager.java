@@ -26,6 +26,7 @@ public class IconManager {
 
     public static final ImageIcon iconHp = loadIcon("/icons/hp.png", 33, 35);
     public static final ImageIcon iconArmor = loadIcon("/icons/armor.png", 25, 26);
+    public static final ImageIcon iconDamage = loadIcon("/icons/sword.png", 25, 26);
 
     private static ImageIcon loadIcon(String path, int width, int height) {
         ImageIcon originalIcon = new ImageIcon(Menu.class.getResource(path));

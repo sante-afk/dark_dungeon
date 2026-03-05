@@ -469,15 +469,15 @@ public class CreateHero {
             maxDamage += 1;
         }
 
-        int health = 0;
+        int health = 1;
         int armor = 0;
 
         if (levelRandom > hero.getLevel()) {
             health = RANDOM.nextInt(hero.getHealth() / 2, hero.getHealth() + 1);
             armor = RANDOM.nextInt(hero.getArmor() / 2, hero.getArmor() + 1);
         } else {
-            health = RANDOM.nextInt(1, hero.getHealth());
-            armor = RANDOM.nextInt(1, hero.getArmor());
+            health = RANDOM.nextInt(1, hero.getHealth() + 1);
+            armor = RANDOM.nextInt(1, hero.getArmor() + 1);
         }
         
         switch (enemyRandom) {
