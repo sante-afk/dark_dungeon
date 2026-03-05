@@ -1,28 +1,23 @@
 package frames;
 
 import enemies.*;
-import handling.Handling;
 import printer.Printer;
 import races.*;
 
-import javax.management.monitor.CounterMonitor;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-import java.util.Scanner;
+
+import static music.musicManager.stopMusic;
 
 public class CreateHero {
 
     private static final Random RANDOM = new Random();
 
-    public static JPanel createHero (Clip clip) {
+    public static JPanel createHero (Clip clip, JFrame window) {
         JPanel panelName = new JPanel();
         panelName.setBackground(Color.BLACK);
         panelName.setSize(new Dimension(1000, 750));
@@ -102,7 +97,7 @@ public class CreateHero {
                     bOK.setVisible(false);
                     panelName.removeAll();
 
-                    JPanel chooseRace = chooseRace(nameHero, clip);
+                    JPanel chooseRace = chooseRace(nameHero, clip, window);
                     panelName.add(chooseRace);
                 } else {
                     String errorName = Printer.printErrorName();
@@ -119,7 +114,7 @@ public class CreateHero {
         return panelName;
     }
 
-    public static JPanel chooseRace (String[] nameHero, Clip clip) {
+    public static JPanel chooseRace (String[] nameHero, Clip clip, JFrame window) {
         JPanel panelRace = new JPanel();
         panelRace.setBackground(Color.BLACK);
         panelRace.setSize(new Dimension(1000, 750));
@@ -172,7 +167,7 @@ public class CreateHero {
             bDwarf.setVisible(false);
             panelRace.removeAll();
 
-            JPanel panelAttributes = chooseAttributes(nameHero, 1, clip);
+            JPanel panelAttributes = chooseAttributes(nameHero, 1, clip, window);
             panelRace.add(panelAttributes);
             }
         });
@@ -198,7 +193,7 @@ public class CreateHero {
             bDwarf.setVisible(false);
             panelRace.removeAll();
 
-            JPanel panelAttributes = chooseAttributes(nameHero, 2, clip);
+            JPanel panelAttributes = chooseAttributes(nameHero, 2, clip, window);
             panelRace.add(panelAttributes);
             }
         });
@@ -224,7 +219,7 @@ public class CreateHero {
             bDwarf.setVisible(false);
             panelRace.removeAll();
 
-            JPanel panelAttributes = chooseAttributes(nameHero, 3, clip);
+            JPanel panelAttributes = chooseAttributes(nameHero, 3, clip, window);
             panelRace.add(panelAttributes);
             }
         });
@@ -233,7 +228,7 @@ public class CreateHero {
         return panelRace;
     }
 
-    public static JPanel chooseAttributes (String[] nameHero, int race, Clip clip) {
+    public static JPanel chooseAttributes (String[] nameHero, int race, Clip clip, JFrame window) {
         JPanel panelAttributes = new JPanel();
         panelAttributes.setBackground(Color.BLACK);
         panelAttributes.setBounds(250,200,700,300);
@@ -396,9 +391,11 @@ public class CreateHero {
                     bOK.setVisible(false);
                     panelAttributes.removeAll();
 
-                    clip.stop();
-                    clip.close();
-                    JPanel gameFrame = Game.gameFrame(hero);
+                    if (clip != null) {
+                        stopMusic(clip);
+                    }
+
+                    JPanel gameFrame = Game.gameFrame(hero, clip, window);
                     panelAttributes.add(gameFrame);
 //              }
             }
@@ -463,12 +460,11 @@ public class CreateHero {
         int enemyRandom = RANDOM.nextInt(enemies) + 1;
         int raceRandom = RANDOM.nextInt(enemies) + 1;
 
-        int levelRandom = RANDOM.nextInt(1, hero.getLevel() + 1);
+        int levelRandom = RANDOM.nextInt(hero.getLevel() + 2) + 1;
         int minDamage = RANDOM.nextInt(1, hero.getMinDamage() + 1);
         int maxDamage = RANDOM.nextInt(minDamage, hero.getMaxDamage() + 1);
 
-        if (levelRandom > hero.getLevel() && levelRandom == hero.getLevel()) {
-            levelRandom += 1;
+        if (levelRandom > hero.getLevel()) {
             minDamage += 1;
             maxDamage += 1;
         }
@@ -476,14 +472,14 @@ public class CreateHero {
         int health = 0;
         int armor = 0;
 
-        if (levelRandom > hero.getLevel() && levelRandom == hero.getLevel()) {
-            health = RANDOM.nextInt(1, (hero.getHealth() / 2) + 1);
-            armor = RANDOM.nextInt(1, (hero.getArmor() / 2) + 1);
+        if (levelRandom > hero.getLevel()) {
+            health = RANDOM.nextInt(hero.getHealth() / 2, hero.getHealth() + 1);
+            armor = RANDOM.nextInt(hero.getArmor() / 2, hero.getArmor() + 1);
         } else {
-            health = RANDOM.nextInt(1, hero.getHealth() + 1);
-            armor = RANDOM.nextInt(1, hero.getArmor() + 1);
+            health = RANDOM.nextInt(1, hero.getHealth());
+            armor = RANDOM.nextInt(1, hero.getArmor());
         }
-
+        
         switch (enemyRandom) {
             case 1 -> {
                 String race;

@@ -14,9 +14,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
+import static music.musicManager.playMusicMenu;
+
 public class Menu {
 
-    public static void menuFrame () throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+    public static void menuFrame () {
         JPanel panelLogo = new JPanel();
         panelLogo.setBackground(Color.BLACK);
         panelLogo.setLayout(new BorderLayout());
@@ -65,14 +67,8 @@ public class Menu {
         logo.setHorizontalAlignment(JLabel.CENTER);
         panelLogo.add(logo);
 
-//      main music menu
-        InputStream mainTheme = Menu.class.getResourceAsStream("/sounds/mainTheme.wav");
-        AudioInputStream audioStream =
-                AudioSystem.getAudioInputStream(new BufferedInputStream(mainTheme));
-        Clip clip = AudioSystem.getClip();
-        clip.open(audioStream);
-        clip.start();
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+//      play music menu
+        Clip clip = playMusicMenu();
 
 //      print start game
         JLabel printStartGame = new JLabel(Printer.printStartGame());
@@ -110,23 +106,10 @@ public class Menu {
                 panelMenuNo.setVisible(false);
                 panelMenuYes.setVisible(false);
 
-                try {
-                    JPanel createHero = CreateHero.createHero(clip);
-                    window.add(createHero);
-                } catch (SecurityException r) {
-                    int dialogButton = JOptionPane.YES_NO_OPTION;
-                    JOptionPane.showConfirmDialog(null, printer.Printer.printGameOwer(), "Information", dialogButton);
-                    if (dialogButton == JOptionPane.NO_OPTION) {
-                        window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSED));
-                    } else if (dialogButton == JOptionPane.YES_NO_OPTION) {
-                        window.removeAll();
-                        try {
-                            Menu.menuFrame();
-                        } catch (Exception t) {
-                            t.printStackTrace();
-                        }
-                    }
-                }
+
+                JPanel createHero = CreateHero.createHero(clip, window);
+                window.add(createHero);
+
             }
         });
 
@@ -173,4 +156,5 @@ public class Menu {
     public static void menuFight () {
         Printer.printMenuFight();
     }
+
 }
