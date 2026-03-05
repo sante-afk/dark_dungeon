@@ -8,18 +8,21 @@ import replicas.Replica;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Formattable;
 import java.util.Random;
 
 import static icons.IconManager.*;
 import static events.Fight.*;
 import static handling.Handling.handlingPath;
+import static java.awt.SystemColor.window;
+import static music.musicManager.*;
 
 public class Game {
 
@@ -32,7 +35,8 @@ public class Game {
     private static JButton btnAutoAttack;
     private static JButton btnPrintLvL;
 
-    private static Enemy enemy;
+    private static Clip clipFight;
+    private static Clip clipPath;
     private static JLabel portraitEnemy;
     private static JLabel nameEnemyLabel;
     private static JLabel raceEnemyLabel;
@@ -40,15 +44,19 @@ public class Game {
     private static JLabel armorEnemyLabel;
     private static JLabel levelEnemyLabel;
     private static JPanel panelEnemy;
+    private static Enemy enemy;
 
-    public static JPanel gameFrame(Hero hero) {
+    public static JPanel gameFrame(Hero hero, Clip clip, JFrame window) {
         JPanel gameFrame = new JPanel();
         gameFrame.setBackground(Color.BLACK);
         gameFrame.setLayout(new BorderLayout());
 
+
         // path music
-        stopMusic();
-        playPathMusic();
+        if (clip != null) {
+            stopMusic(clip);
+        }
+        clipPath = playPathMusic();
 
         // battlePlace
         JPanel battlePlace = new JPanel();
@@ -57,15 +65,18 @@ public class Game {
         battlePlace.setPreferredSize(new Dimension(0, 400));
         gameFrame.add(battlePlace);
 
-        // log game
-        JTextArea gameLog = new JTextArea (Printer.printHistory(hero));
-        gameLog.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JTextPane gameLog = new JTextPane();
+        gameLog.setText(Printer.printHistory(hero));
         gameLog.setEditable(false);
-        gameLog.setLineWrap(true);
-        gameLog.setWrapStyleWord(true);
-        gameLog.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 20));
+        gameLog.setFont(new Font("Dialog", Font.PLAIN, 25));
         gameLog.setForeground(Color.WHITE);
         gameLog.setBackground(Color.BLACK);
+        gameLog.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
+
+        StyledDocument doc = gameLog.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
         // panel scroll
         JScrollPane containerScroll = new JScrollPane(gameLog);
@@ -96,6 +107,7 @@ public class Game {
             }
         }
         portraitHero.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelHero.add(Box.createVerticalStrut(30));
         panelHero.add(portraitHero);
         panelHero.add(Box.createVerticalStrut(30));
 
@@ -173,7 +185,6 @@ public class Game {
         panelMenu.setPreferredSize(new Dimension(0, 100));
         gameFrame.add(panelMenu, BorderLayout.SOUTH);
 
-
         btnContinue = new JButton("Continue on your way");
         btnSleep = new JButton("To take a break");
         btnAttack = new JButton("Physical Attack");
@@ -191,6 +202,7 @@ public class Game {
         }
         btnAttack.setVisible(false);
         panelMenu.add(btnAttack);
+        btnAttack.setPreferredSize(new Dimension(120, 30));
         btnAttack.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -208,6 +220,7 @@ public class Game {
         }
         btnAutoAttack.setVisible(false);
         panelMenu.add(btnAutoAttack);
+        btnAutoAttack.setPreferredSize(new Dimension(120, 30));
         btnAttack.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -215,7 +228,6 @@ public class Game {
             }
         });
 
-        final Enemy[] enemy = {CreateHero.CreateEnemy(hero)};
 
         // Button To take a break
         try {
@@ -225,6 +237,7 @@ public class Game {
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
+        btnSleep.setPreferredSize(new Dimension(120, 30));
         btnSleep.setHorizontalAlignment(SwingConstants.CENTER);
         panelMenu.add(btnSleep);
 
@@ -234,8 +247,12 @@ public class Game {
                     Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(14f);
             btnPrintLvL.setFont(lvlText);
         } catch (FontFormatException | IOException e) {
-            panelMenu.add(btnPrintLvL);
+            e.printStackTrace();
         }
+        btnPrintLvL.setPreferredSize(new Dimension(120, 30));
+        btnPrintLvL.setHorizontalAlignment(SwingConstants.CENTER);
+        panelMenu.add(btnPrintLvL);
+
 
         // panelEnemy
         panelEnemy = new JPanel ();
@@ -247,7 +264,10 @@ public class Game {
 
         // Portrait enemy
         portraitEnemy = new JLabel();
-        String raceEnemy = enemy[0].getRace();
+        String raceEnemy = "";
+        if (enemy != null) {
+            raceEnemy = enemy.getRace();
+        }
         if (raceEnemy.contains("Rat")) {
             portraitEnemy.setIcon(iconRat);
         } else if (raceEnemy.contains("Goblin")) {
@@ -264,12 +284,13 @@ public class Game {
             portraitEnemy.setIcon(iconElementalFire);
         }
         portraitEnemy.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelEnemy.add(Box.createVerticalStrut(30));
         panelEnemy.add(portraitEnemy);
         panelEnemy.setVisible(false);
         panelEnemy.add(Box.createVerticalStrut(30));
 
         // Name
-        nameEnemyLabel = new JLabel("Name: " + enemy[0].getName());
+        nameEnemyLabel = new JLabel("Name: " );
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
                     Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
@@ -283,7 +304,7 @@ public class Game {
         panelEnemy.add(nameEnemyLabel);
 
         // Race
-        raceEnemyLabel = new JLabel("Race: " + enemy[0].getRace());
+        raceEnemyLabel = new JLabel("Race: " );
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
                     Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
@@ -297,7 +318,7 @@ public class Game {
         panelEnemy.add(raceEnemyLabel);
 
         // Health
-        healthEnemyLabel = new JLabel("Health: " + enemy[0].getHealth());
+        healthEnemyLabel = new JLabel("Health: " );
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
                     Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
@@ -312,7 +333,7 @@ public class Game {
         panelEnemy.add(healthEnemyLabel);
 
         // Armor
-        armorEnemyLabel = new JLabel("Armor: " + enemy[0].getArmor());
+        armorEnemyLabel = new JLabel("Armor: " );
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
                     Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
@@ -327,7 +348,7 @@ public class Game {
         panelEnemy.add(armorEnemyLabel);
 
         // Level
-        levelEnemyLabel = new JLabel("LvL: " + enemy[0].getLevel());
+        levelEnemyLabel = new JLabel("LvL: " );
         try {
             Font mainText = Font.createFont(Font.TRUETYPE_FONT,
                     Menu.class.getResourceAsStream("/fonts/Cinzel-Regular.ttf")).deriveFont(18f);
@@ -348,30 +369,34 @@ public class Game {
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
+        btnContinue.setPreferredSize(new Dimension(120, 30));
         panelMenu.add(btnContinue);
-
 
         btnContinue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean chanceFight = RANDOM.nextBoolean();
-                enemy[0] = CreateHero.CreateEnemy(hero);
-                updateEnemyUI(enemy[0]);
 
                 if (chanceFight) {
-                    stopMusic();
+                    enemy = CreateHero.CreateEnemy(hero);
+                    if (enemy != null) {
+                        updateEnemyUI(enemy);
+                    }
 
-                    playFightMusic();
-
+                    if (clipPath != null) {
+                        stopMusic(clipPath);
+                    }
+                    clipFight = playFightMusic();
 
                     boolean autoFight = false;
                     gameLog.setText("");
 
                     btnContinue.setVisible(false);
                     btnSleep.setVisible(false);
+                    btnPrintLvL.setVisible(false);
 
                     btnAttack.setVisible(true);
-                    btnAutoAttack.setVisible(true);
+//                    btnAutoAttack.setVisible(true);
                     panelEnemy.setVisible(true);
                     portraitEnemy.setVisible(true);
                     nameEnemyLabel.setVisible(true);
@@ -381,59 +406,76 @@ public class Game {
                     levelEnemyLabel.setVisible(true);
 
                     choice[0] = 1;
-                    Fight(hero, enemy[0], choice, false);
+                    if (enemy == null) {
+                        return;
+                    }
                     healthHeroLabel.setText("HP: " + hero.getHealth());
                     armorHeroLabel.setText("Armor: " + hero.getArmor());
-                    healthEnemyLabel.setText("HP: " + enemy[0].getHealth());
-                    armorEnemyLabel.setText("Armor: " + enemy[0].getArmor());
 
+                    if (hero.getHealth() <= 0) {
+                        gameOver(window, gameFrame, clipFight);
+                    };
+
+                    if (enemy != null) {
+                        Fight(hero, enemy, choice, false);
+                        healthEnemyLabel.setText("HP: " + enemy.getHealth());
+                        armorEnemyLabel.setText("Armor: " + enemy.getArmor());
+                    }
                     boolean randomReplic = RANDOM.nextBoolean();
-                    String replica = Replica.replicaMet(enemy[0], randomReplic);
+                    String replica = Replica.replicaMet(enemy, randomReplic);
                     gameLog.setText(replica);
 
-                    ArrayList<String> replicas = Path.roll(hero, enemy[0], chanceFight, choice, autoFight);
+                    ArrayList<String> replicas = Path.roll(hero, enemy, chanceFight, choice, autoFight);
                     gameLog.setText(String.valueOf(replicas));
 
-                    if (replicas.equals(printer.Printer.printGameOwer())) {
-                        throw new SecurityException();
+                    if (hero.getHealth() <= 0) {
+                        gameOver(window, gameFrame, clipFight);
                     };
+
                 }
+
             }
         });
         btnAttack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (enemy[0].getHealth() > 0) {
-                    if (hero.getHealth() <= 0 || enemy[0].getHealth() <= 0) {
-                        return;
+                if (enemy != null) {
+                    if (enemy.getHealth() > 0) {
+                        if (hero.getHealth() <= 0 || enemy.getHealth() <= 0) {
+                            return;
+                        }
+
+                        ArrayList<String> roundLog = new ArrayList<>();
+                        choice[0] = 1;
+                        roundLog.addAll(TourHero(hero, enemy, choice, false));
+
+                        if (enemy.getHealth() > 0) {
+                            roundLog.addAll(TourEnemy(hero, enemy, choice, false));
+                        }
+
+                        gameLog.setText(String.join("\n", roundLog));
+                        healthHeroLabel.setText("HP: " + hero.getHealth());
+                        armorHeroLabel.setText("Armor: " + hero.getArmor());
+                        levelHeroLabel.setText("LVL: " + hero.getLevel());
+                        healthEnemyLabel.setText("HP: " + enemy.getHealth());
+                        armorEnemyLabel.setText("Armor: " + enemy.getArmor());
+
+                        if (enemy.getHealth() <= 0 || hero.getHealth() <= 0) {
+                            endBattle(hero, window, gameFrame, enemy, clipFight);
+                            clipPath = playPathMusic();
+                        }
                     }
-
-                    ArrayList<String> roundLog = new ArrayList<>();
-                    choice[0] = 1;
-                    roundLog.addAll(TourHero(hero, enemy[0], choice, false));
-
-                    if (enemy[0].getHealth() > 0) {
-                        roundLog.addAll(TourEnemy(hero, enemy[0], choice, false));
-                    }
-
-                    gameLog.setText(String.join("\n", roundLog));
-                    healthHeroLabel.setText("HP: " + hero.getHealth());
-                    armorHeroLabel.setText("Armor: " + hero.getArmor());
-                    levelHeroLabel.setText("LVL: " + hero.getLevel());
-                    healthEnemyLabel.setText("HP: " + enemy[0].getHealth());
-                    armorEnemyLabel.setText("Armor: " + enemy[0].getArmor());
-
-                    if (enemy[0].getHealth() <= 0 || hero.getHealth() <= 0) {
-                        endBattle(hero, enemy[0]);
-                    }
+                } else {
+                    enemy = CreateHero.CreateEnemy(hero);
                 }
+
             }
         });
         btnSleep.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 choice[0] = 4;
-                String log = handlingPath(hero, enemy[0], false, choice);
+                String log = handlingPath(hero, enemy, false, choice);
                 gameLog.setText(String.join("\n", log));
                 healthHeroLabel.setText("HP: " + hero.getHealth());
             }
@@ -441,16 +483,18 @@ public class Game {
         btnPrintLvL.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameLog.setText(printer.Printer.printLevel(hero));
+                gameLog.setText(Printer.printLevel(hero));
             }
         });
 
         return gameFrame;
     }
 
-
     private static void updateEnemyUI(Enemy enemy) {
-        String raceEnemy = enemy.getRace();
+        String raceEnemy = "";
+        if (enemy != null) {
+            raceEnemy  = enemy.getRace();
+        }
         portraitEnemy.setIcon(getEnemyIcon(raceEnemy));
         nameEnemyLabel.setText("Name: " + enemy.getName());
         raceEnemyLabel.setText("Race: " + enemy.getRace());
@@ -461,14 +505,8 @@ public class Game {
         panelEnemy.repaint();
     }
 
-    private static void stopMusic() {
-        if (musicClip != null && musicClip.isRunning()) {
-            musicClip.stop();
-            musicClip.close();
-        }
-    }
 
-    private static void endBattle(Hero hero, Enemy enemy) {
+    private static void endBattle(Hero hero, JFrame window, JPanel gameFrame, Enemy enemy, Clip clipFight) {
         btnAttack.setVisible(false);
         btnAutoAttack.setVisible(false);
         panelEnemy.setVisible(false);
@@ -481,35 +519,37 @@ public class Game {
 
         btnContinue.setVisible(true);
         btnSleep.setVisible(true);
+        btnPrintLvL.setVisible(true);
 
-        stopMusic();
-        playPathMusic();
-    }
-    private static void playFightMusic () {
-        try {
-            URL soundUrl = Menu.class.getResource("/sounds/fight.wav");
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundUrl);
-            musicClip = AudioSystem.getClip();
-            musicClip.open(audioStream);
-            musicClip.start();
-            musicClip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException r) {
-            r.printStackTrace();
+        if (clipFight != null) {
+            stopMusic(clipFight);
+        }
+
+        if (hero.getHealth() <= 0) {
+            if (clipPath != null) {
+                stopMusic(clipPath);
+            }
+            gameOver(window, gameFrame, clipFight);
         }
     }
 
-    private static void playPathMusic () {
-        boolean randomPathMusic = RANDOM.nextBoolean();
-        String sound = randomPathMusic ? "mainPath.wav" : "path.wav";
-        try {
-            URL soundUrl = Menu.class.getResource("/sounds/" + sound);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundUrl);
-            musicClip = AudioSystem.getClip();
-            musicClip.open(audioStream);
-            musicClip.start();
-            musicClip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException s) {
-            s.printStackTrace();
+    private static void gameOver(JFrame window, JPanel gameFrame, Clip clipFight) {
+
+        int dialog = JOptionPane.showConfirmDialog(
+                gameFrame,
+                "Start new game?",
+                "Game Over",
+                JOptionPane.YES_NO_OPTION
+        );
+        if (dialog == JOptionPane.YES_OPTION) {
+            if (clipFight != null) {
+                stopMusic(clipFight);
+            }
+            window.dispose();
+            Menu.menuFrame();
+        } else {
+            window.dispose();
         }
     }
+
 }

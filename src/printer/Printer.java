@@ -36,15 +36,13 @@ public class Printer {
         int expPersent = (exp * 10) / paintBar / hero.getLevel();
 
         for (int i = 0; i < expPersent; i++) {
-            progressBar.append("█");
+            progressBar.append("◆");
             ++count;
         }
 
         for (int j = count; j < paintBar; j++) {
-            progressBar.append("▒");
+            progressBar.append("◇");
         }
-        progressBar.setLength(0);
-
         return ("\nlevel - " + hero.getLevel() + "\n"
                 + progressBar + "\n"
                 + (int)(hero.getExp() * 1000) + " - " + (hero.getExpEnd()) * 100 + "\n");
