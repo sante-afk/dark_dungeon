@@ -135,12 +135,6 @@ public class Menu {
             }
         });
 
-
-//        Scanner scanner = new Scanner(System.in);
-//        Hero hero = Handling.handlingStartGame(scanner);
-//        Menu.menuBegin(hero, scanner);
-//        scanner.close();
-
         window.setVisible(true);
     }
 
