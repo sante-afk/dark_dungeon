@@ -1,7 +1,7 @@
 jpackage \
   --name "dark dungeon" \
   --input out/artifacts \
-  --main-jar game.jar \
+  --main-jar dark.dungeon.jar \
   --main-class Main \
   --icon resources/icons/game-icon.ico \
   --type exe \

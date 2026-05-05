@@ -76,6 +76,18 @@ public class Handling {
                 }
                 Printer.printNewLevel(hero.getLevel());
             }
+
+            if ((int)(hero.getExp() * 10) == hero.getExpEnd() || (int)(hero.getExp() * 10) > hero.getExpEnd()) {
+                hero.setLevel(hero.getLevel() + 1);
+                hero.setMinDamage(hero.getMinDamage() + RANDOM.nextInt(hero.getMinDamage() + 1)) ;
+                hero.setMaxDamage(hero.getMaxDamage() + RANDOM.nextInt(hero.getMaxDamage() + 1));
+                hero.setExp(0.0);
+                hero.setExpEnd(hero.getLevel() * 10);
+                if (hero.getHealth() < 100) {
+                    hero.setHealth(100, true);
+                }
+                Printer.printNewLevel(hero.getLevel());
+            }
             return exp;
         }
         return 0.0;
