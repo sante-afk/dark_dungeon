@@ -102,13 +102,14 @@ public class Menu {
         yes.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                panelLogo.setVisible(false);
+//                panelLogo.setVisible(false);
+                printStartGame.setVisible(false);
                 panelMenuNo.setVisible(false);
                 panelMenuYes.setVisible(false);
 
 
-                JPanel createHero = CreateHero.createHero(clip, window);
-                window.add(createHero);
+//                JPanel createHero = CreateHero.createHero(clip, window);
+//                window.add(createHero);
 
             }
         });
